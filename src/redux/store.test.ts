@@ -1,5 +1,4 @@
 import {
-  TodoAction,
   WhennerActionType,
   updateTodo,
   createTodo

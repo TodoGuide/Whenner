@@ -4,6 +4,7 @@ import { todos } from "./reducers";
 
 export interface WhennerState {
   todos: ITodo[];
+  // appointments: IAppointment[];
 }
 
 const initialState: WhennerState = JSON.parse(
@@ -26,11 +27,11 @@ export function whennerApp(
   state: WhennerState = initialState,
   action: WhennerAction
 ): WhennerState {
-  console.log("Old State", state);
+  // console.log("Old State", state);
   const result = {
     todos: todos((state || initialState).todos, action)
   };
-  console.log("New State", result);
+  // console.log("New State", result);
   localStorage.setItem("WhennerState", JSON.stringify(result));
   return result;
 }

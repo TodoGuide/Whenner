@@ -1,11 +1,12 @@
 import React from "react";
 import { ITodo } from "../models/Todo";
+import { SFC } from "react-dom/node_modules/@types/react";
 
 interface TodoProps extends ITodo {
   onClick: () => void;
 }
 
-const Todo = ({
+const Todo: SFC<TodoProps> = ({
   onClick,
   id,
   title,
@@ -13,18 +14,15 @@ const Todo = ({
   estimate,
   start,
   done
-}: TodoProps) => (
+}) => (
   <li
     onClick={onClick}
     style={{
       textDecoration: done ? "line-through" : "none"
     }}
   >
-    id: {id}
-    title: {title}
-    description: {description}
-    estimate: {estimate} minutes start: {start}
-    done: {done}
+    {JSON.stringify({id, title, description, estimate, start, done})}
+    
   </li>
 );
 
