@@ -1,7 +1,8 @@
 import { ITodo, schedule } from "../models/Todo";
 import { WhennerAction, WhennerActionType } from "./actions";
+import { defaultSettings, Settings } from "../models/Settings";
 
-export function todos(state: ITodo[] = [], action: WhennerAction) {
+export function todos(state: ITodo[] = [], { dayStart: startTime, dayEnd: endTime}: Settings, action: WhennerAction) {
   let result = state;
   switch (action.type) {
     case WhennerActionType.CreateTodo:
@@ -20,5 +21,9 @@ export function todos(state: ITodo[] = [], action: WhennerAction) {
     //   return state;
   }
   console.log("todos reducer completed", { oldState: state, newState: result });
-  return schedule(...result);
+  return schedule({dayStart: startTime, dayEnd: endTime}, ...result);
+}
+
+export function settings(state: Settings = defaultSettings, action: WhennerAction){
+  return state;
 }

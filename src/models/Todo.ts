@@ -1,4 +1,5 @@
 import moment from "moment";
+import { Settings } from "./Settings";
 
 export interface ITodo {
   id: number;
@@ -37,10 +38,37 @@ export class Todo implements ITodo {
   get duration() {
     return moment.duration(this.estimate, "minutes");
   }
+
+  adjustStart({ dayStart, dayEnd }: Settings) {
+    dayStart = moment.duration(dayStart);
+    dayEnd = moment.duration(dayEnd);
+    const earliest = moment(this.start)
+      .startOf("day")
+      .add(dayStart)
+      .toDate();
+    if (this.start < earliest) {
+      this.start = earliest;
+    }
+
+    const maxTaskLength = dayEnd.asMinutes() - dayStart.asMinutes();
+    const latest = moment(this.end)
+      .startOf("day")
+      .add(dayEnd)
+      .toDate();
+    if (this.end > latest && this.estimate <= maxTaskLength) {
+      this.start = moment(this.start)
+        .add(1, "day")
+        .startOf("day")
+        .toDate();
+      this.adjustStart({ dayStart, dayEnd });
+    }
+  }
 }
 
-export function schedule(...todos: ITodo[]): ITodo[] {
-  console.log("Scheduling todos", todos);
+export function schedule(
+  { dayStart: startTime, dayEnd: endTime }: Settings,
+  ...todos: ITodo[]
+): ITodo[] {
   const result = todos.map(todo => new Todo(todo));
   const notDone = result
     .filter(todo => !todo.done)
@@ -49,25 +77,14 @@ export function schedule(...todos: ITodo[]): ITodo[] {
   const lastIndex = notDone.length - 1;
   if (lastIndex === -1) return result;
 
-  console.log("Rescheduling incomplete todos", notDone);
-
-  let nextDay = moment().add(1, "day").startOf("day").toDate();
-
-  console.log("Adjusting first item start", { from: notDone[0].start, to: new Date() });
   notDone[0].start = new Date();
-
   for (let i = 0; i <= lastIndex; i++) {
     const current = notDone[i];
-
-    if (current.end >= nextDay && current.start < nextDay) {
-      current.start = nextDay;
-      nextDay = moment(nextDay).add(1, "day").startOf("day").toDate();
-    }
+    current.adjustStart({ dayStart: startTime, dayEnd: endTime });
     if (i < lastIndex) {
       notDone[i + 1].start = current.end;
     }
   }
 
-  console.log("Scheduled todos", result);
   return result;
 }
