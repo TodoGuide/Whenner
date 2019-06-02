@@ -8,5 +8,5 @@ export interface Settings {
 
 export const defaultSettings: Settings = {
   dayStart: moment.duration('7:15'), // 7:15am
-  dayEnd: moment.duration('19:00') // 7:00pm
+  dayEnd: moment.duration('20:00') // 7:00pm
 }
