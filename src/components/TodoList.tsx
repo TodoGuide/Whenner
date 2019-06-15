@@ -1,17 +1,17 @@
 import React, { SFC } from "react";
 import Todo from "./Todo";
 import { ITodo } from "../models/Todo";
-import { WhennerState } from "../redux/state";
+import { State } from "../redux/State";
 import { connect } from "react-redux";
 import moment from "moment";
 import BigCalendar from "react-big-calendar";
 import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop";
+import { Store } from "../redux/Store";
+import { updateTodo } from "../redux/actions/updateTodo";
+import { createTodo } from "../redux/actions/createTodo";
 
 import "react-big-calendar/lib/addons/dragAndDrop/styles.css";
 import "react-big-calendar/lib/css/react-big-calendar.css";
-import { WhennerStore } from "../redux/store";
-import { updateTodo } from "../redux/actions/updateTodo";
-import { createTodo } from "../redux/actions/createTodo";
 
 const localizer = BigCalendar.momentLocalizer(moment); // or globalizeLocalizer
 const Calendar = withDragAndDrop(BigCalendar);
@@ -43,16 +43,16 @@ const TodoList: SFC<TodoListProps> = ({ todos, onTodoClick }) => (
           .duration(moment(end).diff(moment(start)))
           .asMinutes();
         console.log("Event resized", event);
-        WhennerStore.instance.dispatch(updateTodo(event));
+        Store.instance.dispatch(updateTodo(event));
       }}
       onEventDrop={({ event, start }) => {
         console.log("Event moved", { from: event.start, to: start });
         event.start = start as Date;
-        WhennerStore.instance.dispatch(updateTodo(event));
+        Store.instance.dispatch(updateTodo(event));
       }}
       onSelectSlot={({start, end}) => {
         console.log("Creatomg new todo", { start, end });
-        WhennerStore.instance.dispatch(createTodo({
+        Store.instance.dispatch(createTodo({
           id: Date.now(),
           title: "New todo",
           description: "Do stuff",
@@ -65,7 +65,7 @@ const TodoList: SFC<TodoListProps> = ({ todos, onTodoClick }) => (
   </div>
 );
 
-const mapStateToProps = (state: WhennerState) => {
+const mapStateToProps = (state: State) => {
   return {
     todos: state.todos
   };

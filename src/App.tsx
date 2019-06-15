@@ -3,11 +3,11 @@ import logo from "./logo.svg";
 import "./App.css";
 import TodoList from "./components/TodoList";
 import { Provider } from "react-redux";
-import { WhennerStore } from "./redux/store";
+import { Store } from "./redux/Store";
 
 const App: React.FC = () => {
   return (
-    <Provider store={WhennerStore.instance}>
+    <Provider store={Store.instance}>
       <div className="App">
         <header className="App-header">
           <img src={logo} className="App-logo" style={{ display: 'none' }} alt="logo" />

@@ -1,26 +1,27 @@
-import { createStore, Store } from "redux";
-import { whennerApp, WhennerState } from "./state";
+import { createStore, Store as ReduxStore } from "redux";
+import { State } from "./State";
 import { WhennerAction } from "./actions/WhennerAction";
+import { whenner } from "./reducers/whenner";
 
-export interface WhennerStoreContainer {
-  getInstance: () => Store<WhennerState, WhennerAction>;
+export interface StoreContainer {
+  getInstance: () => ReduxStore<State, WhennerAction>;
 }
 
-export class WhennerStore {
-  private static defaultContainer = WhennerStore.newContainer();
+export class Store {
+  private static defaultContainer = Store.newContainer();
 
   public static get instance() {
-    return WhennerStore.getInstance(WhennerStore.defaultContainer);
+    return Store.getInstance(Store.defaultContainer);
   }
 
   public static getInstance(
-    container: WhennerStoreContainer = WhennerStore.defaultContainer
+    container: StoreContainer = Store.defaultContainer
   ) {
     return container.getInstance();
   }
 
-  public static newContainer(): WhennerStoreContainer {
-    const instance = createStore(whennerApp);
+  public static newContainer(): StoreContainer {
+    const instance = createStore(whenner);
     return {
       getInstance: () => instance
     };

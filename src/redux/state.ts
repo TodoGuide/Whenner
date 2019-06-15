@@ -1,15 +1,16 @@
 import { ITodo } from "../models/Todo";
-import { todos, settings } from "./reducers";
 import { Settings, defaultSettings } from "../models/Settings";
 import { WhennerAction } from "./actions/WhennerAction";
+import { todos } from "./reducers/todos";
+import { settings } from "./reducers/settings";
 
-export interface WhennerState {
+export interface State {
   settings: Settings;
   todos: ITodo[];
   // appointments: IAppointment[];
 }
 
-const initialState: WhennerState = JSON.parse(
+export const initialState: State = JSON.parse(
   localStorage.getItem("WhennerState") || "null"
 ) || {
   settings: defaultSettings,
@@ -25,18 +26,3 @@ const initialState: WhennerState = JSON.parse(
   ]
   // appointments: [] = []
 };
-
-export function whennerApp(
-  state: WhennerState = initialState,
-  action: WhennerAction
-): WhennerState {
-  // console.log("Old State", state);
-  const settingsState = (state || initialState).settings;
-  const result = {
-    todos: todos((state || initialState).todos, settingsState, action),
-    settings: settings(settingsState, action)
-  };
-  // console.log("New State", result);
-  localStorage.setItem("WhennerState", JSON.stringify(result));
-  return result;
-}

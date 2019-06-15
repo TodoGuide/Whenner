@@ -1,8 +1,8 @@
-import { ITodo } from "../models/Todo";
-import { defaultSettings, Settings } from "../models/Settings";
-import { schedule } from "../models/schedule";
-import { WhennerAction } from "./actions/WhennerAction";
-import { WhennerActionType } from "./actions/WhennerActionType";
+import { ITodo } from "../../models/Todo";
+import { WhennerAction } from "../actions/WhennerAction";
+import { WhennerActionType } from "../actions/WhennerActionType";
+import { Settings } from "../../models/Settings";
+import { schedule } from "../../models/schedule";
 
 export function todos(
   state: ITodo[] = [],
@@ -24,11 +24,4 @@ export function todos(
   }
 
   return schedule({ dayStart: startTime, dayEnd: endTime }, ...result);
-}
-
-export function settings(
-  state: Settings = defaultSettings,
-  action: WhennerAction
-) {
-  return state;
 }
