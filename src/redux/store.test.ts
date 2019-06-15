@@ -4,64 +4,63 @@ import { ITodo } from "../models/Todo";
 import { WhennerActionType } from "./actions/WhennerActionType";
 import { createTodo } from "./actions/createTodo";
 import { updateTodo } from "./actions/updateTodo";
-import { State } from "./State";
+import { State, initialState } from "./State";
 import { WhennerAction } from "./actions/WhennerAction";
+import { oneHourTodo } from "../test/data";
+import { customMatchers } from "../test/matchers";
 
 describe("The Whenner Store", () => {
-  let store: ReduxStore<State, WhennerAction>;
-  it("Allows a to-do item to be added", () => {
-    const store = Store.newContainer().getInstance();
-    expect(store.getState().todos.length).toEqual(1); // Default to-do
-    store.dispatch({
-      type: WhennerActionType.CreateTodo,
-      todo: {
-        id: Date.now(),
-        title: "Test",
-        description: "Test",
-        estimate: 5,
-        start: new Date(),
-        done: false
-      }
+  beforeEach(() => {
+    jasmine.addMatchers(customMatchers);
+  });
+
+  describe("Given the default state", () => {
+    let store: ReduxStore<State, WhennerAction>;
+
+    beforeEach(() => {
+      store = Store.newContainer().getInstance();
     });
-    expect(store.getState().todos.length).toBe(2);
-    expect(store.getState().todos[1].title).toBe("Test");
-  });
 
-  it("Allows to-do items to be added", () => {
-    const store = Store.newContainer().getInstance();
-    store.dispatch(
-      createTodo({
-        id: Date.now(),
-        title: "Test",
-        description: "Test",
-        estimate: 5,
-        start: new Date(),
-        done: false
-      })
-    );
-    expect(store.getState().todos.length).toEqual(2);
-    expect(store.getState().todos[1].title).toEqual("Test");
-  });
+    it("Contains the default Todo", () => {
+      const todos = store.getState().todos;
+      expect(todos.length).toBe(1);
 
-  it("Allows to-do items to be updated", () => {
-    const store = Store.newContainer().getInstance();
+      // Check that the default Todo was scheduled
+      expect(todos[0]).toBeScheduledCopyOf(initialState.todos[0]);
+    });
 
-    const todo: ITodo = {
-      id: Date.now(),
-      title: "New item",
-      description: "Test",
-      estimate: 5,
-      start: new Date(),
-      done: false
-    };
+    describe("When CreateTodo is dispatched, it...", () => {
+      beforeEach(() => {
+        store.dispatch({
+          type: WhennerActionType.CreateTodo,
+          todo: oneHourTodo
+        });
+      });
 
-    store.dispatch(createTodo(todo));
+      it("Adds the provided Todo", () => {
+        const todos = store.getState().todos;
+        expect(todos.length).toBe(2);
+        expect(todos[1]).toBeScheduledCopyOf(oneHourTodo);
+      });
+    });
 
-    todo.title = "Updated Item";
-    expect(store.getState().todos[1].title).toEqual("New item");
+    describe("When UpdateTodo is dispatched, it...", () => {
+      let updatedTodo: ITodo;
+      beforeEach(() => {
+        updatedTodo = Object.assign({}, store.getState().todos[0], { title: "Updated" });
+        expect(updatedTodo.title).toBe("Updated");
+        store.dispatch({
+          type: WhennerActionType.UpdateTodo,
+          todo: updatedTodo
+        });
+      });
 
-    store.dispatch(updateTodo(todo));
-
-    expect(store.getState().todos[1].title).toEqual("Updated Item");
+      it("Replaces the Todo with a new copy", () => {
+        const todos = store.getState().todos;
+        expect(todos.length).toBe(1);
+        expect(todos[0]).toBeScheduledCopyOf(updatedTodo);
+        expect(todos[0]).not.toBe(updateTodo);
+      });
+    });
   });
 });

@@ -2,9 +2,14 @@ import { schedule } from "./schedule";
 import { defaultSettings, Settings } from "./Settings";
 import { Todo } from "./Todo";
 import moment from "moment";
-import { oneHourTodo, twoHourTodo } from "./testData";
+import { oneHourTodo, twoHourTodo } from "../test/data";
+import { customMatchers } from "../test/matchers";
 
 describe("The schedule method", () => {
+  beforeEach(() => {
+    jasmine.addMatchers(customMatchers);
+  });
+  
   describe("Given two NOT done todos", () => {
     const twoNotDoneTodos = [
       {
@@ -59,12 +64,7 @@ describe("The schedule method", () => {
       describe("When schedule is called, it..", () => {
         const scheduledTodos = schedule(oneHourWindow, twoHourTodo);
         it("Schedules the Todo for the current datetime", () => {
-          expect(scheduledTodos[0].start.getTime()).toBeLessThanOrEqual(
-            Date.now()
-          );
-          expect(scheduledTodos[0].start.getTime()).toBeGreaterThanOrEqual(
-            Date.now() - 100
-          );
+          expect(scheduledTodos[0].start.getTime()).toBeWithinTheLast100ms();
         });
       });
     });

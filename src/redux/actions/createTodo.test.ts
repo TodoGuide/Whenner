@@ -1,5 +1,5 @@
 import { createTodo } from "./createTodo";
-import { oneHourTodo } from "../../models/testData";
+import { oneHourTodo } from "../../test/data";
 import { WhennerActionType } from "./WhennerActionType";
 
 describe('The createTodo Action Creator', () => {

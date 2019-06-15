@@ -1,4 +1,4 @@
-import { oneHourTodo } from "../../models/testData";
+import { oneHourTodo } from "../../test/data";
 import { WhennerActionType } from "./WhennerActionType";
 import { updateTodo } from "./updateTodo";
 
