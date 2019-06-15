@@ -1,6 +1,11 @@
 import { Todo, ITodo } from "./Todo";
+import { customMatchers } from "../test/matchers";
 
 describe("The Todo Class", () => {
+  beforeEach(() => {
+    jasmine.addMatchers(customMatchers);
+  });
+  
   describe("Given a valid ITodo instance", () => {
     const validITodoInstance: ITodo = {
       id: 1,
@@ -34,8 +39,7 @@ describe("The Todo Class", () => {
       const todoFromFalseyITodo = new Todo(falseyITodoInstance);
 
       it("Defaults to an ID of the current datetime", () => {
-        expect(todoFromFalseyITodo.id).toBeLessThanOrEqual(Date.now());
-        expect(todoFromFalseyITodo.id).toBeGreaterThanOrEqual(Date.now() - 100);
+        expect(todoFromFalseyITodo.id).toBeWithinTheLast100ms();
       });
 
       it("Defaults to an empty Title", () => {
@@ -51,12 +55,7 @@ describe("The Todo Class", () => {
       });
 
       it("Defaults to a Start of the current datetime", () => {
-        expect(todoFromFalseyITodo.start.getTime()).toBeLessThanOrEqual(
-          Date.now()
-        );
-        expect(todoFromFalseyITodo.start.getTime()).toBeGreaterThanOrEqual(
-          Date.now() - 100
-        );
+        expect(todoFromFalseyITodo.start.getTime()).toBeWithinTheLast100ms();
       });
 
       it("Defaults to NOT Done", () => {
