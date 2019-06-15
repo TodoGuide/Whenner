@@ -10,8 +10,8 @@ export function whenner(
 ): State {
   // console.log("Old State", state);
   const result = {
-    todos: todos((state || initialState), action),
-    settings: settings((state || initialState).settings, action)
+    todos: todos(state, action),
+    settings: settings(state.settings, action)
   };
   // console.log("New State", result);
   localStorage.setItem("WhennerState", JSON.stringify(result));

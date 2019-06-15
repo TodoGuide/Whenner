@@ -1,5 +1,5 @@
 import { createStore, Store as ReduxStore } from "redux";
-import { State } from "./State";
+import { State, initialState } from "./State";
 import { WhennerAction } from "./actions/WhennerAction";
 import { whenner } from "./reducers/whenner";
 
@@ -21,7 +21,7 @@ export class Store {
   }
 
   public static newContainer(): StoreContainer {
-    const instance = createStore(whenner);
+    const instance = createStore(whenner, initialState);
     return {
       getInstance: () => instance
     };

@@ -1,7 +1,6 @@
 import { ITodo } from "../../models/Todo";
 import { WhennerAction } from "../actions/WhennerAction";
 import { WhennerActionType } from "../actions/WhennerActionType";
-import { Settings } from "../../models/Settings";
 import { schedule } from "../../models/schedule";
 import { State } from "../State";
 
