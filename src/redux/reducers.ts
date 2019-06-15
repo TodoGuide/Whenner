@@ -1,7 +1,8 @@
 import { ITodo } from "../models/Todo";
-import { WhennerAction, WhennerActionType } from "./actions";
 import { defaultSettings, Settings } from "../models/Settings";
 import { schedule } from "../models/schedule";
+import { WhennerAction } from "./actions/WhennerAction";
+import { WhennerActionType } from "./actions/WhennerActionType";
 
 export function todos(
   state: ITodo[] = [],

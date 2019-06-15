@@ -1,7 +1,7 @@
 import { ITodo } from "../models/Todo";
-import { WhennerAction } from "./actions";
 import { todos, settings } from "./reducers";
 import { Settings, defaultSettings } from "../models/Settings";
+import { WhennerAction } from "./actions/WhennerAction";
 
 export interface WhennerState {
   settings: Settings;

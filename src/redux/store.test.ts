@@ -1,12 +1,10 @@
-import {
-  WhennerActionType,
-  updateTodo,
-  createTodo
-} from "./actions";
 import { WhennerStore } from "./store";
 import { ITodo } from "../models/Todo";
+import { WhennerActionType } from "./actions/WhennerActionType";
+import { createTodo } from "./actions/createTodo";
+import { updateTodo } from "./actions/updateTodo";
 
-describe("The whenner store", () => {
+describe("The Whenner Store", () => {
   it("Allows a to-do item to be added", () => {
     const whennerStore = WhennerStore.newContainer().getInstance();
     expect(whennerStore.getState().todos.length).toEqual(1); // Default to-do

@@ -1,6 +1,6 @@
 import { createStore, Store } from "redux";
 import { whennerApp, WhennerState } from "./state";
-import { WhennerAction } from "./actions";
+import { WhennerAction } from "./actions/WhennerAction";
 
 export interface WhennerStoreContainer {
   getInstance: () => Store<WhennerState, WhennerAction>;

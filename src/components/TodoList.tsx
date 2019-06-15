@@ -2,7 +2,6 @@ import React, { SFC } from "react";
 import Todo from "./Todo";
 import { ITodo } from "../models/Todo";
 import { WhennerState } from "../redux/state";
-import { updateTodo, createTodo } from "../redux/actions";
 import { connect } from "react-redux";
 import moment from "moment";
 import BigCalendar from "react-big-calendar";
@@ -11,6 +10,8 @@ import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop";
 import "react-big-calendar/lib/addons/dragAndDrop/styles.css";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { WhennerStore } from "../redux/store";
+import { updateTodo } from "../redux/actions/updateTodo";
+import { createTodo } from "../redux/actions/createTodo";
 
 const localizer = BigCalendar.momentLocalizer(moment); // or globalizeLocalizer
 const Calendar = withDragAndDrop(BigCalendar);
@@ -24,7 +25,9 @@ const TodoList: SFC<TodoListProps> = ({ todos, onTodoClick }) => (
   <div>
     <ul>
       {todos.map((todo, index) => (
-        <Todo key={index} {...todo} onClick={() => onTodoClick(todo)} />
+        <li key={index} onClick={() => onTodoClick(todo)}>
+          <Todo key={index} {...todo} />
+        </li>
       ))}
     </ul>
     <Calendar
