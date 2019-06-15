@@ -21,8 +21,8 @@ describe("The whenner store", () => {
         done: false
       }
     });
-    expect(whennerStore.getState().todos.length).toEqual(2);
-    expect(whennerStore.getState().todos[1].title).toEqual("Test");
+    expect(whennerStore.getState().todos.length).toBe(2);
+    expect(whennerStore.getState().todos[1].title).toBe("Test");
   });
 
   it("Allows to-do items to be added", () => {
