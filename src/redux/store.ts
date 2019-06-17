@@ -3,7 +3,7 @@ import { State, initialState } from "./State";
 import { WhennerAction } from "./actions/WhennerAction";
 import { whenner } from "./reducers/whenner";
 
-export interface StoreContainer {
+interface StoreContainer {
   getInstance: () => ReduxStore<State, WhennerAction>;
 }
 

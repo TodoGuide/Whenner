@@ -10,11 +10,11 @@ export function todos(
   let result = todos;
   switch (action.type) {
     case WhennerActionType.CreateTodo:
-      result = [...todos, Object.assign({}, action.todo)];
+      result = [...todos, { ...action.todo }];
       break;
     case WhennerActionType.UpdateTodo:
       result = todos.map(todo =>
-        todo.id === action.todo.id ? Object.assign({}, action.todo) : todo
+        todo.id === action.todo.id ? { ...action.todo } : todo
       );
       break;
     default:

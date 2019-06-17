@@ -1,4 +1,4 @@
-import React, { SFC, FunctionComponent } from "react";
+import React, { FunctionComponent } from "react";
 import Todo from "./Todo";
 import { ITodo } from "../models/Todo";
 import { State } from "../redux/State";

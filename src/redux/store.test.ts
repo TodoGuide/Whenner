@@ -47,7 +47,7 @@ describe("The Whenner Store", () => {
     describe("When UpdateTodo is dispatched, it...", () => {
       let updatedTodo: ITodo;
       beforeEach(() => {
-        updatedTodo = Object.assign({}, store.getState().todos[0], { title: "Updated" });
+        updatedTodo = { ...store.getState().todos[0], title: "Updated" };
         expect(updatedTodo.title).toBe("Updated");
         store.dispatch({
           type: WhennerActionType.UpdateTodo,

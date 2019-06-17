@@ -82,8 +82,8 @@ describe("The schedule method", () => {
       describe("When schedule is called, it..", () => {
         const scheduledTodos = schedule(
           oneHourWindow,
-          Object.assign({}, oneHourTodo),
-          Object.assign({}, oneHourTodo)
+          { ...oneHourTodo },
+          { ...oneHourTodo }
         );
 
         it("Schedules the higher priority Todo for tomorrow", () => {

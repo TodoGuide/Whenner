@@ -1,6 +1,5 @@
-import React, { FunctionComponent } from "react";
+import React from "react";
 import { ITodo } from "../models/Todo";
-import { SFC } from "react-dom/node_modules/@types/react";
 import { connect } from "react-redux";
 
 interface TodoStateProps {}
@@ -11,7 +10,7 @@ interface TodoOwnProps extends ITodo {}
 
 type TodoProps = TodoStateProps & TodoDispatchProps & TodoOwnProps;
 
-const Todo: FunctionComponent<TodoProps> = ({
+const Todo: React.FunctionComponent<TodoProps> = ({
   // onClick,
   id,
   title,
@@ -35,7 +34,7 @@ const Todo: FunctionComponent<TodoProps> = ({
         placeholder="This, that, and the other..."
         // eslint-disable-next-line jsx-a11y/no-autofocus
         autoFocus
-        // readOnly
+        readOnly
       />
     </div>
 

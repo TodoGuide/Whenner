@@ -40,7 +40,7 @@ export class Todo implements ITodo {
   adjustStart({ dayStart, dayEnd }: Settings) {
     dayStart = moment.duration(dayStart);
     dayEnd = moment.duration(dayEnd);
-    
+
     const earliest = moment(this.start)
       .startOf("day")
       .add(dayStart)
@@ -64,7 +64,7 @@ export class Todo implements ITodo {
     }
   }
 
-  static estimateToDuration({ estimate }: { estimate: number}){
+  static estimateToDuration({ estimate }: { estimate: number }) {
     return moment.duration(estimate, "minutes");
   }
 

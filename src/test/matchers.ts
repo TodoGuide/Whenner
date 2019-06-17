@@ -24,15 +24,10 @@ export const customMatchers = {
     return {
       compare: function(actual: ITodo, expected: ITodo) {
         const now = Date.now() - 100; // Allow time to have passed during test run
-        const actualStart = actual.start.getTime(); 
-        actual = Object.assign({}, actual);
-        expected = Object.assign({}, expected);
-
+        const actualStart = actual.start.getTime();
         const pass = actualStart >= now;
 
-        // Set equal for comparison
-        actual.start = expected.start;
-        expect(actual).toEqual(expected);
+        expect({ ...actual, start: expected.start }).toEqual(expected);
 
         return {
           pass,
