@@ -1,12 +1,12 @@
 import { ITodo } from "../models/Todo";
 
 export const customMatchers = {
-  toBeWithinTheLast100ms: function(util?: any, customEqualityTesters?: any) {
+  toBeWithinTheLast200ms: function(util?: any, customEqualityTesters?: any) {
     return {
       compare: function(actual: number) {
         const now = Date.now();
-        const nowMinus100ms = now - 100;
-        const pass = actual <= now && actual >= nowMinus100ms;
+        const nowMinus200ms = now - 200;
+        const pass = actual <= now && actual >= nowMinus200ms;
         return {
           pass,
           message: () =>
@@ -14,7 +14,7 @@ export const customMatchers = {
               pass ? "not" : ""
             } to be within  ${now} (${new Date(
               now
-            )}) and ${nowMinus100ms} (${new Date(nowMinus100ms)})"`
+            )}) and ${nowMinus200ms} (${new Date(nowMinus200ms)})"`
         };
       }
     };
@@ -23,7 +23,7 @@ export const customMatchers = {
   toBeScheduledCopyOf: function(util: any, customEqualityTesters: any) {
     return {
       compare: function(actual: ITodo, expected: ITodo) {
-        const now = Date.now() - 100; // Allow time to have passed during test run
+        const now = Date.now() - 200; // Allow time to have passed during test run
         const actualStart = actual.start.getTime();
         const pass = actualStart >= now;
 

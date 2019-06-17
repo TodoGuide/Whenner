@@ -9,7 +9,7 @@ describe("The schedule method", () => {
   beforeEach(() => {
     jasmine.addMatchers(customMatchers);
   });
-  
+
   describe("Given two NOT done todos", () => {
     const twoNotDoneTodos = [
       {
@@ -57,14 +57,14 @@ describe("The schedule method", () => {
     };
 
     const today = new Date(new Date().setHours(0, 0, 0, 0));
-    const tomorrow = new Date(today.getTime() + (24 * 60 * 60 * 1000));
-    const dayAfterTomorrow = new Date(tomorrow.getTime() + (24 * 60 * 60 * 1000));
+    const tomorrow = new Date(today.getTime() + 24 * 60 * 60 * 1000);
+    const dayAfterTomorrow = new Date(tomorrow.getTime() + 24 * 60 * 60 * 1000);
 
     describe("AND a 2-hour Todo", () => {
       describe("When schedule is called, it..", () => {
         const scheduledTodos = schedule(oneHourWindow, twoHourTodo);
         it("Schedules the Todo for the current datetime", () => {
-          expect(scheduledTodos[0].start.getTime()).toBeWithinTheLast100ms();
+          expect(scheduledTodos[0].start.getTime()).toBeWithinTheLast200ms();
         });
       });
     });

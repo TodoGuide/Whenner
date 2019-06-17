@@ -5,7 +5,7 @@ describe("The Todo Class", () => {
   beforeEach(() => {
     jasmine.addMatchers(customMatchers);
   });
-  
+
   describe("Given a valid ITodo instance", () => {
     const validITodoInstance: ITodo = {
       id: 1,
@@ -39,7 +39,7 @@ describe("The Todo Class", () => {
       const todoFromFalseyITodo = new Todo(falseyITodoInstance);
 
       it("Defaults to an ID of the current datetime", () => {
-        expect(todoFromFalseyITodo.id).toBeWithinTheLast100ms();
+        expect(todoFromFalseyITodo.id).toBeWithinTheLast200ms();
       });
 
       it("Defaults to an empty Title", () => {
@@ -55,7 +55,7 @@ describe("The Todo Class", () => {
       });
 
       it("Defaults to a Start of the current datetime", () => {
-        expect(todoFromFalseyITodo.start.getTime()).toBeWithinTheLast100ms();
+        expect(todoFromFalseyITodo.start.getTime()).toBeWithinTheLast200ms();
       });
 
       it("Defaults to NOT Done", () => {
