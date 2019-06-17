@@ -11,9 +11,8 @@ describe("The createTodo Action Creator", () => {
         expect(action.type).toBe(WhennerActionType.CreateTodo);
       });
 
-      it("Returns an Action with a copy of the todo", () => {
-        expect(action.todo).toEqual(oneHourTodo);
-        expect(action.todo).not.toBe(oneHourTodo);
+      it("Returns an Action with the todo", () => {
+        expect(action.todo).toBe(oneHourTodo);
       });
     });
   });

@@ -13,8 +13,7 @@ describe('The updateTodo Action Creator', () => {
       });
 
       it("Returns an Action with a copy of the todo", () => {
-        expect(action.todo).toEqual(oneHourTodo);
-        expect(action.todo).not.toBe(oneHourTodo);
+        expect(action.todo).toBe(oneHourTodo);
       });
     });
   });

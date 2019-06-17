@@ -6,6 +6,6 @@ export function createTodo(todo: ITodo): TodoAction {
   console.log("createTodo", todo);
   return {
     type: WhennerActionType.CreateTodo,
-    todo: { ...todo }
+    todo
   };
 }
