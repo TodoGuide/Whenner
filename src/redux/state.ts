@@ -1,8 +1,5 @@
 import { ITodo } from "../models/Todo";
 import { Settings, defaultSettings } from "../models/Settings";
-import { WhennerAction } from "./actions/WhennerAction";
-import { todos } from "./reducers/todos";
-import { settings } from "./reducers/settings";
 
 export interface State {
   settings: Settings;

@@ -1,4 +1,3 @@
-import { ITodo } from "../../models/Todo";
 import { WhennerAction } from "../actions/WhennerAction";
 import { WhennerActionType } from "../actions/WhennerActionType";
 import { schedule } from "../../models/schedule";

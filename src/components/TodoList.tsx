@@ -1,8 +1,8 @@
-import React, { SFC, Dispatch } from "react";
+import React, { SFC, FunctionComponent } from "react";
 import Todo from "./Todo";
 import { ITodo } from "../models/Todo";
 import { State } from "../redux/State";
-import { connect, MapStateToProps, MapDispatchToProps } from "react-redux";
+import { connect } from "react-redux";
 import moment from "moment";
 import BigCalendar from "react-big-calendar";
 import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop";
@@ -12,7 +12,6 @@ import { createTodo } from "../redux/actions/createTodo";
 
 import "react-big-calendar/lib/addons/dragAndDrop/styles.css";
 import "react-big-calendar/lib/css/react-big-calendar.css";
-import { WhennerAction } from "../redux/actions/WhennerAction";
 
 const localizer = BigCalendar.momentLocalizer(moment); // or globalizeLocalizer
 const Calendar = withDragAndDrop(BigCalendar);
@@ -25,13 +24,13 @@ interface TodoListDispatchProps {
   onTodoClick: (todo: ITodo) => void;
 }
 
-// type TodoListOwnProps = {
-//   // Other props that component expects when being created
-// }
+type TodoListOwnProps = {
+  // Other props that component expects when being created
+}
 
-type TodoListProps = TodoListStateProps & TodoListDispatchProps; // & TodoListOwnProps;
+type TodoListProps = TodoListStateProps & TodoListDispatchProps & TodoListOwnProps;
 
-const TodoList: SFC<TodoListProps> = ({ todos, onTodoClick }) => (
+const TodoList: FunctionComponent<TodoListProps> = ({ todos, onTodoClick }) => (
   <div>
     <ul>
       {todos.map((todo, index) => (
@@ -80,14 +79,14 @@ const TodoList: SFC<TodoListProps> = ({ todos, onTodoClick }) => (
 );
 
 // Map application State to component props
-const mapStateToProps = (state: State) => {
+const mapStateToProps = (state: State): TodoListStateProps => {
   return {
     todos: state.todos
   };
 };
 
 // Map component events to props
-const mapDispatchToProps = (dispatch: any) => {
+const mapDispatchToProps = (dispatch: any): TodoListDispatchProps => {
   return {
     onTodoClick: (todo: ITodo) => {
       dispatch(updateTodo(todo));
