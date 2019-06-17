@@ -1,6 +1,7 @@
 import React from "react";
 import { ITodo } from "../models/Todo";
 import { SFC } from "react-dom/node_modules/@types/react";
+import { connect } from "react-redux";
 
 interface TodoProps extends ITodo {
   // onClick: () => void;
@@ -55,4 +56,7 @@ const Todo: SFC<TodoProps> = ({
   </div>
 );
 
-export default Todo;
+export default connect(
+  // mapStateToProps,
+  // mapDispatchToProps
+)(Todo);
