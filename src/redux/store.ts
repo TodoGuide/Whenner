@@ -1,7 +1,17 @@
-import { createStore, Store as ReduxStore } from "redux";
+import {
+  createStore,
+  Store as ReduxStore,
+  applyMiddleware,
+  compose
+} from "redux";
 import { State, initialState } from "./State";
 import { WhennerAction } from "./actions/WhennerAction";
 import { whenner } from "./reducers/whenner";
+import reduxImmutableStateInvariant from "redux-immutable-state-invariant";
+
+declare global {
+  interface Window { __REDUX_DEVTOOLS_EXTENSION_COMPOSE__: any; }
+}
 
 interface StoreContainer {
   getInstance: () => ReduxStore<State, WhennerAction>;
@@ -21,7 +31,13 @@ export class Store {
   }
 
   public static newContainer(): StoreContainer {
-    const instance = createStore(whenner, initialState);
+    const composeEnhancers =
+      window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose; // redux dev tools
+    const instance = createStore(
+      whenner,
+      initialState,
+      composeEnhancers(applyMiddleware(reduxImmutableStateInvariant()))
+    );
     return {
       getInstance: () => instance
     };
