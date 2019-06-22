@@ -1,75 +1,112 @@
-import React from "react";
-import { ITodo } from "../models/Todo";
-import { connect } from "react-redux";
+import React, { Dispatch, FormEvent, ChangeEvent } from "react";
+import { ITodo, Todo as TodoModel } from "../models/Todo";
+import { connect, MapStateToProps } from "react-redux";
+import { State } from "../redux/State";
+import { WhennerAction } from "../redux/actions/WhennerAction";
+import { upsertTodo } from "../redux/actions/upsertTodo";
+import { TodoAction } from "../redux/actions/TodoAction";
 
-interface TodoStateProps {}
+interface TodoStateProps {
+  todo: ITodo;
+}
 
-interface TodoDispatchProps {}
+interface TodoDispatchProps {
+  upsertTodo: { (todo: ITodo): void };
+}
 
-interface TodoOwnProps extends ITodo {}
+// interface TodoOwnProps extends TodoStateProps {}
 
-type TodoProps = TodoStateProps & TodoDispatchProps & TodoOwnProps;
+type TodoProps = TodoStateProps & TodoDispatchProps; // & TodoOwnProps;
 
-const Todo: React.FunctionComponent<TodoProps> = ({
-  // onClick,
-  id,
-  title,
-  description,
-  estimate,
-  start,
-  done
-}) => (
-  <div>
-    <div>
-      <input
-        type="checkbox"
-        id={"todo-" + id + "-done"}
-        checked={done}
-        readOnly
-      />
-      <input
-        id={"todo-" + id + "-title"}
-        type="text"
-        value={title}
-        placeholder="This, that, and the other..."
-        // eslint-disable-next-line jsx-a11y/no-autofocus
-        autoFocus
-        readOnly
-      />
-    </div>
+class Todo extends React.Component<TodoProps, TodoStateProps> {
+  constructor(props: TodoProps) {
+    super(props);
+    this.state = { ...props };
+  }
 
-    <div>
-      <label htmlFor={"todo-" + id + "-estimate"}>Estimate:</label>
-      <input
-        type="text"
-        id={"todo-" + id + "-estimate"}
-        value={estimate}
-        readOnly
-      />
-    </div>
+  handleChange = (event: any) => {
+    // const todo = { ...this.state };
+    // this.setState(todo);
+  };
 
-    <div>
-      <textarea
-        id={"todo-" + id + "-description"}
-        value={description}
-        readOnly
-      />
-    </div>
-    {JSON.stringify({ id, start })}
-  </div>
-);
+  handleSave = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    this.props.upsertTodo(this.state.todo);
+  };
+
+  render() {
+    const { todo } = this.state;
+    return (
+      <form onSubmit={this.handleSave}>
+        <div>
+          <input
+            type="checkbox"
+            id={"todo-" + todo.id + "-done"}
+            checked={todo.done}
+          />
+          <input
+            id={"todo-" + todo.id + "-title"}
+            type="text"
+            value={todo.title}
+            placeholder="This, that, and the other..."
+            // eslint-disable-next-line jsx-a11y/no-autofocus
+            autoFocus
+            onChange={(event: FormEvent<HTMLInputElement>) => {
+              const state = {
+                ...this.state,
+                todo: {
+                  ...this.state.todo,
+                  title: event.currentTarget.value || ""
+                }
+              };
+              // alert(event.target.)
+              this.setState(state);
+            }}
+          />
+        </div>
+
+        <div>
+          <label htmlFor={"todo-" + todo.id + "-estimate"}>Estimate:</label>
+          <input
+            type="text"
+            id={"todo-" + todo.id + "-estimate"}
+            value={todo.estimate}
+            readOnly
+          />
+        </div>
+
+        <div>
+          <textarea
+            id={"todo-" + todo.id + "-description"}
+            value={todo.description}
+            readOnly
+          />
+        </div>
+        <input type="submit" value="Save" />
+      </form>
+    );
+  }
+}
 
 // Map application State to component props
-const mapStateToProps = (): TodoStateProps => {
-  return {};
+const mapStateToProps = (
+  state: State,
+  ownProps: TodoStateProps
+): TodoStateProps => {
+  return {
+    todo:
+      state.todos.find(todo => todo.id === ownProps.todo.id) || new TodoModel()
+  };
 };
 
 // Map component events to props
-const mapDispatchToProps = (dispatch: any): TodoDispatchProps => {
-  return {};
+const mapDispatchToProps = (
+  dispatch: Dispatch<WhennerAction>
+): TodoDispatchProps => {
+  return { upsertTodo: (todo: ITodo) => dispatch(upsertTodo(todo)) };
 };
 
-export default connect<TodoStateProps, TodoDispatchProps, TodoOwnProps>(
+export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(Todo);

@@ -11,11 +11,13 @@ export function todos(
   switch (action.type) {
     case WhennerActionType.UpsertTodo:
       let updated = false;
-      result = todos.map(todo =>
-        (updated = todo.id === action.todo.id || updated)
+      result = todos.map(todo => {
+        const isSameTodo = todo.id === action.todo.id;
+        updated = isSameTodo || updated;
+        return isSameTodo
           ? { ...action.todo }
-          : todo
-      );
+          : todo;
+      });
       if (!updated) {
         result.push({ ...action.todo });
       }
