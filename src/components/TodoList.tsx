@@ -7,8 +7,7 @@ import moment from "moment";
 import BigCalendar from "react-big-calendar";
 import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop";
 import { Store } from "../redux/Store";
-import { updateTodo } from "../redux/actions/updateTodo";
-import { createTodo } from "../redux/actions/createTodo";
+import { upsertTodo } from "../redux/actions/upsertTodo";
 
 import "react-big-calendar/lib/addons/dragAndDrop/styles.css";
 import "react-big-calendar/lib/css/react-big-calendar.css";
@@ -52,17 +51,17 @@ const TodoList: FunctionComponent<TodoListProps> = ({ todos, onTodoClick }) => (
           .duration(moment(end).diff(moment(start)))
           .asMinutes();
         console.log("Event resized", event);
-        Store.instance.dispatch(updateTodo(event));
+        Store.instance.dispatch(upsertTodo(event));
       }}
       onEventDrop={({ event, start }) => {
         console.log("Event moved", { from: event.start, to: start });
         event.start = start as Date;
-        Store.instance.dispatch(updateTodo(event));
+        Store.instance.dispatch(upsertTodo(event));
       }}
       onSelectSlot={({ start, end }) => {
         console.log("Creatomg new todo", { start, end });
         Store.instance.dispatch(
-          createTodo({
+          upsertTodo({
             id: Date.now(),
             title: "New todo",
             description: "Do stuff",
@@ -89,7 +88,7 @@ const mapStateToProps = (state: State): TodoListStateProps => {
 const mapDispatchToProps = (dispatch: any): TodoListDispatchProps => {
   return {
     onTodoClick: (todo: ITodo) => {
-      dispatch(updateTodo(todo));
+      dispatch(upsertTodo(todo));
     }
   };
 };

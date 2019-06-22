@@ -1,5 +1,4 @@
 export enum WhennerActionType {
-  CreateTodo = "CreateTodo",
-  UpdateTodo = "UpdateTodo",
+  UpsertTodo = "UpsertTodo",
   SizeTodo = "SizeTodo"
 }

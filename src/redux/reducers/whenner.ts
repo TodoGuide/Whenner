@@ -2,8 +2,17 @@ import { State, initialState } from "../State";
 import { WhennerAction } from "../actions/WhennerAction";
 import { todos } from "./todos";
 import { settings } from "./settings";
+import { combineReducers } from "redux";
 // import { combineReducers } from "redux";
 
+/**
+ * The primary Redux reducer for the Whenner application
+ *
+ * @export
+ * @param {State} [state=initialState]
+ * @param {WhennerAction} action
+ * @returns {State}
+ */
 export function whenner(
   state: State = initialState,
   action: WhennerAction

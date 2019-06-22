@@ -2,8 +2,7 @@ import { Store } from "./Store";
 import { Store as ReduxStore } from "redux";
 import { ITodo } from "../models/Todo";
 import { WhennerActionType } from "./actions/WhennerActionType";
-import { createTodo } from "./actions/createTodo";
-import { updateTodo } from "./actions/updateTodo";
+import { upsertTodo } from "./actions/upsertTodo";
 import { State, initialState } from "./State";
 import { WhennerAction } from "./actions/WhennerAction";
 import { oneHourTodo } from "../test/data";
@@ -29,10 +28,10 @@ describe("The Whenner Store", () => {
       expect(todos[0]).toBeScheduledCopyOf(initialState.todos[0]);
     });
 
-    describe("When CreateTodo is dispatched, it...", () => {
+    describe("When UpsertTodo is dispatched with new Todo, it...", () => {
       beforeEach(() => {
         store.dispatch({
-          type: WhennerActionType.CreateTodo,
+          type: WhennerActionType.UpsertTodo,
           todo: oneHourTodo
         });
       });
@@ -44,13 +43,13 @@ describe("The Whenner Store", () => {
       });
     });
 
-    describe("When UpdateTodo is dispatched, it...", () => {
+    describe("When UpsertTodo is dispatched with existing Todo, it...", () => {
       let updatedTodo: ITodo;
       beforeEach(() => {
         updatedTodo = { ...store.getState().todos[0], title: "Updated" };
         expect(updatedTodo.title).toBe("Updated");
         store.dispatch({
-          type: WhennerActionType.UpdateTodo,
+          type: WhennerActionType.UpsertTodo,
           todo: updatedTodo
         });
       });
@@ -59,7 +58,7 @@ describe("The Whenner Store", () => {
         const todos = store.getState().todos;
         expect(todos.length).toBe(1);
         expect(todos[0]).toBeScheduledCopyOf(updatedTodo);
-        expect(todos[0]).not.toBe(updateTodo);
+        expect(todos[0]).not.toBe(updatedTodo);
       });
     });
   });
