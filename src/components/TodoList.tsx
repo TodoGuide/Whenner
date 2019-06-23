@@ -6,13 +6,13 @@ import { connect } from "react-redux";
 import moment from "moment";
 import BigCalendar from "react-big-calendar";
 import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop";
-import { Store } from "../redux/Store";
-import { upsertTodo } from "../redux/actions/upsertTodo";
+import * as todoActions from "../redux/actions/upsertTodo";
 
 import "react-big-calendar/lib/addons/dragAndDrop/styles.css";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { WhennerAction } from "../redux/actions/WhennerAction";
-import { Dispatch } from "redux";
+import { Dispatch, bindActionCreators } from "redux";
+import { TodoActionDispatch } from "../redux/actions/TodoAction";
 
 const localizer = BigCalendar.momentLocalizer(moment); // or globalizeLocalizer
 const Calendar = withDragAndDrop(BigCalendar);
@@ -22,7 +22,7 @@ interface TodoListStateProps {
 }
 
 interface TodoListDispatchProps {
-  upsertTodo: { (todo: ITodo): void };
+  actions: { upsertTodo:  TodoActionDispatch };
 }
 
 type TodoListOwnProps = {
@@ -33,7 +33,7 @@ type TodoListProps = TodoListStateProps &
   TodoListDispatchProps &
   TodoListOwnProps;
 
-const TodoList: FunctionComponent<TodoListProps> = ({ todos, upsertTodo }) => (
+const TodoList: FunctionComponent<TodoListProps> = ({ todos, actions }) => (
   <div>
     <ul>
       {todos.map(todo => (
@@ -51,20 +51,18 @@ const TodoList: FunctionComponent<TodoListProps> = ({ todos, upsertTodo }) => (
       selectable
       resizable
       onEventResize={({ event, start, end }) => {
-        event.estimate = moment
-          .duration(moment(end).diff(moment(start)))
-          .asMinutes();
         console.log("Event resized", event);
-        upsertTodo(event);
+        actions.upsertTodo({...event, estimate: moment
+          .duration(moment(end).diff(moment(start)))
+          .asMinutes()});
       }}
       onEventDrop={({ event, start }) => {
         console.log("Event moved", { from: event.start, to: start });
-        event.start = start as Date;
-        upsertTodo(event);
+        actions.upsertTodo({ ...event, start: (start as Date) });
       }}
       onSelectSlot={({ start, end }) => {
         console.log("Creating new todo", { start, end });
-        upsertTodo({
+        actions.upsertTodo({
           id: Date.now(),
           title: "New todo",
           description: "Do stuff",
@@ -91,7 +89,7 @@ const mapDispatchToProps = (
   dispatch: Dispatch<WhennerAction>
 ): TodoListDispatchProps => {
   return {
-    upsertTodo: (todo: ITodo) => dispatch(upsertTodo(todo))
+    actions: bindActionCreators(todoActions, dispatch),
   };
 };
 

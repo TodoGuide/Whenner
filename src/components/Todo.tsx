@@ -1,17 +1,18 @@
-import React, { Dispatch, FormEvent, ChangeEvent } from "react";
+import React, { FormEvent } from "react";
 import { ITodo, Todo as TodoModel } from "../models/Todo";
-import { connect, MapStateToProps } from "react-redux";
+import { connect } from "react-redux";
 import { State } from "../redux/State";
 import { WhennerAction } from "../redux/actions/WhennerAction";
-import { upsertTodo } from "../redux/actions/upsertTodo";
-import { TodoAction } from "../redux/actions/TodoAction";
+import * as todoActions from "../redux/actions/upsertTodo";
+import { TodoActionDispatch } from "../redux/actions/TodoAction";
+import { bindActionCreators, Dispatch } from "redux";
 
 interface TodoStateProps {
   todo: ITodo;
 }
 
 interface TodoDispatchProps {
-  upsertTodo: { (todo: ITodo): void };
+  actions: { upsertTodo:  TodoActionDispatch };
 }
 
 // interface TodoOwnProps extends TodoStateProps {}
@@ -31,7 +32,7 @@ class Todo extends React.Component<TodoProps, TodoStateProps> {
 
   handleSave = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    this.props.upsertTodo(this.state.todo);
+    this.props.actions.upsertTodo(this.state.todo);
   };
 
   render() {
@@ -43,6 +44,7 @@ class Todo extends React.Component<TodoProps, TodoStateProps> {
             type="checkbox"
             id={"todo-" + todo.id + "-done"}
             checked={todo.done}
+            readOnly
           />
           <input
             id={"todo-" + todo.id + "-title"}
@@ -103,7 +105,10 @@ const mapStateToProps = (
 const mapDispatchToProps = (
   dispatch: Dispatch<WhennerAction>
 ): TodoDispatchProps => {
-  return { upsertTodo: (todo: ITodo) => dispatch(upsertTodo(todo)) };
+  return {
+    actions: bindActionCreators(todoActions, dispatch),
+    // upsertTodo: (todo: ITodo) => dispatch(todoActions.upsertTodo(todo))
+  };
 };
 
 export default connect(

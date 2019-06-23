@@ -18,7 +18,7 @@ export function schedule(
     const current = notDone[i];
     current.adjustStart({ dayStart: startTime, dayEnd: endTime });
     if (i < lastIndex) {
-      notDone[i + 1].start = current.end;
+      notDone[i + 1].start = new Date(current.end);
     }
   }
 
