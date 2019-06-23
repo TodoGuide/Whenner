@@ -78,9 +78,9 @@ const TodoList: FunctionComponent<TodoListProps> = ({ todos, actions }) => (
 );
 
 // Map application State to component props
-const mapStateToProps = (state: State): TodoListStateProps => {
+const mapStateToProps = ({ todos }: State): TodoListStateProps => {
   return {
-    todos: state.todos
+    todos
   };
 };
 
