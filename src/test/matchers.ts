@@ -24,7 +24,7 @@ export const customMatchers = {
     return {
       compare: function(actual: ITodo, expected: ITodo) {
         const now = Date.now() - 200; // Allow time to have passed during test run
-        const actualStart = actual.start.getTime();
+        const actualStart = new Date(actual.start).getTime();
         const pass = actualStart >= now;
 
         expect({ ...actual, start: expected.start }).toEqual(expected);
