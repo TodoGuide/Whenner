@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from "react";
+import React from "react";
 import Todo from "./Todo";
 import { ITodo } from "../models/Todo";
 import { State } from "../redux/State";
@@ -11,7 +11,7 @@ import * as todoActions from "../redux/actions/todoActions";
 import "react-big-calendar/lib/addons/dragAndDrop/styles.css";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { WhennerAction } from "../redux/actions/WhennerAction";
-import { Dispatch, bindActionCreators, AnyAction } from "redux";
+import { Dispatch, bindActionCreators } from "redux";
 import { TodoActionDispatch } from "../redux/actions/TodoAction";
 import { TodosResultActionThunk } from "../redux/actions/TodosAction";
 

@@ -2,9 +2,6 @@ import { State, initialState } from "../State";
 import { WhennerAction } from "../actions/WhennerAction";
 import { todos } from "./todos";
 import { settings } from "./settings";
-import { combineReducers } from "redux";
-import { todosService } from "../../services/TodosService";
-// import { combineReducers } from "redux";
 
 /**
  * The primary Redux reducer for the Whenner application

@@ -54,7 +54,7 @@ export class TodosService {
 
   async byIds(...ids: number[]): Promise<ITodo[]> {
     const result = ids.map(id => this.todos.find(todo => todo.id === id)) || [];
-    return <ITodo[]>result.filter(Boolean);
+    return result.filter(Boolean) as ITodo[];
   }
 
   async all() {

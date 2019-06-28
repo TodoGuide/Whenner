@@ -1,8 +1,6 @@
 import { ITodo } from "../models/Todo";
 import { Settings, defaultSettings } from "../models/Settings";
-import { TodosService, defaultTodos } from "../services/TodosService";
-
-const todosService = new TodosService();
+import { defaultTodos } from "../services/TodosService";
 
 export interface State {
   settings: Settings;
