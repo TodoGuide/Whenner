@@ -4,7 +4,7 @@ const TODOS_KEY = "Whenner.Todos";
 
 export const defaultTodos: ITodo[] = [
   {
-    id: Date.now(),
+    id: 1,
     title: "Get started with Whenner",
     description: "Click stuff, learn how the app works",
     estimate: 5,

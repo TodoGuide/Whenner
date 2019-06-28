@@ -14,6 +14,7 @@ import { WhennerAction } from "../redux/actions/WhennerAction";
 import { Dispatch, bindActionCreators } from "redux";
 import { TodoActionDispatch } from "../redux/actions/TodoAction";
 import { TodosResultActionThunk } from "../redux/actions/TodosAction";
+import { defaultTodos } from "../services/TodosService";
 
 const localizer = BigCalendar.momentLocalizer(moment); // or globalizeLocalizer
 const Calendar = withDragAndDrop(BigCalendar);
@@ -42,13 +43,16 @@ class TodoList extends React.Component<TodoListProps, TodoListStateProps> {
   }
 
   componentDidMount() {
-    this.props.actions.loadTodos();
+    const { todos } = this.props;
+    if(todos.length === defaultTodos.length && todos.every((value, index) => value.id === defaultTodos[index].id)){
+      // Only load if todos todos contains defaults
+      this.props.actions.loadTodos();
+    }
   }
 
   render() {
     // const { todos } = this.state;
     const { actions, todos } = this.props;
-    console.log("Rendering todos list", todos);
     return (
       <div>
         <ul>
@@ -67,7 +71,6 @@ class TodoList extends React.Component<TodoListProps, TodoListStateProps> {
           selectable
           resizable
           onEventResize={({ event, start, end }) => {
-            console.log("Event resized", event);
             actions.upsertTodo({
               ...event,
               estimate: moment
@@ -76,11 +79,9 @@ class TodoList extends React.Component<TodoListProps, TodoListStateProps> {
             });
           }}
           onEventDrop={({ event, start }) => {
-            console.log("Event moved", { from: event.start, to: start });
             actions.upsertTodo({ ...event, start: start as Date });
           }}
           onSelectSlot={({ start, end }) => {
-            console.log("Creating new todo", { start, end });
             actions.upsertTodo({
               id: Date.now(),
               title: "New todo",

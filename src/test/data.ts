@@ -1,6 +1,6 @@
 
 export const oneHourTodo = {
-  id: 1,
+  id: 100,
   title: "One hour todo",
   description: "This is a one hour Todo",
   estimate: 60,
@@ -10,7 +10,7 @@ export const oneHourTodo = {
 
 
 export const twoHourTodo = {
-  id: 1,
+  id: 101,
   title: "Two hour todo",
   description: "This is two hour Todo",
   estimate: 120,

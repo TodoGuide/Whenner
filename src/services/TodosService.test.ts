@@ -23,8 +23,8 @@ describe("The Todos Service", () => {
         allResult = await todosService.all();
       });
       
-      it("Returns an empty array", () => {
-        expect(allResult).toEqual([]);
+      it("Returns the default todos", () => {
+        expect(allResult).toEqual(defaultTodos);
       });
     });
 
