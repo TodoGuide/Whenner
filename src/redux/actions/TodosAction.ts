@@ -6,8 +6,8 @@ export interface TodosAction extends WhennerAction {
   todos: ITodo[];
 }
 
-export interface TodosActionThunk {
-  (dispatch: Dispatch): Promise<TodosAction>
+export interface TodosResultActionThunk {
+  (): { (dispatch: Dispatch): Promise<TodosAction> }
 }
 
 export interface TodosActionDispatch {

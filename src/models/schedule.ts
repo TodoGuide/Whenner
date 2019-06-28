@@ -5,10 +5,10 @@ export function schedule(
   { dayStart: startTime, dayEnd: endTime }: Settings,
   ...todos: ITodo[]
 ): ITodo[] {
-  const result = todos.map(todo => new Todo(todo));
-  const notDone = result
-    .filter(todo => !todo.done)
+  const result = todos
+    .map(todo => new Todo(todo))
     .sort((a, b) => a.start.getTime() - b.start.getTime());
+  const notDone = result.filter(todo => !todo.done);
 
   const lastIndex = notDone.length - 1;
   if (lastIndex === -1) return result;

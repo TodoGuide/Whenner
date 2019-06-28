@@ -1,14 +1,14 @@
-import { upsertTodo } from "./todoActions";
+import { upsertTodoSuccess } from "./todoActions";
 import { oneHourTodo } from "../../test/data";
 import { WhennerActionType } from "./WhennerActionType";
 
-describe("The upsertTodo Action Creator", () => {
+describe("The upsertTodoSuccess Action Creator", () => {
   describe("Given a valid Todo", () => {
     describe("When upsertTodo is called, the resulting action...", () => {
-      const action = upsertTodo(oneHourTodo);
+      const action = upsertTodoSuccess(oneHourTodo);
 
-      it("Is of type UpsertTodo", () => {
-        expect(action.type).toBe(WhennerActionType.UpsertTodo);
+      it("Is of type upsertTodoSuccess", () => {
+        expect(action.type).toBe(WhennerActionType.UpsertTodoSuccess);
       });
 
       it("Has the given todo", () => {

@@ -7,7 +7,7 @@ export interface TodoAction extends WhennerAction {
 }
 
 export interface TodoActionThunk {
-  (dispatch: Dispatch): Promise<TodoAction>
+  (todo: ITodo): { (dispatch: Dispatch): Promise<TodoAction> }
 } 
 
 export interface TodoActionDispatch {

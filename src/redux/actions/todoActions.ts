@@ -3,7 +3,7 @@ import { TodoAction, TodoActionThunk } from "./TodoAction";
 import { WhennerActionType } from "./WhennerActionType";
 import { Dispatch } from "redux";
 import { todosService } from "../../services/TodosService";
-import { TodosAction, TodosActionThunk } from "./TodosAction";
+import { TodosAction, TodosResultActionThunk } from "./TodosAction";
 
 export function loadTodosSuccess(todos: ITodo[]): TodosAction {
   return {
@@ -21,7 +21,7 @@ export function upsertTodoSuccess(todo: ITodo): TodoAction {
 
 // Thunks //
 
-export function loadTodos(): TodosActionThunk {
+export const loadTodos: TodosResultActionThunk = () => {
   return function(dispatch: Dispatch) {
     return todosService
       .all()
@@ -33,7 +33,7 @@ export function loadTodos(): TodosActionThunk {
   };
 }
 
-export function upsertTodo(todo: ITodo): TodoActionThunk {
+export const upsertTodo: TodoActionThunk = (todo: ITodo) => {
   return function(dispatch: Dispatch) {
     return todosService
       .upsert(todo)

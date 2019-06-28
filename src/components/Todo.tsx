@@ -12,7 +12,7 @@ interface TodoStateProps {
 }
 
 interface TodoDispatchProps {
-  actions: { upsertTodo:  TodoActionDispatch };
+  actions: { upsertTodo: TodoActionDispatch };
 }
 
 // interface TodoOwnProps extends TodoStateProps {}
@@ -106,7 +106,7 @@ const mapDispatchToProps = (
   dispatch: Dispatch<WhennerAction>
 ): TodoDispatchProps => {
   return {
-    actions: bindActionCreators(todoActions, dispatch),
+    actions: bindActionCreators(todoActions, dispatch)
     // upsertTodo: (todo: ITodo) => dispatch(todoActions.upsertTodo(todo))
   };
 };

@@ -13,7 +13,7 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 import { WhennerAction } from "../redux/actions/WhennerAction";
 import { Dispatch, bindActionCreators, AnyAction } from "redux";
 import { TodoActionDispatch } from "../redux/actions/TodoAction";
-import { TodosAction, TodosActionDispatch, TodosActionThunk } from "../redux/actions/TodosAction";
+import { TodosResultActionThunk } from "../redux/actions/TodosAction";
 
 const localizer = BigCalendar.momentLocalizer(moment); // or globalizeLocalizer
 const Calendar = withDragAndDrop(BigCalendar);
@@ -25,7 +25,7 @@ interface TodoListStateProps {
 interface TodoListDispatchProps {
   actions: {
     upsertTodo: TodoActionDispatch;
-    loadTodos: { (): TodosActionThunk };
+    loadTodos: TodosResultActionThunk;
   };
 }
 
@@ -42,18 +42,18 @@ class TodoList extends React.Component<TodoListProps, TodoListStateProps> {
   }
 
   componentDidMount() {
-    this.props.actions
-      .loadTodos();
+    this.props.actions.loadTodos();
   }
 
   render() {
     // const { todos } = this.state;
     const { actions, todos } = this.props;
+    console.log("Rendering todos list", todos);
     return (
       <div>
         <ul>
           {todos.map(todo => (
-            <li key={todo.id}>
+            <li key={new Date(todo.start).getTime()}>
               <Todo todo={todo} />
             </li>
           ))}

@@ -28,10 +28,10 @@ describe("The Whenner Store", () => {
       expect(todos[0]).toBeScheduledCopyOf(initialState.todos[0]);
     });
 
-    describe("When UpsertTodo is dispatched with new Todo, it...", () => {
+    describe("When UpsertTodoSuccess is dispatched with new Todo, it...", () => {
       beforeEach(() => {
         store.dispatch({
-          type: WhennerActionType.UpsertTodo,
+          type: WhennerActionType.UpsertTodoSuccess,
           todo: oneHourTodo
         });
       });
@@ -43,13 +43,13 @@ describe("The Whenner Store", () => {
       });
     });
 
-    describe("When UpsertTodo is dispatched with existing Todo, it...", () => {
+    describe("When UpsertTodoSuccess is dispatched with existing Todo, it...", () => {
       let updatedTodo: ITodo;
       beforeEach(() => {
         updatedTodo = { ...store.getState().todos[0], title: "Updated" };
         expect(updatedTodo.title).toBe("Updated");
         store.dispatch({
-          type: WhennerActionType.UpsertTodo,
+          type: WhennerActionType.UpsertTodoSuccess,
           todo: updatedTodo
         });
       });
