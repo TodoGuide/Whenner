@@ -38,7 +38,7 @@ describe("The schedule method", () => {
           Date.now()
         );
         expect(scheduledTodos[0].start.getTime()).toBeGreaterThanOrEqual(
-          Date.now() - 100
+          Date.now() - 200
         );
       });
 
