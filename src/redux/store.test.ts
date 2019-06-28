@@ -2,7 +2,7 @@ import { Store } from "./Store";
 import { Store as ReduxStore } from "redux";
 import { ITodo } from "../models/Todo";
 import { WhennerActionType } from "./actions/WhennerActionType";
-import { upsertTodo } from "./actions/upsertTodo";
+import { upsertTodo } from "./actions/todoActions";
 import { State, initialState } from "./State";
 import { WhennerAction } from "./actions/WhennerAction";
 import { oneHourTodo } from "../test/data";

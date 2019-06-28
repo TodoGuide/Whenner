@@ -3,6 +3,7 @@ import { WhennerAction } from "../actions/WhennerAction";
 import { todos } from "./todos";
 import { settings } from "./settings";
 import { combineReducers } from "redux";
+import { todosService } from "../../services/TodosService";
 // import { combineReducers } from "redux";
 
 /**
@@ -24,6 +25,7 @@ export function whenner(
   };
   // console.log("New State", result);
   localStorage.setItem("WhennerState", JSON.stringify(result));
+  localStorage.setItem("Whenner.Todos", JSON.stringify(result.todos));
   return result;
 }
 

@@ -14,7 +14,7 @@ export const defaultTodos: ITodo[] = [
 ];
 
 function readTodos(): ITodo[] {
-    return JSON.parse(localStorage.getItem(TODOS_KEY) || "[]");
+    return JSON.parse(localStorage.getItem(TODOS_KEY) || "null") || defaultTodos;
 }
 
 async function writeTodos(todos: ITodo[]): Promise<ITodo[]> {
@@ -61,3 +61,5 @@ export class TodosService {
     return this.todos = await readTodos();
   }
 }
+
+export const todosService = new TodosService();

@@ -3,7 +3,7 @@ import { ITodo, Todo as TodoModel } from "../models/Todo";
 import { connect } from "react-redux";
 import { State } from "../redux/State";
 import { WhennerAction } from "../redux/actions/WhennerAction";
-import * as todoActions from "../redux/actions/upsertTodo";
+import * as todoActions from "../redux/actions/todoActions";
 import { TodoActionDispatch } from "../redux/actions/TodoAction";
 import { bindActionCreators, Dispatch } from "redux";
 

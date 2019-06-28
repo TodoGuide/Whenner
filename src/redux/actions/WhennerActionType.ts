@@ -1,3 +1,4 @@
 export enum WhennerActionType {
-  UpsertTodo = "UpsertTodo"
+  UpsertTodoSuccess = "UpsertTodoSuccess",
+  LoadTodosSuccess = "LoadTodosSuccess"
 }
