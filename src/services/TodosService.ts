@@ -37,12 +37,12 @@ export class TodosService {
   }
 
   private async insert(todo: ITodo): Promise<ITodo> {
-    const todos = await readTodos();
+    const todos = await this.all();
     const existing = todos.find(t => t.id === todo.id);
     if(existing){
       throw new Error(`Cannot insert todo with ID ${todo.id} because it already exists`);
     }
-    const result = { ...todo };
+    const result = { ...todo, id: Date.now() };
     todos.push(result);
     await writeTodos(todos);
     return result;

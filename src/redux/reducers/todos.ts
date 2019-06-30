@@ -11,19 +11,16 @@ export function todos(
 ) {
   let result = todos;
   switch (action.type) {
-    case WhennerActionType.UpsertTodoSuccess:
-      console.log("UpsertTodo", action.todo);
-      let updated = false;
-      result = todos.map(todo => {
-        const isSameTodo = todo.id === action.todo.id;
-        updated = isSameTodo || updated;
-        return isSameTodo
-          ? { ...action.todo }
-          : todo;
-      });
-      if (!updated) {
+    case WhennerActionType.InsertTodoSuccess:
         result.push({ ...action.todo });
-      }
+        break;
+    case WhennerActionType.UpdateTodoSuccess:
+      console.log("UpdateTodoSuccess", action.todo);
+      result = todos.map(todo => 
+        todo.id === action.todo.id 
+          ? { ...action.todo }
+          : todo
+      );
       break;
     case WhennerActionType.LoadTodosSuccess:
       result = action.todos;

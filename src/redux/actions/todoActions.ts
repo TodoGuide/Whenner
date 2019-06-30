@@ -12,9 +12,16 @@ export function loadTodosSuccess(todos: ITodo[]): TodosAction {
   };
 }
 
-export function upsertTodoSuccess(todo: ITodo): TodoAction {
+export function insertTodoSuccess(todo: ITodo): TodoAction {
   return {
-    type: WhennerActionType.UpsertTodoSuccess,
+    type: WhennerActionType.InsertTodoSuccess,
+    todo
+  };
+}
+
+export function updateTodoSuccess(todo: ITodo): TodoAction {
+  return {
+    type: WhennerActionType.UpdateTodoSuccess,
     todo
   };
 }
@@ -37,7 +44,10 @@ export const upsertTodo: TodoActionThunk = (todo: ITodo) => {
   return function(dispatch: Dispatch) {
     return todosService
       .upsert(todo)
-      .then(todo => dispatch(upsertTodoSuccess(todo)))
+      .then(upsertedTodo => 
+        upsertedTodo.id === todo.id 
+          ? dispatch(updateTodoSuccess(upsertedTodo))
+          : dispatch(insertTodoSuccess(upsertedTodo)))
       .catch(e => {
         console.log("upsertTodo error", e);
         throw e;
