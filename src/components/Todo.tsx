@@ -1,4 +1,4 @@
-import React, { FormEvent } from "react";
+import React, { FormEvent, ChangeEventHandler, ChangeEvent } from "react";
 import { ITodo, Todo as TodoModel } from "../models/Todo";
 import { connect } from "react-redux";
 import { State } from "../redux/State";
@@ -25,7 +25,27 @@ class Todo extends React.Component<TodoProps, TodoStateProps> {
     this.state = { ...props };
   }
 
-  handleChange = (event: any) => {
+  handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const { id, value, checked } = event.currentTarget;
+    console.log("currentTarget", { id, value, checked });
+    const idParts = id.split("-");
+    const propName = idParts[2];
+    const propType = idParts[3];
+    console.log("propName", propName);
+    const state = {
+      ...this.state,
+      todo: {
+        ...this.state.todo,
+        [propName]:
+          propType === "bool"
+            ? checked
+            : propType === "int"
+            ? parseInt(value)
+            : value
+      }
+    };
+    console.log("new todo state", state.todo);
+    this.setState(state);
     // const todo = { ...this.state };
     // this.setState(todo);
   };
@@ -42,9 +62,9 @@ class Todo extends React.Component<TodoProps, TodoStateProps> {
         <div>
           <input
             type="checkbox"
-            id={"todo-" + todo.id + "-done"}
+            id={"todo-" + todo.id + "-done-bool"}
             checked={todo.done}
-            readOnly
+            onChange={this.handleChange}
           />
           <input
             id={"todo-" + todo.id + "-title"}
@@ -53,17 +73,7 @@ class Todo extends React.Component<TodoProps, TodoStateProps> {
             placeholder="This, that, and the other..."
             // eslint-disable-next-line jsx-a11y/no-autofocus
             autoFocus
-            onChange={(event: FormEvent<HTMLInputElement>) => {
-              const state = {
-                ...this.state,
-                todo: {
-                  ...this.state.todo,
-                  title: event.currentTarget.value || ""
-                }
-              };
-              // alert(event.target.)
-              this.setState(state);
-            }}
+            onChange={this.handleChange}
           />
         </div>
 
@@ -71,17 +81,17 @@ class Todo extends React.Component<TodoProps, TodoStateProps> {
           <label htmlFor={"todo-" + todo.id + "-estimate"}>Estimate:</label>
           <input
             type="text"
-            id={"todo-" + todo.id + "-estimate"}
+            id={"todo-" + todo.id + "-estimate-int"}
             value={todo.estimate}
-            readOnly
+            onChange={this.handleChange}
           />
         </div>
 
         <div>
-          <textarea
+          <input type="text"
             id={"todo-" + todo.id + "-description"}
             value={todo.description}
-            readOnly
+            onChange={this.handleChange}
           />
         </div>
         {JSON.stringify(this.state.todo.start)}
@@ -108,7 +118,6 @@ const mapDispatchToProps = (
 ): TodoDispatchProps => {
   return {
     actions: bindActionCreators(todoActions, dispatch)
-    // upsertTodo: (todo: ITodo) => dispatch(todoActions.upsertTodo(todo))
   };
 };
 
