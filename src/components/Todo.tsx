@@ -84,6 +84,7 @@ class Todo extends React.Component<TodoProps, TodoStateProps> {
             readOnly
           />
         </div>
+        {JSON.stringify(this.state.todo.start)}
         <input type="submit" value="Save" />
       </form>
     );
