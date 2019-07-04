@@ -8,10 +8,11 @@ export interface State {
   // appointments: IAppointment[];
 }
 
-export const initialState: State = JSON.parse(
-  localStorage.getItem("WhennerState") || "null"
-) || {
-  settings: defaultSettings,
-  todos: defaultTodos
-  // appointments: [] = []
+export const initialState: State = {
+  settings: JSON.parse(
+    localStorage.getItem("Whenner.Settings") || "null"
+  ) || defaultSettings,
+  todos: JSON.parse(
+    localStorage.getItem("Whenner.Todos") || "null"
+  ) || defaultTodos
 };

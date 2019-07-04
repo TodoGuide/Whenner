@@ -15,12 +15,14 @@ import { Dispatch, bindActionCreators } from "redux";
 import { TodoActionDispatch } from "../redux/actions/TodoAction";
 import { TodosResultActionThunk } from "../redux/actions/TodosAction";
 import { defaultTodos } from "../services/TodosService";
+import { Chronotype } from "../models/Chronotype";
 
 const localizer = BigCalendar.momentLocalizer(moment); // or globalizeLocalizer
 const Calendar = withDragAndDrop(BigCalendar);
 
 interface TodoListStateProps {
   todos: ITodo[];
+  chronotype: Chronotype;
 }
 
 interface TodoListDispatchProps {
@@ -44,7 +46,10 @@ class TodoList extends React.Component<TodoListProps, TodoListStateProps> {
 
   componentDidMount() {
     const { todos } = this.props;
-    if(todos.length === defaultTodos.length && todos.every((value, index) => value.id === defaultTodos[index].id)){
+    if (
+      todos.length === defaultTodos.length &&
+      todos.every((value, index) => value.id === defaultTodos[index].id)
+    ) {
       // Only load if todos todos contains defaults
       this.props.actions.loadTodos();
     }
@@ -52,13 +57,13 @@ class TodoList extends React.Component<TodoListProps, TodoListStateProps> {
 
   render() {
     // const { todos } = this.state;
-    const { actions, todos } = this.props;
+    const { actions, todos, chronotype } = this.props;
     return (
       <div>
         <ul>
           {todos.map(todo => (
             <li key={new Date(todo.start).getTime()}>
-              <Todo todo={todo} />
+              <Todo todo={todo} chronotype={chronotype} />
             </li>
           ))}
         </ul>
@@ -71,27 +76,33 @@ class TodoList extends React.Component<TodoListProps, TodoListStateProps> {
           selectable
           resizable
           onEventResize={({ event, start, end }) => {
-            actions.upsertTodo({
-              ...event,
-              estimate: moment
-                .duration(moment(end).diff(moment(start)))
-                .asMinutes()
-            });
+            actions.upsertTodo(
+              {
+                ...event,
+                estimate: moment
+                  .duration(moment(end).diff(moment(start)))
+                  .asMinutes()
+              },
+              chronotype
+            );
           }}
           onEventDrop={({ event, start }) => {
-            actions.upsertTodo({ ...event, start: start as Date });
+            actions.upsertTodo({ ...event, start: start as Date }, chronotype);
           }}
           onSelectSlot={({ start, end }) => {
-            actions.upsertTodo({
-              id: Date.now(),
-              title: "New todo",
-              description: "Do stuff",
-              estimate: moment
-                .duration(moment(end).diff(moment(start)))
-                .asMinutes(),
-              start: start as Date,
-              done: false
-            });
+            actions.upsertTodo(
+              {
+                id: Date.now(),
+                title: "New todo",
+                description: "Do stuff",
+                estimate: moment
+                  .duration(moment(end).diff(moment(start)))
+                  .asMinutes(),
+                start: start as Date,
+                done: false
+              },
+              chronotype
+            );
           }}
         />
       </div>
@@ -100,9 +111,10 @@ class TodoList extends React.Component<TodoListProps, TodoListStateProps> {
 }
 
 // Map application State to component props
-const mapStateToProps = ({ todos }: State): TodoListStateProps => {
+const mapStateToProps = ({ todos, settings: { chronotype } }: State): TodoListStateProps => {
   return {
-    todos
+    todos,
+    chronotype
   };
 };
 

@@ -3,12 +3,11 @@ import { WhennerActionType } from "../actions/WhennerActionType";
 import { schedule } from "../../models/schedule";
 import { TodoAction } from "../actions/TodoAction";
 import { TodosAction } from "../actions/TodosAction";
-import { Chronotype } from "../../models/Chronotype";
 import { ITodo } from "../../models/Todo";
+import { defaultTodos } from "../../services/TodosService";
 
 export function todos(
-  todos: ITodo[],
-  chronotype: Chronotype,
+  todos: ITodo[] = defaultTodos,
   action: WhennerAction | TodoAction | TodosAction
 ) {
   let result = todos;
@@ -30,5 +29,5 @@ export function todos(
       break;
   }
 
-  return schedule(chronotype, ...result);
+  return !!action.chronotype ? schedule(action.chronotype, ...result) : result;
 }

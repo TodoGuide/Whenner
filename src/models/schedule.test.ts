@@ -4,7 +4,7 @@ import { Todo } from "./Todo";
 import moment from "moment";
 import { oneHourTodo, twoHourTodo } from "../test/data";
 import { customMatchers } from "../test/matchers";
-import { Chronotype } from "./Chronotype";
+import { Chronotype, defaultChronotype } from "./Chronotype";
 
 describe("The schedule method", () => {
   beforeEach(() => {
@@ -32,7 +32,7 @@ describe("The schedule method", () => {
     ];
 
     describe("When the schedule method is called", () => {
-      const scheduledTodos = schedule(defaultSettings, ...twoNotDoneTodos);
+      const scheduledTodos = schedule(defaultChronotype, ...twoNotDoneTodos);
 
       it("Schedules the higher priority Todo for the current datetime", () => {
         expect(scheduledTodos[0].start.getTime()).toBeLessThanOrEqual(
