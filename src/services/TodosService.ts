@@ -1,5 +1,6 @@
 import { ITodo } from "../models/Todo";
 import { Chronotype } from "../models/Chronotype";
+import { schedule } from "../models/schedule";
 
 export const TODOS_KEY = "Whenner.Todos";
 
@@ -28,25 +29,24 @@ export class TodosService {
     const todos = await this.all();
     const existing = todos.find(t => t.id === todo.id);
     if (existing) {
-      const result = { ...todo };
-      todos[todos.indexOf(existing)] = result;
-      await writeTodos(todos);
-      return result;
+      todos[todos.indexOf(existing)] = { ...todo };
+      await writeTodos(schedule(this.chronotype, ...todos));
+      return await this.byId(todo.id);
     }
   }
 
   private async insert(todo: ITodo): Promise<ITodo> {
-    const todos = await this.all();
-    const existing = todos.find(t => t.id === todo.id);
+    const existing = await this.byId(todo.id);
     if (existing) {
       throw new Error(
         `Cannot insert todo with ID ${todo.id} because it already exists`
       );
     }
-    const result = { ...todo, id: Date.now() };
-    todos.push(result);
-    await writeTodos(todos);
-    return result;
+    const todos = await this.all();
+    const insertTodo = { ...todo, id: Date.now() };
+    todos.push(insertTodo);
+    await writeTodos(schedule(this.chronotype, ...todos));
+    return await this.byId(insertTodo.id) || insertTodo;
   }
 
   constructor(public chronotype: Chronotype) {
@@ -68,6 +68,6 @@ export class TodosService {
   }
 
   async all() {
-    return await readTodos();
+    return schedule(this.chronotype, ...await readTodos());
   }
 }

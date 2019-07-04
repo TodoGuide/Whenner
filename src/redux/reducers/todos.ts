@@ -3,7 +3,7 @@ import { WhennerActionType } from "../actions/WhennerActionType";
 import { schedule } from "../../models/schedule";
 import { TodoAction } from "../actions/TodoAction";
 import { TodosAction } from "../actions/TodosAction";
-import { ITodo } from "../../models/Todo";
+import { ITodo, sortedTodoList, Todo } from "../../models/Todo";
 import { defaultTodos } from "../../services/TodosService";
 
 export function todos(
@@ -13,13 +13,13 @@ export function todos(
   let result = todos;
   switch (action.type) {
     case WhennerActionType.InsertTodoSuccess:
-      result = todos.map(todo => todo);
-      result.push({ ...action.todo });
+      result = todos.map(todo => new Todo(todo));
+      result.push(new Todo(action.todo));
       break;
     case WhennerActionType.UpdateTodoSuccess:
       console.log("UpdateTodoSuccess", action.todo);
       result = todos.map(todo =>
-        todo.id === action.todo.id ? { ...action.todo } : todo
+        todo.id === action.todo.id ? new Todo(action.todo) : todo
       );
       break;
     case WhennerActionType.LoadTodosSuccess:
@@ -28,6 +28,5 @@ export function todos(
     default:
       break;
   }
-
-  return !!action.chronotype ? schedule(action.chronotype, ...result) : result;
+  return result;
 }

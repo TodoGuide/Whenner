@@ -51,7 +51,7 @@ export const loadTodos: TodosResultActionThunk = () => {
 
 export const upsertTodo: TodoActionThunk = (todo: ITodo, chronotype: Chronotype) => {
   return function(dispatch: Dispatch) {
-    return todosService
+    const result = todosService
       .upsert(todo)
       .then(upsertedTodo =>
         upsertedTodo.id === todo.id
@@ -62,5 +62,7 @@ export const upsertTodo: TodoActionThunk = (todo: ITodo, chronotype: Chronotype)
         console.log("upsertTodo error", e);
         throw e;
       });
+      result.then(x => loadTodos()(dispatch));
+    return result;
   };
 };
