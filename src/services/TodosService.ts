@@ -1,6 +1,7 @@
 import { ITodo } from "../models/Todo";
+import { Chronotype } from "../models/Chronotype";
 
-const TODOS_KEY = "Whenner.Todos";
+export const TODOS_KEY = "Whenner.Todos";
 
 export const defaultTodos: ITodo[] = [
   {
@@ -48,6 +49,10 @@ export class TodosService {
     return result;
   }
 
+  constructor(public chronotype: Chronotype) {
+
+  }
+
   async upsert(todo: ITodo): Promise<ITodo> {
     return (await this.update(todo)) || (await this.insert(todo));
   }
@@ -66,5 +71,3 @@ export class TodosService {
     return await readTodos();
   }
 }
-
-export const todosService = new TodosService();

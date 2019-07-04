@@ -2,9 +2,9 @@ import { ITodo } from "../../models/Todo";
 import { TodoAction, TodoActionThunk } from "./TodoAction";
 import { WhennerActionType } from "./WhennerActionType";
 import { Dispatch } from "redux";
-import { todosService } from "../../services/TodosService";
 import { TodosAction, TodosResultActionThunk } from "./TodosAction";
 import { Chronotype } from "../../models/Chronotype";
+import { todosService } from "../../services/services";
 
 export function loadTodosSuccess(todos: ITodo[]): TodosAction {
   return {
