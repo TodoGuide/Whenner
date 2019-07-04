@@ -13,8 +13,8 @@ export const defaultTodos: ITodo[] = [
   }
 ];
 
-function readTodos(): ITodo[] {
-    return JSON.parse(localStorage.getItem(TODOS_KEY) || "null") || defaultTodos;
+async function readTodos(): Promise<ITodo[]> {
+  return JSON.parse(localStorage.getItem(TODOS_KEY) || "null") || defaultTodos;
 }
 
 async function writeTodos(todos: ITodo[]): Promise<ITodo[]> {
@@ -23,12 +23,10 @@ async function writeTodos(todos: ITodo[]): Promise<ITodo[]> {
 }
 
 export class TodosService {
-  constructor() {}
-
   private async update(todo: ITodo): Promise<ITodo | undefined> {
     const todos = await this.all();
     const existing = todos.find(t => t.id === todo.id);
-    if(existing){
+    if (existing) {
       const result = { ...todo };
       todos[todos.indexOf(existing)] = result;
       await writeTodos(todos);
@@ -39,8 +37,10 @@ export class TodosService {
   private async insert(todo: ITodo): Promise<ITodo> {
     const todos = await this.all();
     const existing = todos.find(t => t.id === todo.id);
-    if(existing){
-      throw new Error(`Cannot insert todo with ID ${todo.id} because it already exists`);
+    if (existing) {
+      throw new Error(
+        `Cannot insert todo with ID ${todo.id} because it already exists`
+      );
     }
     const result = { ...todo, id: Date.now() };
     todos.push(result);
@@ -49,7 +49,7 @@ export class TodosService {
   }
 
   async upsert(todo: ITodo): Promise<ITodo> {
-    return await this.update(todo) || await this.insert(todo);
+    return (await this.update(todo)) || (await this.insert(todo));
   }
 
   async byId(id: number): Promise<ITodo | undefined> {

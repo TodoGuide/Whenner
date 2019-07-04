@@ -4,6 +4,7 @@ import { Todo } from "./Todo";
 import moment from "moment";
 import { oneHourTodo, twoHourTodo } from "../test/data";
 import { customMatchers } from "../test/matchers";
+import { Chronotype } from "./Chronotype";
 
 describe("The schedule method", () => {
   beforeEach(() => {
@@ -51,9 +52,9 @@ describe("The schedule method", () => {
   });
 
   describe("Given a 1 hour Day Start to Day End window", () => {
-    const oneHourWindow: Settings = {
-      dayStart: moment.duration("0:00"),
-      dayEnd: moment.duration("1:00")
+    const oneHourWindow: Chronotype = {
+      start: moment.duration("0:00"),
+      end: moment.duration("1:00")
     };
 
     const today = new Date(new Date().setHours(0, 0, 0, 0));

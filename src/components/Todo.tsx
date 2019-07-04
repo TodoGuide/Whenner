@@ -1,4 +1,4 @@
-import React, { FormEvent, ChangeEventHandler, ChangeEvent } from "react";
+import React, { FormEvent, ChangeEvent } from "react";
 import { ITodo, Todo as TodoModel } from "../models/Todo";
 import { connect } from "react-redux";
 import { State } from "../redux/State";

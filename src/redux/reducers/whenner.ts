@@ -15,9 +15,9 @@ export function whenner(
   state: State = initialState,
   action: WhennerAction
 ): State {
-  // console.log("Old State", state);
+  console.log("whenner reducer", { state, action });
   const result = {
-    todos: todos(state, action),
+    todos: todos(state.todos, state.settings.chronotype, action),
     settings: settings(state.settings, action)
   };
   // console.log("New State", result);

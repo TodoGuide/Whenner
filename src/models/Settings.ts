@@ -1,12 +1,11 @@
-import moment, { Duration } from "moment";
+import { Chronotype, defaultChronotype } from "./Chronotype";
 
 
 export interface Settings {
-  dayStart: Duration;
-  dayEnd: Duration;
+  chronotype: Chronotype;
+  // ...
 }
 
 export const defaultSettings: Settings = {
-  dayStart: moment.duration('7:15'), // 7:15am
-  dayEnd: moment.duration('20:00') // 7:00pm
+  chronotype: defaultChronotype
 }
