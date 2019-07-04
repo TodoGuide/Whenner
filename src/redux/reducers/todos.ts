@@ -12,6 +12,7 @@ export function todos(
   let result = todos;
   switch (action.type) {
     case WhennerActionType.InsertTodoSuccess:
+        result = todos.map(todo => todo);
         result.push({ ...action.todo });
         break;
     case WhennerActionType.UpdateTodoSuccess:

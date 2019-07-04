@@ -2,7 +2,6 @@ import { Store } from "./Store";
 import { Store as ReduxStore } from "redux";
 import { ITodo } from "../models/Todo";
 import { WhennerActionType } from "./actions/WhennerActionType";
-import { upsertTodo } from "./actions/todoActions";
 import { State, initialState } from "./State";
 import { WhennerAction } from "./actions/WhennerAction";
 import { oneHourTodo } from "../test/data";
@@ -28,33 +27,33 @@ describe("The Whenner Store", () => {
       expect(todos[0]).toBeScheduledCopyOf(initialState.todos[0]);
     });
 
-    describe("When UpsertTodoSuccess is dispatched with new Todo, it...", () => {
+    describe("When InsertTodoSuccess is dispatched with new Todo, it...", () => {
       beforeEach(() => {
         store.dispatch({
-          type: WhennerActionType.UpsertTodoSuccess,
+          type: WhennerActionType.InsertTodoSuccess,
           todo: oneHourTodo
         });
       });
 
-      it("Adds the provided Todo", () => {
+      it("Adds the provided Todo to the store state", () => {
         const todos = store.getState().todos;
         expect(todos.length).toBe(2);
         expect(todos[1]).toBeScheduledCopyOf(oneHourTodo);
       });
     });
 
-    describe("When UpsertTodoSuccess is dispatched with existing Todo, it...", () => {
+    describe("When UpdateTodoSuccess is dispatched with existing Todo, it...", () => {
       let updatedTodo: ITodo;
       beforeEach(() => {
         updatedTodo = { ...store.getState().todos[0], title: "Updated" };
         expect(updatedTodo.title).toBe("Updated");
         store.dispatch({
-          type: WhennerActionType.UpsertTodoSuccess,
+          type: WhennerActionType.UpdateTodoSuccess,
           todo: updatedTodo
         });
       });
 
-      it("Replaces the Todo with a new copy", () => {
+      it("Replaces the Todo in store state with a new copy", () => {
         const todos = store.getState().todos;
         expect(todos.length).toBe(1);
         expect(todos[0]).toBeScheduledCopyOf(updatedTodo);

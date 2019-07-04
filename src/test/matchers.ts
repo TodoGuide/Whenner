@@ -27,7 +27,7 @@ export const customMatchers = {
         const actualStart = new Date(actual.start).getTime();
         const pass = actualStart >= now;
 
-        expect({ ...actual, start: expected.start }).toEqual(expected);
+        expect({ ...actual, start: expected.start, id: expected.id }).toEqual(expected);
 
         return {
           pass,

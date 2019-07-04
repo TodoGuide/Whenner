@@ -5,14 +5,14 @@ import { Duration } from "moment";
  * The typical period of time during which Todos can be completed.
  *
  * @export
- * @interface Chronality
+ * @interface Chronotype
  */
-export interface Chronality {
+export interface Chronotype {
   start: Duration;
   end: Duration;
 }
 
-export const defaultChronality: Chronality = {
+export const defaultChronotype: Chronotype = {
   start: moment.duration("7:15"), // 7:15am
   end: moment.duration("20:00") // 7:00pm
 };
