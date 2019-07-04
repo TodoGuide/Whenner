@@ -26,39 +26,5 @@ describe("The Whenner Store", () => {
       // Check that the default Todo was scheduled
       expect(todos[0]).toBeScheduledCopyOf(initialState.todos[0]);
     });
-
-    describe("When InsertTodoSuccess is dispatched with new Todo, it...", () => {
-      beforeEach(() => {
-        store.dispatch({
-          type: WhennerActionType.InsertTodoSuccess,
-          todo: oneHourTodo
-        });
-      });
-
-      it("Adds the provided Todo to the store state", () => {
-        const todos = store.getState().todos;
-        expect(todos.length).toBe(2);
-        expect(todos[1]).toBeScheduledCopyOf(oneHourTodo);
-      });
-    });
-
-    describe("When UpdateTodoSuccess is dispatched with existing Todo, it...", () => {
-      let updatedTodo: ITodo;
-      beforeEach(() => {
-        updatedTodo = { ...store.getState().todos[0], title: "Updated" };
-        expect(updatedTodo.title).toBe("Updated");
-        store.dispatch({
-          type: WhennerActionType.UpdateTodoSuccess,
-          todo: updatedTodo
-        });
-      });
-
-      it("Replaces the Todo in store state with a new copy", () => {
-        const todos = store.getState().todos;
-        expect(todos.length).toBe(1);
-        expect(todos[0]).toBeScheduledCopyOf(updatedTodo);
-        expect(todos[0]).not.toBe(updatedTodo);
-      });
-    });
   });
 });
