@@ -69,7 +69,7 @@ class Todo extends React.Component<TodoProps, TodoStateProps> {
             onChange={this.handleChange}
           />
           <input
-            id={"todo-" + todo.id + "-title"}
+            id={"todo-" + todo.id + "-title-string"}
             type="text"
             value={todo.title}
             placeholder="This, that, and the other..."
@@ -92,7 +92,7 @@ class Todo extends React.Component<TodoProps, TodoStateProps> {
         <div>
           <input
             type="text"
-            id={"todo-" + todo.id + "-description"}
+            id={"todo-" + todo.id + "-description-string"}
             value={todo.description}
             onChange={this.handleChange}
           />
