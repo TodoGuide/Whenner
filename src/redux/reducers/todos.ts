@@ -2,7 +2,7 @@ import { WhennerAction } from "../actions/WhennerAction";
 import { WhennerActionType } from "../actions/WhennerActionType";
 import { TodoAction } from "../actions/TodoAction";
 import { TodosAction } from "../actions/TodosAction";
-import { ITodo, Todo } from "../../models/Todo";
+import { ITodo } from "../../models/Todo";
 import { defaultTodos } from "../../services/TodosService";
 
 export function todos(
