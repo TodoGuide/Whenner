@@ -65,7 +65,7 @@ describe("The schedule method", () => {
       describe("When schedule is called, it..", () => {
         const scheduledTodos = schedule(oneHourWindow, twoHourTodo);
         it("Schedules the Todo for the current datetime", () => {
-          expect(scheduledTodos[0].start.getTime()).toBeWithinTheLast200ms();
+          expect(scheduledTodos[0].start.getTime()).toBeWithinTheLast300ms();
         });
       });
     });

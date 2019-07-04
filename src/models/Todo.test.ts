@@ -39,7 +39,7 @@ describe("The Todo Class", () => {
       const todoFromFalseyITodo = new Todo(falseyITodoInstance);
 
       it("Defaults to an ID of the current datetime", () => {
-        expect(todoFromFalseyITodo.id).toBeWithinTheLast200ms();
+        expect(todoFromFalseyITodo.id).toBeWithinTheLast300ms();
       });
 
       it("Defaults to an empty Title", () => {
@@ -55,7 +55,7 @@ describe("The Todo Class", () => {
       });
 
       it("Defaults to a Start of the current datetime", () => {
-        expect(todoFromFalseyITodo.start.getTime()).toBeWithinTheLast200ms();
+        expect(todoFromFalseyITodo.start.getTime()).toBeWithinTheLast300ms();
       });
 
       it("Defaults to NOT Done", () => {

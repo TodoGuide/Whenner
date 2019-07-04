@@ -33,7 +33,6 @@ describe("The Todos Service", () => {
 
       beforeEach(async function() {
         upsertResult = await todosService.upsert(oneHourTodo);
-        console.log("upsertResult", upsertResult);
       });
 
       it('Inserts the provided Todo', async function() {

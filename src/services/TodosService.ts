@@ -49,7 +49,6 @@ export class TodosService {
   }
 
   async upsert(todo: ITodo): Promise<ITodo> {
-    console.log("TodosService.upsert", todo);
     return (await this.update(todo)) || (await this.insert(todo));
   }
 
