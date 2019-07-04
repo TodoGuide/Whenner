@@ -15,14 +15,12 @@ import { Dispatch, bindActionCreators } from "redux";
 import { TodoActionDispatch } from "../redux/actions/TodoAction";
 import { TodosResultActionThunk } from "../redux/actions/TodosAction";
 import { defaultTodos } from "../services/TodosService";
-import { Chronotype } from "../models/Chronotype";
 
 const localizer = BigCalendar.momentLocalizer(moment); // or globalizeLocalizer
 const Calendar = withDragAndDrop(BigCalendar);
 
 interface TodoListStateProps {
   todos: ITodo[];
-  chronotype: Chronotype;
 }
 
 interface TodoListDispatchProps {
@@ -57,13 +55,13 @@ class TodoList extends React.Component<TodoListProps, TodoListStateProps> {
 
   render() {
     // const { todos } = this.state;
-    const { actions, todos, chronotype } = this.props;
+    const { actions, todos } = this.props;
     return (
       <div>
         <ul>
           {todos.map(todo => (
             <li key={new Date(todo.start).getTime()}>
-              <Todo todo={todo} chronotype={chronotype} />
+              <Todo todo={todo} />
             </li>
           ))}
         </ul>
@@ -82,12 +80,11 @@ class TodoList extends React.Component<TodoListProps, TodoListStateProps> {
                 estimate: moment
                   .duration(moment(end).diff(moment(start)))
                   .asMinutes()
-              },
-              chronotype
+              }
             );
           }}
           onEventDrop={({ event, start }) => {
-            actions.upsertTodo({ ...event, start: start as Date }, chronotype);
+            actions.upsertTodo({ ...event, start: start as Date });
           }}
           onSelectSlot={({ start, end }) => {
             actions.upsertTodo(
@@ -100,8 +97,7 @@ class TodoList extends React.Component<TodoListProps, TodoListStateProps> {
                   .asMinutes(),
                 start: start as Date,
                 done: false
-              },
-              chronotype
+              }
             );
           }}
         />
@@ -111,10 +107,9 @@ class TodoList extends React.Component<TodoListProps, TodoListStateProps> {
 }
 
 // Map application State to component props
-const mapStateToProps = ({ todos, settings: { chronotype } }: State): TodoListStateProps => {
+const mapStateToProps = ({ todos }: State): TodoListStateProps => {
   return {
-    todos,
-    chronotype
+    todos
   };
 };
 

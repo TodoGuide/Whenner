@@ -5,13 +5,12 @@ import { Chronotype } from "../../models/Chronotype";
 
 export interface TodoAction extends WhennerAction {
   todo: ITodo;
-  chronotype: Chronotype
 }
 
 export interface TodoActionThunk {
-  (todo: ITodo, chronotype: Chronotype): { (dispatch: Dispatch): Promise<TodoAction> }
+  (todo: ITodo): { (dispatch: Dispatch): Promise<TodoAction> }
 } 
 
 export interface TodoActionDispatch {
-  (todo: ITodo, chronotype: Chronotype): void
+  (todo: ITodo): void
 }

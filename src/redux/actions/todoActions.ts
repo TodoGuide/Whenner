@@ -3,7 +3,6 @@ import { TodoAction, TodoActionThunk } from "./TodoAction";
 import { WhennerActionType } from "./WhennerActionType";
 import { Dispatch } from "redux";
 import { TodosAction, TodosResultActionThunk } from "./TodosAction";
-import { Chronotype } from "../../models/Chronotype";
 import { todosService } from "../../services/services";
 
 export function loadTodosSuccess(todos: ITodo[]): TodosAction {
@@ -14,24 +13,20 @@ export function loadTodosSuccess(todos: ITodo[]): TodosAction {
 }
 
 export function insertTodoSuccess(
-  todo: ITodo,
-  chronotype: Chronotype
+  todo: ITodo
 ): TodoAction {
   return {
     type: WhennerActionType.InsertTodoSuccess,
-    todo,
-    chronotype
+    todo
   };
 }
 
 export function updateTodoSuccess(
-  todo: ITodo,
-  chronotype: Chronotype
+  todo: ITodo
 ): TodoAction {
   return {
     type: WhennerActionType.UpdateTodoSuccess,
-    todo,
-    chronotype
+    todo
   };
 }
 
@@ -49,14 +44,14 @@ export const loadTodos: TodosResultActionThunk = () => {
   };
 };
 
-export const upsertTodo: TodoActionThunk = (todo: ITodo, chronotype: Chronotype) => {
+export const upsertTodo: TodoActionThunk = (todo: ITodo) => {
   return function(dispatch: Dispatch) {
     const result = todosService
       .upsert(todo)
       .then(upsertedTodo =>
         upsertedTodo.id === todo.id
-          ? dispatch(updateTodoSuccess(upsertedTodo, chronotype))
-          : dispatch(insertTodoSuccess(upsertedTodo, chronotype))
+          ? dispatch(updateTodoSuccess(upsertedTodo))
+          : dispatch(insertTodoSuccess(upsertedTodo))
       )
       .catch(e => {
         console.log("upsertTodo error", e);

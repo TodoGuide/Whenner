@@ -6,11 +6,9 @@ import { WhennerAction } from "../redux/actions/WhennerAction";
 import * as todoActions from "../redux/actions/todoActions";
 import { TodoActionDispatch } from "../redux/actions/TodoAction";
 import { bindActionCreators, Dispatch } from "redux";
-import { Chronotype } from "../models/Chronotype";
 
 interface TodoStateProps {
   todo: ITodo;
-  chronotype: Chronotype;
 }
 
 interface TodoDispatchProps {
@@ -54,7 +52,7 @@ class Todo extends React.Component<TodoProps, TodoStateProps> {
 
   handleSave = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    this.props.actions.upsertTodo(this.state.todo, this.state.chronotype);
+    this.props.actions.upsertTodo(this.state.todo);
   };
 
   render() {
@@ -111,8 +109,7 @@ const mapStateToProps = (
 ): TodoStateProps => {
   return {
     todo:
-      state.todos.find(todo => todo.id === ownProps.todo.id) || new TodoModel(),
-    chronotype: state.settings.chronotype
+      state.todos.find(todo => todo.id === ownProps.todo.id) || new TodoModel()
   };
 };
 

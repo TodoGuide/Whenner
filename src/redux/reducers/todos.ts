@@ -1,9 +1,8 @@
 import { WhennerAction } from "../actions/WhennerAction";
 import { WhennerActionType } from "../actions/WhennerActionType";
-import { schedule } from "../../models/schedule";
 import { TodoAction } from "../actions/TodoAction";
 import { TodosAction } from "../actions/TodosAction";
-import { ITodo, sortedTodoList, Todo } from "../../models/Todo";
+import { ITodo, Todo } from "../../models/Todo";
 import { defaultTodos } from "../../services/TodosService";
 
 export function todos(
