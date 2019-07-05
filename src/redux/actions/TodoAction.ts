@@ -1,7 +1,7 @@
 import { WhennerAction } from "./WhennerAction";
 import { ITodo } from "../../models/Todo";
 import { Dispatch } from "redux";
-import { Chronotype } from "../../models/Chronotype";
+import { IChronotype } from "../../models/Chronotype";
 
 export interface TodoAction extends WhennerAction {
   todo: ITodo;

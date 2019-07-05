@@ -1,5 +1,5 @@
 import { ITodo } from "../models/Todo";
-import { Chronotype } from "../models/Chronotype";
+import { IChronotype } from "../models/Chronotype";
 import { schedule } from "../models/schedule";
 
 export const TODOS_KEY = "Whenner.Todos";
@@ -49,7 +49,7 @@ export class TodosService {
     return await this.byId(insertTodo.id) || insertTodo;
   }
 
-  constructor(public chronotype: Chronotype) {
+  constructor(public chronotype: IChronotype) {
 
   }
 

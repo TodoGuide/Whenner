@@ -7,9 +7,12 @@
     "node_modules": true,
   },
   "cSpell.words": [
+    "action",
     "chronotype",
     "default",
     "service",
-    "todos"
+    "todos",
+    "type",
+    "whenner"
   ]
 }
