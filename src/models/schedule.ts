@@ -5,7 +5,7 @@ import {
   chronotypeDayStart,
   chronotypeDayEnd
 } from "./Chronotype";
-import moment, { Duration } from "moment";
+import moment from "moment";
 
 /**
  * Calculates the earliest date and time the todo can be started based on the provided Chronotype.
