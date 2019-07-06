@@ -8,8 +8,7 @@ import { Time } from "./time";
 describe("The ScheduledTodo class", () => {
   beforeEach(() => {
     jasmine.addMatchers(customMatchers);
-    Time.current = () => new Date(2019, 6, 5, 12, 0, 0, 0); // 2019-07-05 at Noon
-    Time.now = () => Time.current().getTime();
+    Time.set(new Date(2019, 6, 5, 12, 0, 0, 0)); // 2019-07-05 at Noon
   });
 
   describe("Given a current Todo", () => {

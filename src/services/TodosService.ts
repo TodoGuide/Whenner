@@ -21,6 +21,7 @@ async function readTodos(): Promise<ITodo[]> {
 }
 
 async function writeTodos(todos: ITodo[]): Promise<ITodo[]> {
+  console.log("writeTodos", todos);
   localStorage.setItem(TODOS_KEY, JSON.stringify(todos));
   return todos;
 }

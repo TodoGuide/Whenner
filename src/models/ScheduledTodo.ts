@@ -1,7 +1,7 @@
 import { ITodo, Todo } from "./Todo";
 import { IChronotype, Chronotype } from "./Chronotype";
 import moment from "moment";
-import { Time } from "./time";
+import { Time, Start, End } from "./time";
 
 export class ScheduledTodo extends Todo {
   constructor(chronotype: Chronotype, current: Todo, previous?: Todo) {
@@ -14,39 +14,21 @@ export class ScheduledTodo extends Todo {
   }
 
   private static earliestStartDateCandidate(
-    {
-      start
-    }:
-      | ITodo
-      | {
-          start: Date;
-        },
+    { start }: Start,
     chronotype: Chronotype
   ) {
     const dayStart = chronotype.startOf(start);
-    const result = start < dayStart ? dayStart : start;
-    console.log("earliestStartDateCandidate", {
-      start,
-      dayStart,
-      result
-    });
-    return result;
+    return start < dayStart ? dayStart : start;
   }
 
   /**
    * Determines if the todo can be completed as-scheduled based on the provided Chronotype
    */
   private static canBeCompletedSameDay(
-    { end }: Todo | { end: Date },
+    { end }: End,
     chronotype: Chronotype
   ) {
-    const result = end <= chronotype.endOf(end);
-    console.log("canBeCompletedSameDay", {
-      result,
-      end,
-      limit: chronotype.endOf(end)
-    });
-    return result;
+    return end <= chronotype.endOf(end);
   }
 
   /**
@@ -56,22 +38,14 @@ export class ScheduledTodo extends Todo {
     { estimate }: ITodo,
     { minutes }: Chronotype
   ) {
-    const result = estimate <= minutes;
-    console.log("canBeCompletedWithinOneDay", { estimate, minutes, result })
-    return result;
+    return estimate <= minutes;
   }
 
   /**
    * Calculates the earliest date and time the todo can be started based on the provided Chronotype.
    */
   private static earliestStartDatePermitted(
-    {
-      start: todoStart
-    }:
-      | Todo
-      | {
-          start: Date;
-        },
+    { start: todoStart }: Start,
     { start: chronotypeStart }: IChronotype
   ) {
     const dayStart = Chronotype.getStartOf(todoStart, {
@@ -88,25 +62,28 @@ export class ScheduledTodo extends Todo {
     chronotype: Chronotype,
     current: Todo,
     previous?: Todo
-  ) {
-    const candidate = ScheduledTodo.earliestStartDateCandidate(
+  ): Date {
+    // console.log("firstAvailableStartDate", {current, previous})
+    const candidateStart = ScheduledTodo.earliestStartDateCandidate(
       { start: (previous || { end: Time.current() }).end },
       chronotype
     );
-    const result = !ScheduledTodo.canBeCompletedSameDay(
-      { end: candidate },
-      chronotype
-    ) && ScheduledTodo.canBeCompletedWithinOneDay(current, chronotype)
-      ? ScheduledTodo.earliestStartDatePermitted(
-          {
-            start: moment(candidate)
-              .add(1, "day")
-              .startOf("day")
-              .toDate()
-          },
-          chronotype
-        )
-      : candidate;
-    console.log("firstAvailableStartDate", { candidate, result })
+    const candidateResult = { ...current, start: candidateStart };
+    const candidateEnd = Todo.calculateEnd(candidateResult);
+    const result =
+      !ScheduledTodo.canBeCompletedSameDay({ end: candidateEnd }, chronotype) &&
+      ScheduledTodo.canBeCompletedWithinOneDay(candidateResult, chronotype)
+        ? ScheduledTodo.earliestStartDatePermitted(
+            {
+              start: moment(candidateStart)
+                .add(1, "day")
+                .startOf("day")
+                .toDate()
+            },
+            chronotype
+          )
+        : candidateStart;
+    // console.log("firstAvailableStartDate", { candidate: candidateStart, result });
+    return result;
   }
 }

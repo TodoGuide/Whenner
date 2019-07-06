@@ -1,24 +1,23 @@
 import moment from "moment";
-import { Time } from "./time";
+import { Time, Estimate, Estimated, Period, Start } from "./time";
 
-export interface ITodo {
+export interface ITodo extends Start, Estimate, Estimated {
   id: number;
   title: string;
   description: string;
-  estimate: number;
-  start: Date;
   done: boolean;
 }
 
-export class Todo implements ITodo {
+export class Todo implements ITodo, Period {
   id: number = Time.now();
   title: string = "";
   description: string = "";
   estimate: number = 60;
   start: Date = Time.current();
   done: boolean = false;
+  static c: Date;
   
-  constructor(todo?: ITodo | null) {
+  constructor(todo?: ITodo) {
     Object.assign(this, todo);
     this.start = new Date(this.start || Time.now()); // JavaScript stores dates as strings when serializing
   }
@@ -29,7 +28,7 @@ export class Todo implements ITodo {
 
   set end(end: Date) {
     this.estimate = moment
-      .duration(moment(this.end).diff(this.start))
+      .duration(moment(end).diff(this.start))
       .asMinutes();
   }
 
@@ -37,11 +36,11 @@ export class Todo implements ITodo {
     return Todo.estimateToDuration(this);
   }
 
-  static estimateToDuration({ estimate }: { estimate: number }) {
+  static estimateToDuration({ estimate }: Estimate) {
     return moment.duration(estimate, "minutes");
   }
 
-  static calculateEnd({ start, estimate }: ITodo) {
+  static calculateEnd({ start, estimate }: Estimated) {
     return moment(start)
       .add(Todo.estimateToDuration({ estimate }))
       .toDate();
