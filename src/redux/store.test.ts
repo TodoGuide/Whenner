@@ -1,10 +1,8 @@
-import { Store } from "./Store";
+import { Store } from "./store";
 import { Store as ReduxStore } from "redux";
-import { ITodo } from "../models/Todo";
-import { State, initialState } from "./State";
-import { WhennerAction } from "./actions/WhennerAction";
 import { customMatchers } from "../test/matchers";
 import { Time } from "../models/time";
+import { WhennerAction, WhennerState, initialState } from ".";
 
 describe("The Whenner Store", () => {
   beforeEach(() => {
@@ -13,7 +11,7 @@ describe("The Whenner Store", () => {
   });
 
   describe("Given the default state", () => {
-    let store: ReduxStore<State, WhennerAction>;
+    let store: ReduxStore<WhennerState, WhennerAction>;
 
     beforeEach(() => {
       store = Store.newContainer().getInstance();

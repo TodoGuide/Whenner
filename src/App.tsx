@@ -3,7 +3,7 @@ import logo from "./logo.svg";
 import "./App.css";
 import TodoList from "./components/TodoList";
 import { Provider } from "react-redux";
-import { Store } from "./redux/Store";
+import { Store } from "./redux/store";
 
 const App: React.FC = () => {
   return (

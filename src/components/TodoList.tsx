@@ -1,21 +1,20 @@
+import "react-big-calendar/lib/addons/dragAndDrop/styles.css";
+import "react-big-calendar/lib/css/react-big-calendar.css";
+
 import React from "react";
 import Todo from "./Todo";
-import { ITodo } from "../models/Todo";
-import { State } from "../redux/State";
-import { connect } from "react-redux";
 import moment from "moment";
 import BigCalendar from "react-big-calendar";
 import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop";
-import * as todoActions from "../redux/actions/todoActions";
-
-import "react-big-calendar/lib/addons/dragAndDrop/styles.css";
-import "react-big-calendar/lib/css/react-big-calendar.css";
-import { WhennerAction } from "../redux/actions/WhennerAction";
+import { ITodo } from "../models/Todo";
+import { connect } from "react-redux";
 import { Dispatch, bindActionCreators } from "redux";
-import { TodoActionDispatch } from "../redux/actions/TodoAction";
-import { TodosResultActionThunk } from "../redux/actions/TodosAction";
+import { TodosResultActionThunk, TodoActionThunk } from "../redux/todos/actions";
 import { defaultTodos } from "../services/TodosService";
 import { Time } from "../models/time";
+import { loadTodos } from "../redux/todos/actions/loadTodos";
+import { upsertTodo } from "../redux/todos/actions/upsertTodo";
+import { WhennerAction, WhennerState } from "../redux";
 
 const localizer = BigCalendar.momentLocalizer(moment); // or globalizeLocalizer
 const Calendar = withDragAndDrop(BigCalendar);
@@ -25,10 +24,8 @@ interface TodoListStateProps {
 }
 
 interface TodoListDispatchProps {
-  actions: {
-    upsertTodo: TodoActionDispatch;
-    loadTodos: TodosResultActionThunk;
-  };
+  upsertTodo: TodoActionThunk;
+  loadTodos: TodosResultActionThunk;
 }
 
 // type TodoListOwnProps = {
@@ -50,13 +47,13 @@ class TodoList extends React.Component<TodoListProps, TodoListStateProps> {
       todos.every((value, index) => value.id === defaultTodos[index].id)
     ) {
       // Only load if todos todos contains defaults
-      this.props.actions.loadTodos();
+      this.props.loadTodos();
     }
   }
 
   render() {
     // const { todos } = this.state;
-    const { actions, todos } = this.props;
+    const { upsertTodo, todos } = this.props;
     return (
       <div>
         <ul>
@@ -75,7 +72,7 @@ class TodoList extends React.Component<TodoListProps, TodoListStateProps> {
           selectable
           resizable
           onEventResize={({ event, start, end }) => {
-            actions.upsertTodo(
+            upsertTodo(
               {
                 ...event,
                 estimate: moment
@@ -85,10 +82,10 @@ class TodoList extends React.Component<TodoListProps, TodoListStateProps> {
             );
           }}
           onEventDrop={({ event, start }) => {
-            actions.upsertTodo({ ...event, start: start as Date });
+            upsertTodo({ ...event, start: start as Date });
           }}
           onSelectSlot={({ start, end }) => {
-            actions.upsertTodo(
+            upsertTodo(
               {
                 id: Time.now(),
                 title: "New todo",
@@ -100,7 +97,7 @@ class TodoList extends React.Component<TodoListProps, TodoListStateProps> {
                 done: false
               }
             );
-          }}
+          }} 
         />
       </div>
     );
@@ -108,7 +105,7 @@ class TodoList extends React.Component<TodoListProps, TodoListStateProps> {
 }
 
 // Map application State to component props
-const mapStateToProps = ({ todos }: State): TodoListStateProps => {
+const mapStateToProps = ({ todos }: WhennerState): TodoListStateProps => {
   return {
     todos
   };
@@ -119,12 +116,13 @@ const mapDispatchToProps = (
   dispatch: Dispatch<WhennerAction>
 ): TodoListDispatchProps => {
   return {
-    actions: bindActionCreators(todoActions, dispatch)
+    upsertTodo: bindActionCreators(upsertTodo, dispatch),
+    loadTodos: bindActionCreators(loadTodos, dispatch),
   };
 };
 
 // react-redux magic
-export default connect<TodoListStateProps, TodoListDispatchProps, {}, State>(
+export default connect<TodoListStateProps, TodoListDispatchProps, {}, WhennerState>(
   mapStateToProps,
   mapDispatchToProps
 )(TodoList);

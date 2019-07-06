@@ -1,18 +1,17 @@
 import React, { FormEvent, ChangeEvent } from "react";
 import { ITodo, Todo as TodoModel } from "../models/Todo";
 import { connect } from "react-redux";
-import { State } from "../redux/State";
-import { WhennerAction } from "../redux/actions/WhennerAction";
-import * as todoActions from "../redux/actions/todoActions";
-import { TodoActionDispatch } from "../redux/actions/TodoAction";
 import { bindActionCreators, Dispatch } from "redux";
+import { TodoActionThunk } from "../redux/todos/actions";
+import { upsertTodo } from "../redux/todos/actions/upsertTodo";
+import { WhennerAction, WhennerState } from "../redux";
 
 interface TodoStateProps {
   todo: ITodo;
 }
 
 interface TodoDispatchProps {
-  actions: { upsertTodo: TodoActionDispatch };
+  upsertTodo: TodoActionThunk;
 }
 
 // interface TodoOwnProps extends TodoStateProps {}
@@ -52,7 +51,7 @@ class Todo extends React.Component<TodoProps, TodoStateProps> {
 
   handleSave = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    this.props.actions.upsertTodo(this.state.todo);
+    this.props.upsertTodo(this.state.todo);
   };
 
   render() {
@@ -104,7 +103,7 @@ class Todo extends React.Component<TodoProps, TodoStateProps> {
 
 // Map application State to component props
 const mapStateToProps = (
-  state: State,
+  state: WhennerState,
   ownProps: TodoStateProps
 ): TodoStateProps => {
   return {
@@ -118,7 +117,7 @@ const mapDispatchToProps = (
   dispatch: Dispatch<WhennerAction>
 ): TodoDispatchProps => {
   return {
-    actions: bindActionCreators(todoActions, dispatch)
+    upsertTodo: bindActionCreators(upsertTodo, dispatch)
   };
 };
 

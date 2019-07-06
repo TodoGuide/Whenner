@@ -1,4 +1,4 @@
-import { ITodo, Todo } from "./Todo";
+import { Todo } from "./Todo";
 import { IChronotype, Chronotype } from "./Chronotype";
 import { Time, Start, End, Estimate } from "./time";
 
