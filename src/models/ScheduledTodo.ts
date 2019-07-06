@@ -1,6 +1,5 @@
 import { ITodo, Todo } from "./Todo";
 import { IChronotype, Chronotype } from "./Chronotype";
-import moment from "moment";
 import { Time, Start, End } from "./time";
 
 export class ScheduledTodo extends Todo {
@@ -24,10 +23,7 @@ export class ScheduledTodo extends Todo {
   /**
    * Determines if the todo can be completed as-scheduled based on the provided Chronotype
    */
-  private static canBeCompletedSameDay(
-    { end }: End,
-    chronotype: Chronotype
-  ) {
+  private static canBeCompletedSameDay({ end }: End, chronotype: Chronotype) {
     return end <= chronotype.endOf(end);
   }
 
@@ -75,10 +71,7 @@ export class ScheduledTodo extends Todo {
       ScheduledTodo.canBeCompletedWithinOneDay(candidateResult, chronotype)
         ? ScheduledTodo.earliestStartDatePermitted(
             {
-              start: moment(candidateStart)
-                .add(1, "day")
-                .startOf("day")
-                .toDate()
+              start: Time.dayAfter(candidateStart)
             },
             chronotype
           )

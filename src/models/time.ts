@@ -1,3 +1,6 @@
+
+const MILLISECONDS_PER_DAY = 86400000;
+
 /**
  * Use instead of Date for easy mocking in tests
  */
@@ -5,8 +8,10 @@ export const Time = {
   current: () => new Date(),
   now: () => Date.now(),
   today: () => new Date(Time.current().setHours(0, 0, 0, 0)),
-  tomorrow: () => new Date(Time.today().getTime() + 24 * 60 * 60 * 1000),
-  dayAfterTomorrow: () => new Date(Time.tomorrow().getTime() + 24 * 60 * 60 * 1000),
+  tomorrow: () => new Date(Time.today().getTime() + MILLISECONDS_PER_DAY),
+  dayAfterTomorrow: () => new Date(Time.tomorrow().getTime() + MILLISECONDS_PER_DAY),
+
+  dayAfter: (date: Date) => new Date(date.setHours(0,0,0,0) + MILLISECONDS_PER_DAY),
 
   set: (to: Date) => {
     Time.current = () => new Date(to);
