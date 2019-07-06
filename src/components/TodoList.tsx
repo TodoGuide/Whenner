@@ -61,7 +61,7 @@ class TodoList extends React.Component<TodoListProps, TodoListStateProps> {
       <div>
         <ul>
           {todos.map(todo => (
-            <li key={new Date(todo.start).getTime()}>
+            <li key={`${todo.id}${todo.start}`}>
               <Todo todo={todo} />
             </li>
           ))}
