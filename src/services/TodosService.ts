@@ -1,6 +1,7 @@
 import { ITodo } from "../models/Todo";
-import { Chronotype } from "../models/Chronotype";
+import { IChronotype } from "../models/Chronotype";
 import { schedule } from "../models/schedule";
+import { Time } from "../models/time";
 
 export const TODOS_KEY = "Whenner.Todos";
 
@@ -10,7 +11,7 @@ export const defaultTodos: ITodo[] = [
     title: "Get started with Whenner",
     description: "Click stuff, learn how the app works",
     estimate: 5,
-    start: new Date(),
+    start: Time.current(),
     done: false
   }
 ];
@@ -43,13 +44,13 @@ export class TodosService {
       );
     }
     const todos = await this.all();
-    const insertTodo = { ...todo, id: Date.now() };
+    const insertTodo = { ...todo, id: Time.now() };
     todos.push(insertTodo);
     await writeTodos(schedule(this.chronotype, ...todos));
     return await this.byId(insertTodo.id) || insertTodo;
   }
 
-  constructor(public chronotype: Chronotype) {
+  constructor(public chronotype: IChronotype) {
 
   }
 

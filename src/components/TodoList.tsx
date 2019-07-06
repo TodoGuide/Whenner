@@ -15,6 +15,7 @@ import { Dispatch, bindActionCreators } from "redux";
 import { TodoActionDispatch } from "../redux/actions/TodoAction";
 import { TodosResultActionThunk } from "../redux/actions/TodosAction";
 import { defaultTodos } from "../services/TodosService";
+import { Time } from "../models/time";
 
 const localizer = BigCalendar.momentLocalizer(moment); // or globalizeLocalizer
 const Calendar = withDragAndDrop(BigCalendar);
@@ -66,7 +67,7 @@ class TodoList extends React.Component<TodoListProps, TodoListStateProps> {
           ))}
         </ul>
         <Calendar
-          defaultDate={new Date()}
+          defaultDate={Time.current()}
           defaultView="week"
           events={todos}
           localizer={localizer}
@@ -89,7 +90,7 @@ class TodoList extends React.Component<TodoListProps, TodoListStateProps> {
           onSelectSlot={({ start, end }) => {
             actions.upsertTodo(
               {
-                id: Date.now(),
+                id: Time.now(),
                 title: "New todo",
                 description: "Do stuff",
                 estimate: moment

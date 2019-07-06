@@ -1,15 +1,16 @@
 import { Store } from "./Store";
 import { Store as ReduxStore } from "redux";
 import { ITodo } from "../models/Todo";
-import { WhennerActionType } from "./actions/WhennerActionType";
 import { State, initialState } from "./State";
 import { WhennerAction } from "./actions/WhennerAction";
-import { oneHourTodo } from "../test/data";
 import { customMatchers } from "../test/matchers";
+import { Time } from "../models/time";
 
 describe("The Whenner Store", () => {
   beforeEach(() => {
     jasmine.addMatchers(customMatchers);
+    Time.current = () => new Date(2019, 6, 5, 12, 0, 0, 0); // 2019-07-05 at Noon
+    Time.now = () => Time.current().getTime();
   });
 
   describe("Given the default state", () => {

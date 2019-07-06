@@ -1,7 +1,7 @@
-import { Chronotype, defaultChronotype } from "./Chronotype";
+import { IChronotype, defaultChronotype } from "./Chronotype";
 
 
 export interface Settings {
-  chronotype: Chronotype;
+  chronotype: IChronotype;
   // ...
 }
