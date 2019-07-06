@@ -21,11 +21,6 @@ describe("The Todo Class", () => {
     describe("When the instance is passed to the Todo constructor, it...", () => {
       const todoFromValidITodo = new Todo(validITodoInstance);
 
-      it("Takes the properties of the ITodo instance", () => {
-        expect(todoFromValidITodo).toEqual(validITodoInstance);
-        expect(todoFromValidITodo).not.toBe(validITodoInstance);
-      });
-
       it("Sets the End date based on the Start and Estimate", () => {
         expect(todoFromValidITodo.end).toEqual(
           new Date(2019, 6, 2, 15, 14, 8, 7)
@@ -34,13 +29,11 @@ describe("The Todo Class", () => {
     });
   });
 
-  describe("Given a falsey ITodo instance", () => {
-    const falsyITodoInstance: ITodo | null = null;
-
-    describe("When the instance is passed to the Todo constructor, it...", () => {
+  describe("Given no ITodo instance", () => {
+    describe("When nothing is passed to the Todo constructor, it...", () => {
       let todoFromFalsyITodo: Todo;
       beforeEach(() => {
-        todoFromFalsyITodo = new Todo(falsyITodoInstance);
+        todoFromFalsyITodo = new Todo();
       });
 
       it("Defaults to an ID of the current date and time", () => {

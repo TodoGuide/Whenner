@@ -15,7 +15,6 @@ export class Todo implements ITodo, Period {
   estimate: number = 60;
   start: Date = Time.current();
   done: boolean = false;
-  static c: Date;
   
   constructor(todo?: ITodo) {
     Object.assign(this, todo);

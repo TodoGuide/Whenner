@@ -1,15 +1,19 @@
 import { ITodo, Todo } from "./Todo";
 import { IChronotype, Chronotype } from "./Chronotype";
-import { Time, Start, End } from "./time";
+import { Time, Start, End, Estimate } from "./time";
 
 export class ScheduledTodo extends Todo {
-  constructor(chronotype: Chronotype, current: Todo, previous?: Todo) {
+  constructor(chronotype: Chronotype, current: Todo, previousIncomplete?: Todo) {
+    if(previousIncomplete && previousIncomplete.done){
+      throw new Error("Previous value cannot be marked as done");
+    }
     super({
       ...current,
       start: current.done
         ? current.start
-        : ScheduledTodo.firstAvailableStartDate(chronotype, current, previous)
+        : ScheduledTodo.firstAvailableStartDate(chronotype, current, previousIncomplete)
     });
+    console.log("ScheduledTodo", { me: this, current, previous: previousIncomplete });
   }
 
   private static earliestStartDateCandidate(
@@ -31,7 +35,7 @@ export class ScheduledTodo extends Todo {
    * Determines if the todo can be within the a single Chronotype period
    */
   private static canBeCompletedWithinOneDay(
-    { estimate }: ITodo,
+    { estimate }: Estimate,
     { minutes }: Chronotype
   ) {
     return estimate <= minutes;
@@ -64,11 +68,11 @@ export class ScheduledTodo extends Todo {
       { start: (previous || { end: Time.current() }).end },
       chronotype
     );
-    const candidateResult = { ...current, start: candidateStart };
-    const candidateEnd = Todo.calculateEnd(candidateResult);
+    const estimated = { ...current, start: candidateStart };
+    const candidateEnd = Todo.calculateEnd(estimated);
     const result =
       !ScheduledTodo.canBeCompletedSameDay({ end: candidateEnd }, chronotype) &&
-      ScheduledTodo.canBeCompletedWithinOneDay(candidateResult, chronotype)
+      ScheduledTodo.canBeCompletedWithinOneDay(estimated, chronotype)
         ? ScheduledTodo.earliestStartDatePermitted(
             {
               start: Time.dayAfter(candidateStart)
