@@ -1,9 +1,12 @@
 import { Todo, ITodo } from "./Todo";
 import { customMatchers } from "../test/matchers";
+import { Time } from "./time";
 
 describe("The Todo Class", () => {
   beforeEach(() => {
     jasmine.addMatchers(customMatchers);
+    Time.current = () => new Date(2019, 6, 5, 12, 0, 0, 0); // 2019-07-05 at Noon
+    Time.now = () => Time.current().getTime();
   });
 
   describe("Given a valid ITodo instance", () => {
@@ -33,33 +36,36 @@ describe("The Todo Class", () => {
   });
 
   describe("Given a falsey ITodo instance", () => {
-    const falseyITodoInstance: ITodo | null = null;
+    const falsyITodoInstance: ITodo | null = null;
 
     describe("When the instance is passed to the Todo constructor, it...", () => {
-      const todoFromFalseyITodo = new Todo(falseyITodoInstance);
+      let todoFromFalsyITodo: Todo;
+      beforeEach(() => {
+        todoFromFalsyITodo = new Todo(falsyITodoInstance);
+      });
 
-      it("Defaults to an ID of the current datetime", () => {
-        expect(todoFromFalseyITodo.id).toBeWithinTheLast300ms();
+      it("Defaults to an ID of the current date and time", () => {
+        expect(todoFromFalsyITodo.id).toEqual(Time.now());
       });
 
       it("Defaults to an empty Title", () => {
-        expect(todoFromFalseyITodo.title).toBe("");
+        expect(todoFromFalsyITodo.title).toBe("");
       });
 
       it("Defaults to an empty Description", () => {
-        expect(todoFromFalseyITodo.description).toBe("");
+        expect(todoFromFalsyITodo.description).toBe("");
       });
 
       it("Defaults to a 60 minute Estimate", () => {
-        expect(todoFromFalseyITodo.estimate).toBe(60);
+        expect(todoFromFalsyITodo.estimate).toBe(60);
       });
 
       it("Defaults to a Start of the current datetime", () => {
-        expect(todoFromFalseyITodo.start.getTime()).toBeWithinTheLast300ms();
+        expect(todoFromFalsyITodo.start.getTime()).toEqual(Time.now());
       });
 
       it("Defaults to NOT Done", () => {
-        expect(todoFromFalseyITodo.done).toBe(false);
+        expect(todoFromFalsyITodo.done).toBe(false);
       });
     });
   });

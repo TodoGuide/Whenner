@@ -15,10 +15,14 @@ export interface IChronotype {
 
 export const defaultChronotype: IChronotype = {
   start: moment.duration("7:15"), // 7:15am
-  end: moment.duration("20:00") // 7:00pm
+  end: moment.duration("19:00") // 7:00pm
 };
 
 export class Chronotype implements IChronotype {
+
+  start: Duration = defaultChronotype.start;
+  end: Duration = defaultChronotype.end;
+
   constructor(chronotype: IChronotype = defaultChronotype) {
     Object.assign(this, {
       start: moment.duration(chronotype.start),
@@ -29,9 +33,6 @@ export class Chronotype implements IChronotype {
       throw new Error("Cannot create a negative Chronotype");
     }
   }
-
-  start: Duration = defaultChronotype.start;
-  end: Duration = defaultChronotype.end;
 
   get minutes() {
     return Chronotype.getMinutes(this);

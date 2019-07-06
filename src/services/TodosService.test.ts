@@ -3,6 +3,7 @@ import { ITodo } from "../models/Todo";
 import { oneHourTodo } from "../test/data";
 import { customMatchers } from "../test/matchers";
 import { defaultChronotype } from "../models/Chronotype";
+import { Time } from "../models/time";
 
 describe("The Todos Service", () => {
   let todosService: TodosService;
@@ -10,6 +11,8 @@ describe("The Todos Service", () => {
   beforeEach(() => {
     todosService = new TodosService(defaultChronotype);
     jasmine.addMatchers(customMatchers);
+    Time.current = () => new Date(2019, 6, 5, 12, 0, 0, 0); // 2019-07-05 at Noon
+    Time.now = () => Time.current().getTime();
   });
 
   describe("Given nothing in local storage", () => {

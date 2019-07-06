@@ -1,4 +1,5 @@
 import moment from "moment";
+import { Time } from "./time";
 
 export interface ITodo {
   id: number;
@@ -10,17 +11,17 @@ export interface ITodo {
 }
 
 export class Todo implements ITodo {
-  constructor(todo?: ITodo | null) {
-    Object.assign(this, todo);
-    this.start = new Date(this.start || Date.now); // JavaScript stores dates as strings when serializing
-  }
-
-  id: number = Date.now();
+  id: number = Time.now();
   title: string = "";
   description: string = "";
   estimate: number = 60;
-  start: Date = new Date();
+  start: Date = Time.current();
   done: boolean = false;
+  
+  constructor(todo?: ITodo | null) {
+    Object.assign(this, todo);
+    this.start = new Date(this.start || Time.now()); // JavaScript stores dates as strings when serializing
+  }
 
   get end() {
     return Todo.calculateEnd(this);

@@ -11,8 +11,10 @@
     "chronotype",
     "default",
     "service",
+    "todo",
     "todos",
     "type",
+    "upsert",
     "whenner"
   ]
 }
