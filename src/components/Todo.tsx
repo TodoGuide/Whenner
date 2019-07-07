@@ -50,6 +50,7 @@ export default class Todo extends React.Component<TodoProps, TodoState> {
             checked={todo.done}
             onChange={this.handleChange}
           />
+          
           <input
             id={"todo-" + todo.id + "-title-string"}
             type="text"
@@ -79,6 +80,7 @@ export default class Todo extends React.Component<TodoProps, TodoState> {
             onChange={this.handleChange}
           />
         </div>
+
         {JSON.stringify(this.state.todo.start)}
         <input type="submit" value="Save" />
       </form>

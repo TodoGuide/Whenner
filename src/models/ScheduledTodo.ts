@@ -13,7 +13,6 @@ export class ScheduledTodo extends Todo {
         ? current.start
         : ScheduledTodo.firstAvailableStartDate(chronotype, current, previousIncomplete)
     });
-    console.log("ScheduledTodo", { me: this, current, previous: previousIncomplete });
   }
 
   private static earliestStartDateCandidate(
