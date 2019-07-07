@@ -1,5 +1,5 @@
 import React, { FormEvent, ChangeEvent } from "react";
-import { ITodo, Todo as TodoModel } from "../models/Todo";
+import { ITodo } from "../models/Todo";
 
 type TodoProps = {
   todo: ITodo;

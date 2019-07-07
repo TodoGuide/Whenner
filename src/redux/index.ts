@@ -1,36 +1,33 @@
 import { settings } from "./settings/reducers";
-import { combineReducers, AnyAction } from "redux";
+import { combineReducers } from "redux";
 import { todos } from "./todos/reducers";
 import { Settings } from "../models/Settings";
 import { ITodo } from "../models/Todo";
 import { defaultSettings } from "../services/SettingsService";
 import { defaultTodos } from "../services/TodosService";
+import { loadsInProgress } from "./common/reducers"
 
-export enum WhennerActionType {
-  InsertTodoSuccess = "InsertTodoSuccess",
-  UpdateTodoSuccess = "UpsertTodoSuccess",
-  LoadTodosSuccess = "LoadTodosSuccess"
-}
-
-export interface WhennerAction extends AnyAction {
-  type: WhennerActionType;
-}
+// State //
 
 export interface WhennerState {
   settings: Settings;
   todos: ITodo[];
+  loadsInProgress: number;
   // appointments: IAppointment[];
 }
 
 export const initialState: WhennerState = {
   settings: defaultSettings,
-  todos: defaultTodos
+  todos: defaultTodos,
+  loadsInProgress: 0
 };
 
+// Reducer //
 
 export const reducer = combineReducers({
-  todos,
-  settings
+  todos: todos,
+  settings,
+  loadsInProgress
 });
 
 // export function reducer(

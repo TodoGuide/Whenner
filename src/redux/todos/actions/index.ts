@@ -1,6 +1,6 @@
 import { ITodo } from "../../../models/Todo";
 import { Dispatch } from "redux";
-import { WhennerAction } from "../..";
+import { WhennerAction } from "../../common/actions";
 
 
 // TODO: Update redux-thunk when new NPM package is available: https://github.com/reduxjs/redux-thunk/pull/224

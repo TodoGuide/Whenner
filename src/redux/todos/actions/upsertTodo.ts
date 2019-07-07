@@ -1,10 +1,9 @@
 import { ITodo } from "../../../models/Todo";
 import { TodoAction, TodoActionThunk } from ".";
-import { Dispatch } from "redux";
+import { Dispatch, AnyAction } from "redux";
 import { todosService } from "../../../services/services";
 import { loadTodos } from "./loadTodos";
-import { WhennerActionType } from "../..";
-
+import { WhennerActionType } from "../../common/actions";
 
 // Action Creators
 
@@ -45,7 +44,7 @@ export const upsertTodo: TodoActionThunk = (todo: ITodo) => {
         console.log("upsertTodo error", e);
         throw e;
       });
-      result.then(x => loadTodos()(dispatch));
+      // result.then(dispatch(loadTodos() as any));
     return result;
   };
 };

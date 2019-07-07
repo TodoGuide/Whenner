@@ -1,7 +1,7 @@
 import { TodosResultAction } from "./actions";
 import { ITodo } from "../../models/Todo";
 import { defaultTodos } from "../../services/TodosService";
-import { WhennerActionType } from "..";
+import { WhennerActionType } from "../common/actions";
 
 export function todos(
   todos: ITodo[] = defaultTodos,

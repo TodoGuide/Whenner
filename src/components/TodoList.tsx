@@ -14,7 +14,8 @@ import { defaultTodos } from "../services/TodosService";
 import { Time } from "../models/time";
 import { loadTodos } from "../redux/todos/actions/loadTodos";
 import { upsertTodo } from "../redux/todos/actions/upsertTodo";
-import { WhennerAction, WhennerState } from "../redux";
+import { WhennerState } from "../redux";
+import { WhennerAction } from "../redux/common/actions";
 
 const localizer = BigCalendar.momentLocalizer(moment); // or globalizeLocalizer
 const Calendar = withDragAndDrop(BigCalendar);

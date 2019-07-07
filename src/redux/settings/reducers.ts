@@ -1,6 +1,6 @@
 import { Settings } from "../../models/Settings";
 import { defaultSettings } from "../../services/SettingsService";
-import { WhennerAction } from "..";
+import { WhennerAction } from "../common/actions";
 
 export function settings(
   state: Settings = defaultSettings,

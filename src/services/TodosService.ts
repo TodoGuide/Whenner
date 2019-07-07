@@ -17,13 +17,22 @@ export const defaultTodos: ITodo[] = [
 ];
 
 async function readTodos(): Promise<ITodo[]> {
-  return JSON.parse(localStorage.getItem(TODOS_KEY) || "null") || defaultTodos;
+  return new Promise((resolve, reject) => {
+    // Simulate slow read
+    setTimeout(function(){
+      resolve(JSON.parse(localStorage.getItem(TODOS_KEY) || "null") || defaultTodos);
+    }, /*2000*/ 0);
+  });
 }
 
 async function writeTodos(todos: ITodo[]): Promise<ITodo[]> {
-  console.log("writeTodos", todos);
-  localStorage.setItem(TODOS_KEY, JSON.stringify(todos));
-  return todos;
+  return new Promise((resolve, reject) => {
+    // Simulate slow write
+    setTimeout(function(){
+      localStorage.setItem(TODOS_KEY, JSON.stringify(todos));
+      resolve(todos);
+    }, /*2000*/ 0);
+  });
 }
 
 export class TodosService {
