@@ -22,7 +22,6 @@
     "@types/react-dom": "16.8.4",
     "@types/react-redux": "^7.0.9",
     "@types/redux-immutable-state-invariant": "^2.1.1",
-    "@types/redux-thunk": "^2.1.0",
     "typescript": "3.5.1"
   },
   "scripts": {
