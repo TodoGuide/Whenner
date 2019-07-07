@@ -40,7 +40,16 @@ export class Store {
     const instance = createStore(
       reducer,
       initialState,
-      composeEnhancers(applyMiddleware(thunk, reduxImmutableStateInvariant()))
+      composeEnhancers(
+        applyMiddleware(
+          // Allow thunks as middleware. Because middleware is potentially asynchronous, this should
+          // be the first store enhancer in the composition chain.
+          thunk,
+
+          // Die if state mutations are detected
+          reduxImmutableStateInvariant()
+        )
+      )
     );
 
     return {
