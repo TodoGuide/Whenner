@@ -59,7 +59,7 @@ class TodoList extends React.Component<TodoListProps, TodoListStateProps> {
         <ul>
           {todos.map(todo => (
             <li key={`${todo.id}${todo.start}`}>
-              <Todo todo={todo} />
+              <Todo todo={todo} onSaveTodo={upsertTodo} />
             </li>
           ))}
         </ul>

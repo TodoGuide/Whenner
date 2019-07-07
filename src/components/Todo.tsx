@@ -1,24 +1,16 @@
 import React, { FormEvent, ChangeEvent } from "react";
 import { ITodo, Todo as TodoModel } from "../models/Todo";
-import { connect } from "react-redux";
-import { bindActionCreators, Dispatch } from "redux";
-import { TodoActionThunk } from "../redux/todos/actions";
-import { upsertTodo } from "../redux/todos/actions/upsertTodo";
-import { WhennerAction, WhennerState } from "../redux";
 
-interface TodoStateProps {
+type TodoProps = {
   todo: ITodo;
-}
+  onSaveTodo: (todo: ITodo) => void;
+};
 
-interface TodoDispatchProps {
-  upsertTodo: TodoActionThunk;
-}
+type TodoState = {
+  todo: ITodo;
+};
 
-// interface TodoOwnProps extends TodoStateProps {}
-
-type TodoProps = TodoStateProps & TodoDispatchProps; // & TodoOwnProps;
-
-class Todo extends React.Component<TodoProps, TodoStateProps> {
+export default class Todo extends React.Component<TodoProps, TodoState> {
   constructor(props: TodoProps) {
     super(props);
     this.state = { ...props };
@@ -26,11 +18,7 @@ class Todo extends React.Component<TodoProps, TodoStateProps> {
 
   handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { id, value, checked } = event.currentTarget;
-    console.log("currentTarget", { id, value, checked });
-    const idParts = id.split("-");
-    const propName = idParts[2];
-    const propType = idParts[3];
-    console.log("propName", propName);
+    const [, , propName, propType] = id.split("-");
     const state = {
       ...this.state,
       todo: {
@@ -43,15 +31,12 @@ class Todo extends React.Component<TodoProps, TodoStateProps> {
             : value
       }
     };
-    console.log("new todo state", state.todo);
     this.setState(state);
-    // const todo = { ...this.state };
-    // this.setState(todo);
   };
 
   handleSave = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    this.props.upsertTodo(this.state.todo);
+    this.props.onSaveTodo(this.state.todo);
   };
 
   render() {
@@ -100,28 +85,3 @@ class Todo extends React.Component<TodoProps, TodoStateProps> {
     );
   }
 }
-
-// Map application State to component props
-const mapStateToProps = (
-  state: WhennerState,
-  ownProps: TodoStateProps
-): TodoStateProps => {
-  return {
-    todo:
-      state.todos.find(todo => todo.id === ownProps.todo.id) || new TodoModel()
-  };
-};
-
-// Map component events to props
-const mapDispatchToProps = (
-  dispatch: Dispatch<WhennerAction>
-): TodoDispatchProps => {
-  return {
-    upsertTodo: bindActionCreators(upsertTodo, dispatch)
-  };
-};
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Todo);
