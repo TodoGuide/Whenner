@@ -5,10 +5,7 @@ import { ACTION_SUCCESS_SUFFIX, TODO_ACTION_PREFIX } from "./common/actions";
 import { beginLoad } from "./common/actions/beginLoad";
 import { loadTodos } from "./todos/actions/loadTodos";
 
-export const logger: Middleware = ({
-  dispatch,
-  getState
-}: MiddlewareAPI<Dispatch, WhennerState>) => (next: Dispatch) => action => {
+export const logger: Middleware = () => (next: Dispatch) => action => {
   console.log("Action Dispatched", action);
   return next(action);
 };
@@ -18,8 +15,7 @@ export function autoDispatcher(
   actionCreator: () => any
 ): Middleware {
   const result: Middleware = ({
-    dispatch,
-    getState
+    dispatch
   }: MiddlewareAPI<Dispatch, WhennerState>) => (next: Dispatch) => action => {
     if (condition(action)) {
       const autoAction = actionCreator();
