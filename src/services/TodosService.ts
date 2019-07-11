@@ -31,7 +31,7 @@ async function writeTodos(todos: ITodo[]): Promise<ITodo[]> {
     setTimeout(function(){
       localStorage.setItem(TODOS_KEY, JSON.stringify(todos));
       resolve(todos);
-    }, /*2000*/ 0);
+    }, 2000);
   });
 }
 

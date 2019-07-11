@@ -1,7 +1,6 @@
-import { Dispatch, Middleware, MiddlewareAPI, AnyAction } from "redux";
+import { Dispatch, Middleware, MiddlewareAPI } from "redux";
 import { WhennerState } from ".";
-import thunk from "redux-thunk";
-import { ACTION_SUCCESS_SUFFIX, TODO_ACTION_PREFIX } from "./common/actions";
+import { TODO_ACTION_PREFIX } from "./common/actions";
 import { beginLoad } from "./common/actions/beginLoad";
 import { loadTodos } from "./todos/actions/loadTodos";
 

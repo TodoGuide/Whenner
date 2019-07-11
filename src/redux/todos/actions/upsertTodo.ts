@@ -1,8 +1,7 @@
 import { ITodo } from "../../../models/Todo";
 import { TodoAction, TodoActionThunk } from ".";
-import { Dispatch, AnyAction } from "redux";
+import { Dispatch } from "redux";
 import { todosService } from "../../../services/services";
-import { loadTodos } from "./loadTodos";
 import { WhennerActionType } from "../../common/actions";
 
 // Action Creators

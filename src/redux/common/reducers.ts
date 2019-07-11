@@ -5,6 +5,7 @@ import {
   ACTION_SUCCESS_SUFFIX
 } from "./actions";
 
+// Note: Dispatched by middleware
 export function loadsInProgress(
   state = initialState.loadsInProgress,
   action: WhennerAction
