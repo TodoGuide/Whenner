@@ -6,6 +6,7 @@ export interface ITodo extends Start, Estimate, Estimated {
   title: string;
   description: string;
   done: boolean;
+  // Predecessors: number[];
 }
 
 export class Todo implements ITodo, Period {

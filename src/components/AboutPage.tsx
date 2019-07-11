@@ -1,14 +1,13 @@
 import React from "react";
-import TodoList from "./TodoList";
 import Header from "./common/Header";
 
-const HomePage: React.FC = () => {
+const AboutPage: React.FC = () => {
   return (
     <div className="App">
       <Header />
-      <TodoList />
+      <p>About</p>
     </div>
   );
 };
 
-export default HomePage;
+export default AboutPage;
