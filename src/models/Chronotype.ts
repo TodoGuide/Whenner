@@ -1,6 +1,6 @@
 import moment from "moment";
 import { Duration } from "moment";
-import { DateRange } from "./DateRange";
+import { Period } from "./time";
 
 /**
  * The typical period of time during which Todos can be completed.
@@ -49,7 +49,7 @@ export class Chronotype implements IChronotype {
     return Chronotype.getEndOf(date, this);
   }
 
-  range(date: Date): DateRange {
+  activityPeriod(date: Date): Period {
     return {
       start: this.startOf(date),
       end: this.endOf(date)

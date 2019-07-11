@@ -1,3 +1,12 @@
+
+## To Do
+
+* Replace spinner with https://react-bootstrap.github.io/components/spinners/
+* Predecessors/Successors in Todo Model
+  * Then add [breadcrumbs](https://react-bootstrap.github.io/components/breadcrumb/)
+* Consider [more widgets](https://react-bootstrap.github.io/components/)
+
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts

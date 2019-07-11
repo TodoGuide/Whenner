@@ -57,13 +57,7 @@ class TodoList extends React.Component<TodoListProps, TodoListStateProps> {
     const { upsertTodo, todos } = this.props;
     return (
       <div>
-        <ul>
-          {todos.map(todo => (
-            <li key={`${todo.id}${todo.start}`}>
-              <Todo todo={todo} onSaveTodo={upsertTodo} />
-            </li>
-          ))}
-        </ul>
+        
         <Calendar
           defaultDate={Time.current()}
           defaultView="week"
