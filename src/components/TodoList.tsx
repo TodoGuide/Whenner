@@ -19,8 +19,8 @@ import { loadTodos } from "../redux/todos/actions/loadTodos";
 import { upsertTodo } from "../redux/todos/actions/upsertTodo";
 import { WhennerState } from "../redux";
 import { WhennerAction } from "../redux/common/actions";
-import Spinner from "./common/Spinner";
 import { Chronotype } from "../models/Chronotype";
+import Spinner from "react-bootstrap/Spinner"
 
 const localizer = BigCalendar.momentLocalizer(moment); // or globalizeLocalizer
 const Calendar = withDragAndDrop(BigCalendar);
@@ -66,7 +66,9 @@ class TodoList extends React.Component<TodoListProps, TodoListStateProps> {
     return (
       <div>
         {loading ? (
-          <Spinner />
+          <Spinner animation="border" role="status">
+            <span className="sr-only">Loading...</span>
+          </Spinner>
         ) : (
           <div style={{ height: "50vh" }}>
               {todos.map(todo => (
