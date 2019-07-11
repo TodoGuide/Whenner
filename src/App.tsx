@@ -5,17 +5,19 @@ import HomePage from "./components/HomePage";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import AboutPage from "./components/AboutPage";
 import Container from "react-bootstrap/Container";
+import SettingsPage from "./components/SettingsPage";
 
 const App: React.FC = () => {
   return (
-    <Provider store={Store.instance}>
-      <Router>
-        <Container>
+    <Router>
+      <Container>
+        <Provider store={Store.instance}>
           <Route path="/" exact component={HomePage} />
+          <Route path="/settings/" component={SettingsPage} />
           <Route path="/about/" component={AboutPage} />
-        </Container>
-      </Router>
-    </Provider>
+        </Provider>
+      </Container>
+    </Router>
   );
 };
 

@@ -1,13 +1,13 @@
 import React from "react";
 import Header from "./common/Header";
 
-const AboutPage: React.FC = () => {
+const SettingsPage: React.FC = () => {
   return (
     <div>
       <Header />
-      <p>About</p>
+      <p>Settings</p>
     </div>
   );
 };
 
-export default AboutPage;
+export default SettingsPage;

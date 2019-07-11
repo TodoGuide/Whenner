@@ -4,7 +4,7 @@ import Header from "./common/Header";
 
 const HomePage: React.FC = () => {
   return (
-    <div className="App">
+    <div>
       <Header />
       <TodoList />
     </div>

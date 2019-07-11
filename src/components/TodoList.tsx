@@ -70,13 +70,13 @@ class TodoList extends React.Component<TodoListProps, TodoListStateProps> {
             <span className="sr-only">Loading...</span>
           </Spinner>
         ) : (
-          <div style={{ height: "50vh" }}>
-              {todos.map(todo => (
+          <div style={{ height: "80vh" }}>
+              {/* {todos.map(todo => (
                 <span>
                   <Todo todo={todo} onSaveTodo={upsertTodo} />
                   <hr/>
                 </span>
-              ))}
+              ))} */}
             <Calendar
               defaultDate={Time.current()}
               defaultView="week"
