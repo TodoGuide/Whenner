@@ -19,7 +19,8 @@ import { upsertTodo } from "../redux/todos/actions/upsertTodo";
 import { WhennerState } from "../redux";
 import { WhennerAction } from "../redux/common/actions";
 import { Chronotype } from "../models/Chronotype";
-import Spinner from "react-bootstrap/Spinner";
+import { Spinner, Modal, Button } from "react-bootstrap";
+import TodoModal from "./todo/TodoModal";
 
 moment.locale(navigator.language, {
   week: {
@@ -32,6 +33,16 @@ moment.locale(navigator.language, {
 const localizer = BigCalendar.momentLocalizer(moment); // or globalizeLocalizer
 const DnDCalendar = withDragAndDrop(BigCalendar);
 
+/**
+ * The internal state of the Calendar component
+ */
+interface CalendarOwnState {
+  selectedTodo?: ITodo;
+}
+
+/**
+ * The state of the Calendar component initialized by props
+ */
 interface CalendarStateProps {
   todos: ITodo[];
   loading: boolean;
@@ -39,19 +50,24 @@ interface CalendarStateProps {
   maxTime: Date;
 }
 
+type CalendarState = CalendarOwnState & CalendarStateProps;
+
+// interface CalendarOwnProps = {
+//   // Other props that component expects from parent
+// };
+
+/**
+ * Properties of the Calendar component that dispatch Redux actions
+ */
 interface CalendarDispatchProps {
   upsertTodo: TodoActionThunk;
   loadTodos: TodosResultActionThunk;
 }
 
-// type TodoListOwnProps = {
-//   // Other props that component expects from parent
-// };
+type CalendarProps = CalendarStateProps & CalendarDispatchProps; // & TodoListOwnProps;
 
-type TodoListProps = CalendarStateProps & CalendarDispatchProps; // & TodoListOwnProps;
-
-class Calendar extends React.Component<TodoListProps, CalendarStateProps> {
-  constructor(props: TodoListProps) {
+class Calendar extends React.Component<CalendarProps, CalendarState> {
+  constructor(props: CalendarProps) {
     super(props);
     this.state = { ...props };
   }
@@ -67,9 +83,25 @@ class Calendar extends React.Component<TodoListProps, CalendarStateProps> {
     }
   }
 
+  handleTodoShowSelected = (event: ITodo) => {
+    this.setState({ ...this.state, selectedTodo: event });
+  };
+
+  handleTodoHideSelected = () => {
+    this.setState({ ...this.state, selectedTodo: undefined });
+  };
+
+  handleTodoSave = (event: ITodo | undefined = this.state.selectedTodo) => {
+    if (!event) {
+      throw Error("No todo was specified to save in the handleTodoSave event");
+    }
+    this.props.upsertTodo(event);
+    this.setState({ ...this.state, selectedTodo: undefined });
+  };
+
   render() {
     // const { todos } = this.state;
-    const { upsertTodo, todos, minTime, maxTime, loading } = this.props;
+    const { todos, minTime, maxTime, loading } = this.props;
     return (
       <div>
         {loading ? (
@@ -77,44 +109,52 @@ class Calendar extends React.Component<TodoListProps, CalendarStateProps> {
             <span className="sr-only">Loading...</span>
           </Spinner>
         ) : (
-            <DnDCalendar
-              defaultDate={Time.current()}
-              defaultView="week"
-              events={todos}
-              localizer={localizer}
-              step={15}
-              selectable
-              resizable
-              min={minTime}
-              max={maxTime}
-              showMultiDayTimes={true}
-              // views={{month: true, week:Week, agenda: true, day: true} as any}
-              getNow={() => Time.current()}
-              onEventResize={({ event, start, end }) => {
-                upsertTodo({
-                  ...event,
-                  estimate: moment
-                    .duration(moment(end).diff(moment(start)))
-                    .asMinutes()
-                });
-              }}
-              onEventDrop={({ event, start }) => {
-                upsertTodo({ ...event, start: start as Date });
-              }}
-              onSelectSlot={({ start, end }) => {
-                upsertTodo({
-                  id: Time.now(),
-                  title: "New todo",
-                  description: "Do stuff",
-                  estimate: moment
-                    .duration(moment(end).diff(moment(start)))
-                    .asMinutes(),
-                  start: start as Date,
-                  done: false
-                });
-              }}
-            />
+          <DnDCalendar
+            defaultDate={Time.current()}
+            defaultView="week"
+            events={todos}
+            localizer={localizer}
+            step={15}
+            selectable
+            resizable
+            min={minTime}
+            max={maxTime}
+            showMultiDayTimes={true}
+            // views={{month: true, week:Week, agenda: true, day: true} as any}
+            getNow={() => Time.current()}
+            onEventResize={({ event, start, end }) => {
+              this.handleTodoSave({
+                ...event,
+                estimate: moment
+                  .duration(moment(end).diff(moment(start)))
+                  .asMinutes()
+              });
+            }}
+            onEventDrop={({ event, start }) => {
+              this.handleTodoSave({ ...event, start: start as Date });
+            }}
+            onSelectSlot={({ start, end }) => {
+              this.handleTodoSave({
+                id: Time.now(),
+                title: "New todo",
+                description: "Do stuff",
+                estimate: moment
+                  .duration(moment(end).diff(moment(start)))
+                  .asMinutes(),
+                start: start as Date,
+                done: false
+              });
+            }}
+            onDoubleClickEvent={this.handleTodoShowSelected}
+          />
         )}
+
+        <TodoModal
+          show={!!this.state.selectedTodo}
+          todo={this.state.selectedTodo}
+          onSaveTodo={this.handleTodoSave}
+          onHide={this.handleTodoHideSelected}
+        />
       </div>
     );
   }

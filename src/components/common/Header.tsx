@@ -2,8 +2,6 @@ import React from "react";
 import Jumbotron from "react-bootstrap/Jumbotron";
 import Nav from "react-bootstrap/Nav";
 
-import logo from "../../logo.svg";
-
 const Header: React.FC = () => {
   return (
     <div>
