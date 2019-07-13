@@ -1,12 +1,12 @@
 import React from "react";
-import TodoList from "./TodoList";
+import Calendar from "./Calendar";
 import Header from "./common/Header";
 
 const HomePage: React.FC = () => {
   return (
     <div>
       <Header />
-      <TodoList />
+      <Calendar />
     </div>
   );
 };

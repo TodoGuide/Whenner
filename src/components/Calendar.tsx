@@ -2,7 +2,6 @@ import "react-big-calendar/lib/addons/dragAndDrop/styles.css";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 
 import React from "react";
-import Todo from "./Todo";
 import moment from "moment";
 import BigCalendar from "react-big-calendar";
 import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop";
@@ -20,19 +19,27 @@ import { upsertTodo } from "../redux/todos/actions/upsertTodo";
 import { WhennerState } from "../redux";
 import { WhennerAction } from "../redux/common/actions";
 import { Chronotype } from "../models/Chronotype";
-import Spinner from "react-bootstrap/Spinner"
+import Spinner from "react-bootstrap/Spinner";
+
+moment.locale(navigator.language, {
+  week: {
+    // Always start the week "today"
+    dow: Time.current().getDay(),
+    doy: 1
+  }
+});
 
 const localizer = BigCalendar.momentLocalizer(moment); // or globalizeLocalizer
-const Calendar = withDragAndDrop(BigCalendar);
+const DnDCalendar = withDragAndDrop(BigCalendar);
 
-interface TodoListStateProps {
+interface CalendarStateProps {
   todos: ITodo[];
   loading: boolean;
   minTime: Date;
   maxTime: Date;
 }
 
-interface TodoListDispatchProps {
+interface CalendarDispatchProps {
   upsertTodo: TodoActionThunk;
   loadTodos: TodosResultActionThunk;
 }
@@ -41,9 +48,9 @@ interface TodoListDispatchProps {
 //   // Other props that component expects from parent
 // };
 
-type TodoListProps = TodoListStateProps & TodoListDispatchProps; // & TodoListOwnProps;
+type TodoListProps = CalendarStateProps & CalendarDispatchProps; // & TodoListOwnProps;
 
-class TodoList extends React.Component<TodoListProps, TodoListStateProps> {
+class Calendar extends React.Component<TodoListProps, CalendarStateProps> {
   constructor(props: TodoListProps) {
     super(props);
     this.state = { ...props };
@@ -70,14 +77,7 @@ class TodoList extends React.Component<TodoListProps, TodoListStateProps> {
             <span className="sr-only">Loading...</span>
           </Spinner>
         ) : (
-          <div style={{ height: "80vh" }}>
-              {/* {todos.map(todo => (
-                <span>
-                  <Todo todo={todo} onSaveTodo={upsertTodo} />
-                  <hr/>
-                </span>
-              ))} */}
-            <Calendar
+            <DnDCalendar
               defaultDate={Time.current()}
               defaultView="week"
               events={todos}
@@ -87,6 +87,9 @@ class TodoList extends React.Component<TodoListProps, TodoListStateProps> {
               resizable
               min={minTime}
               max={maxTime}
+              showMultiDayTimes={true}
+              // views={{month: true, week:Week, agenda: true, day: true} as any}
+              getNow={() => Time.current()}
               onEventResize={({ event, start, end }) => {
                 upsertTodo({
                   ...event,
@@ -111,7 +114,6 @@ class TodoList extends React.Component<TodoListProps, TodoListStateProps> {
                 });
               }}
             />
-          </div>
         )}
       </div>
     );
@@ -122,8 +124,8 @@ class TodoList extends React.Component<TodoListProps, TodoListStateProps> {
 const mapStateToProps = ({
   todos,
   loadsInProgress,
-  settings: { chronotype },
-}: WhennerState): TodoListStateProps => {
+  settings: { chronotype }
+}: WhennerState): CalendarStateProps => {
   return {
     todos,
     minTime: Chronotype.getStartOf(Time.current(), chronotype),
@@ -135,7 +137,7 @@ const mapStateToProps = ({
 // Map component events to props
 const mapDispatchToProps = (
   dispatch: Dispatch<WhennerAction>
-): TodoListDispatchProps => {
+): CalendarDispatchProps => {
   return {
     upsertTodo: bindActionCreators(upsertTodo, dispatch),
     loadTodos: bindActionCreators(loadTodos, dispatch)
@@ -144,11 +146,11 @@ const mapDispatchToProps = (
 
 // react-redux magic
 export default connect<
-  TodoListStateProps,
-  TodoListDispatchProps,
+  CalendarStateProps,
+  CalendarDispatchProps,
   {},
   WhennerState
 >(
   mapStateToProps,
   mapDispatchToProps
-)(TodoList);
+)(Calendar);
