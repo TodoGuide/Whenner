@@ -1,11 +1,11 @@
 import moment from "moment";
-import { Time, Estimate, Estimated, Period, Start } from "./time";
+import { Time, Estimated, Period, EndEstimated, StartEstimated } from "./time";
 
-export interface ITodo extends Start, Estimate, Estimated {
+export interface ITodo extends StartEstimated {
   id: number;
   title: string;
   description: string;
-  done: boolean;
+  done?: Date;
   // Predecessors: number[];
 }
 
@@ -15,7 +15,7 @@ export class Todo implements ITodo, Period {
   description: string = "";
   estimate: number = 60;
   start: Date = Time.current();
-  done: boolean = false;
+  done?: Date;
   
   constructor(todo?: ITodo) {
     Object.assign(this, todo);
@@ -36,11 +36,17 @@ export class Todo implements ITodo, Period {
     return Todo.estimateToDuration(this);
   }
 
-  static estimateToDuration({ estimate }: Estimate) {
+  static estimateToDuration({ estimate }: Estimated) {
     return moment.duration(estimate, "minutes");
   }
 
-  static calculateEnd({ start, estimate }: Estimated) {
+  static calculateStart({ end, estimate }: EndEstimated) {
+    return moment(end)
+      .subtract(Todo.estimateToDuration({ estimate }))
+      .toDate();
+  }
+
+  static calculateEnd({ start, estimate }: StartEstimated) {
     return moment(start)
       .add(Todo.estimateToDuration({ estimate }))
       .toDate();

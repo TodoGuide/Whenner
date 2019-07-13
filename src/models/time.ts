@@ -27,9 +27,10 @@ export interface End {
     end: Date;
 }
 
-export interface Estimate {
+export interface Estimated {
     estimate: number;
 }
 
-export type Estimated = Start & Estimate;
+export type StartEstimated = Start & Estimated;
+export type EndEstimated = End & Estimated;
 export type Period = Start & End;

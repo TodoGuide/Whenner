@@ -1,6 +1,6 @@
 import { Todo } from "./Todo";
 import { IChronotype, Chronotype } from "./Chronotype";
-import { Time, Start, End, Estimate } from "./time";
+import { Time, Start, End, Estimated } from "./time";
 
 export class ScheduledTodo extends Todo {
   constructor(chronotype: Chronotype, current: Todo, previousIncomplete?: Todo) {
@@ -9,7 +9,7 @@ export class ScheduledTodo extends Todo {
     }
     super({
       ...current,
-      start: current.done
+      start: !!current.done
         ? current.start
         : ScheduledTodo.firstAvailableStartDate(chronotype, current, previousIncomplete)
     });
@@ -34,7 +34,7 @@ export class ScheduledTodo extends Todo {
    * Determines if the todo can be within the a single Chronotype period
    */
   private static canBeCompletedWithinOneDay(
-    { estimate }: Estimate,
+    { estimate }: Estimated,
     { minutes }: Chronotype
   ) {
     return estimate <= minutes;

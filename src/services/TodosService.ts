@@ -11,8 +11,7 @@ export const defaultTodos: ITodo[] = [
     title: "Get started with Whenner",
     description: "Click stuff, learn how the app works",
     estimate: 5,
-    start: Time.current(),
-    done: false
+    start: Time.current()
   }
 ];
 

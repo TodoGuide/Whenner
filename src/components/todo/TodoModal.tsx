@@ -25,7 +25,7 @@ export default class TodoModal extends React.Component<
   constructor(props: TodoModalProps) {
     super(props);
     console.log("TodoModal constructor", props.todo);
-    const todo = props.todo || new TodoModel();
+    const todo = new TodoModel(props.todo);
     this.state = { todo };
   }
 
@@ -115,7 +115,7 @@ export default class TodoModal extends React.Component<
 
             <Form.Check
               id={"todo-" + todo.id + "-done-bool"}
-              checked={todo.done}
+              checked={!!todo.done}
               onChange={this.handleChange}
               label="Done"
               type="checkbox"

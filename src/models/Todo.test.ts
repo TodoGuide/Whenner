@@ -57,7 +57,7 @@ describe("The Todo Class", () => {
       });
 
       it("Defaults to NOT Done", () => {
-        expect(todoFromFalsyITodo.done).toBe(false);
+        expect(todoFromFalsyITodo.done).toBeUndefined();
       });
     });
   });

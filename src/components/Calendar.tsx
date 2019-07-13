@@ -3,7 +3,7 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 
 import React from "react";
 import moment from "moment";
-import BigCalendar from "react-big-calendar";
+import BigCalendar, { stringOrDate } from "react-big-calendar";
 import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop";
 import { ITodo } from "../models/Todo";
 import { connect } from "react-redux";
@@ -83,6 +83,22 @@ class Calendar extends React.Component<CalendarProps, CalendarState> {
     }
   }
 
+  getEventStyle(
+    event: ITodo,
+    start: stringOrDate,
+    end: stringOrDate,
+    isSelected: boolean
+  ) {
+    // const backgroundColor = 'blue';
+    const result: { backgroundColor?: string } = {};
+    if (event.done) {
+      result.backgroundColor = "black";
+    }
+    return {
+      style: result
+    };
+  }
+
   handleTodoShowSelected = (event: ITodo) => {
     this.setState({ ...this.state, selectedTodo: event });
   };
@@ -121,6 +137,7 @@ class Calendar extends React.Component<CalendarProps, CalendarState> {
             max={maxTime}
             showMultiDayTimes={true}
             getNow={() => Time.current()}
+            eventPropGetter={this.getEventStyle}
             onEventResize={({ event, start, end }) => {
               this.handleTodoSave({
                 ...event,
@@ -140,8 +157,7 @@ class Calendar extends React.Component<CalendarProps, CalendarState> {
                 estimate: moment
                   .duration(moment(end).diff(moment(start)))
                   .asMinutes(),
-                start: start as Date,
-                done: false
+                start: start as Date
               });
             }}
             onDoubleClickEvent={this.handleTodoShowSelected}
