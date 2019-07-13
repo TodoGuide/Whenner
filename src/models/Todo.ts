@@ -9,7 +9,7 @@ export interface ITodo extends StartEstimated {
   // Predecessors: number[];
 }
 
-export class Todo implements ITodo, Period {
+export class Todo implements ITodo, Period, EndEstimated {
   id: number = Time.now();
   title: string = "";
   description: string = "";
