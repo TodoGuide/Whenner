@@ -120,7 +120,6 @@ class Calendar extends React.Component<CalendarProps, CalendarState> {
             min={minTime}
             max={maxTime}
             showMultiDayTimes={true}
-            // views={{month: true, week:Week, agenda: true, day: true} as any}
             getNow={() => Time.current()}
             onEventResize={({ event, start, end }) => {
               this.handleTodoSave({
@@ -149,12 +148,14 @@ class Calendar extends React.Component<CalendarProps, CalendarState> {
           />
         )}
 
-        <TodoModal
-          show={!!this.state.selectedTodo}
-          todo={this.state.selectedTodo}
-          onSaveTodo={this.handleTodoSave}
-          onHide={this.handleTodoHideSelected}
-        />
+        {this.state.selectedTodo ? (
+          <TodoModal
+            show={!!this.state.selectedTodo}
+            todo={this.state.selectedTodo}
+            onSaveTodo={this.handleTodoSave}
+            onHide={this.handleTodoHideSelected}
+          />
+        ) : null}
       </div>
     );
   }

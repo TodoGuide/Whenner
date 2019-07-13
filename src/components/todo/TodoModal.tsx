@@ -131,7 +131,6 @@ export default class TodoModal extends React.Component<
           <Button variant="primary" onClick={() => onSaveTodo(this.state.todo)}>
             Save Changes
           </Button>
-          <div>{JSON.stringify(todo)}</div>
         </Modal.Footer>
       </Modal>
     );

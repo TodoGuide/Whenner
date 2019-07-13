@@ -21,7 +21,7 @@ async function readTodos(): Promise<ITodo[]> {
     // Simulate slow read
     setTimeout(function(){
       resolve(JSON.parse(localStorage.getItem(TODOS_KEY) || "null") || defaultTodos);
-    }, /*2000*/ 0);
+    }, 100);
   });
 }
 
@@ -31,7 +31,7 @@ async function writeTodos(todos: ITodo[]): Promise<ITodo[]> {
     setTimeout(function(){
       localStorage.setItem(TODOS_KEY, JSON.stringify(todos));
       resolve(todos);
-    }, 2000);
+    }, 100);
   });
 }
 
