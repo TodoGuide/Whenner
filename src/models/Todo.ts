@@ -56,6 +56,10 @@ export class Todo implements ITodo, Period, EndEstimated {
     return moment.duration(estimate, "minutes");
   }
 
+  static periodToEstimate({ start, end }: Period){
+    return moment.duration(moment(end).diff(start)).asMinutes();
+  }
+
   static calculateStart({ end, estimate }: EndEstimated) {
     return moment(end)
       .subtract(Todo.estimateToDuration({ estimate }))

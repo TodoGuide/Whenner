@@ -5,7 +5,7 @@ import React from "react";
 import moment from "moment";
 import BigCalendar, { stringOrDate } from "react-big-calendar";
 import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop";
-import { ITodo } from "../models/Todo";
+import { ITodo, Todo as TodoModel } from "../models/Todo";
 import { connect } from "react-redux";
 import { Dispatch, bindActionCreators } from "redux";
 import {
@@ -150,15 +150,18 @@ class Calendar extends React.Component<CalendarProps, CalendarState> {
               this.handleTodoSave({ ...event, start: start as Date });
             }}
             onSelectSlot={({ start, end }) => {
-              this.handleTodoSave({
+              start = new Date(start);
+              const todo = new TodoModel({
                 id: Time.now(),
-                title: "New todo",
-                description: "Do stuff",
-                estimate: moment
-                  .duration(moment(end).diff(moment(start)))
-                  .asMinutes(),
-                start: start as Date
+                title: "",
+                description: "",
+                start,
+                estimate: TodoModel.periodToEstimate({
+                  start,
+                  end: new Date(end)
+                })
               });
+              this.handleTodoShowSelected(todo);
             }}
             onDoubleClickEvent={this.handleTodoShowSelected}
           />

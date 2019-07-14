@@ -98,6 +98,7 @@ export default class TodoModal extends React.Component<
                 placeholder="What do you want to get done?"
                 value={todo.title}
                 onChange={this.handleInputChange}
+                autoFocus
               />
             </Form.Group>
 
