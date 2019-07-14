@@ -18,10 +18,10 @@ export function autoDispatcher(
   }: MiddlewareAPI<Dispatch, WhennerState>) => (next: Dispatch) => action => {
     if (condition(action)) {
       const autoAction = actionCreator();
-      console.log("autoDispatcher dispatch", { action, autoAction });
+      console.debug("autoDispatcher dispatch", { action, autoAction });
       dispatch(autoAction);
     } else {
-      console.log("autoDispatcher, nothing to dispatch", action);
+      console.debug("autoDispatcher, nothing to dispatch", action);
     }
     return next(action);
   };
