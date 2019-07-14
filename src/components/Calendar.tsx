@@ -92,7 +92,7 @@ class Calendar extends React.Component<CalendarProps, CalendarState> {
     // const backgroundColor = 'blue';
     const result: { backgroundColor?: string } = {};
     if (event.done) {
-      result.backgroundColor = "black";
+      result.backgroundColor = "grey";
     }
     return {
       style: result
