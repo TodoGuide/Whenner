@@ -26,10 +26,6 @@ function updateTodoSuccess(
 
 // Action Thunks //
 
-/**
- * 
- * @param todo Thunk to upsert a Todo. Automatically chains loadTodos.
- */
 export const upsertTodo: TodoActionThunk = (todo: ITodo) => {
   return function(dispatch: Dispatch) {
     const result = todosService
@@ -43,7 +39,6 @@ export const upsertTodo: TodoActionThunk = (todo: ITodo) => {
         console.log("upsertTodo error", e);
         throw e;
       });
-      // result.then(dispatch(loadTodos() as any));
     return result;
   };
 };

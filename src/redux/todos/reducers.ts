@@ -1,18 +1,22 @@
-import { TodosResultAction } from "./actions";
-import { ITodo } from "../../models/Todo";
+import { TodosResultAction, TodoAction } from "./actions";
+import { ITodo, Todo } from "../../models/Todo";
 import { defaultTodos } from "../../services/TodosService";
 import { WhennerActionType } from "../common/actions";
+import { schedule, quickSchedule } from "../../models/schedule";
 
 export function todos(
   todos: ITodo[] = defaultTodos,
-  action: /* WhennerAction | TodoAction | */ TodosResultAction
+  action: /* WhennerAction | */ TodoAction | TodosResultAction
 ): ITodo[] {
   switch (action.type) {
     case WhennerActionType.LoadTodosSuccess:
       return action.todos;
-    // No need to calculate state because todos will be reloaded by thunk
     case WhennerActionType.InsertTodoSuccess:
+      // return quickSchedule(...[...todos, new Todo(action.todo)]);
     case WhennerActionType.UpdateTodoSuccess:
+      // return todos.map(todo =>
+      //   todo.id === action.todo.id ? action.todo : todo
+      // );
     default:
       break;
   }

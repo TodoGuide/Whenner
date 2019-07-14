@@ -77,6 +77,10 @@ export default class TodoModal extends React.Component<
     }
   };
 
+  handleSubmit = () => {
+    this.props.onSaveTodo(this.state.todo);
+  }
+
   render() {
     const { todo } = this.state;
     const { onSaveTodo, ...modalProps } = { ...this.props };
@@ -88,7 +92,7 @@ export default class TodoModal extends React.Component<
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form>
+          <Form onSubmit={this.handleSubmit} id={"todo-" + todo.id + "-form"}>
             <Form.Group>
               <Form.Label>Title</Form.Label>
               <Form.Control
@@ -99,6 +103,7 @@ export default class TodoModal extends React.Component<
                 value={todo.title}
                 onChange={this.handleInputChange}
                 autoFocus
+                required
               />
             </Form.Group>
 
@@ -143,7 +148,7 @@ export default class TodoModal extends React.Component<
           <Button variant="secondary" onClick={this.props.onHide}>
             Close
           </Button>
-          <Button variant="primary" onClick={() => onSaveTodo(this.state.todo)}>
+          <Button variant="primary" onClick={this.handleSubmit}>
             Save Changes
           </Button>
         </Modal.Footer>

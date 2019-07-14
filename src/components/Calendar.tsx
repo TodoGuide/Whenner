@@ -20,6 +20,7 @@ import { WhennerState } from "../redux";
 import { WhennerAction } from "../redux/common/actions";
 import { Chronotype } from "../models/Chronotype";
 import { Spinner } from "react-bootstrap";
+import Toast from "react-bootstrap/Toast";
 import TodoModal from "./todo/TodoModal";
 
 moment.locale(navigator.language, {
@@ -118,55 +119,68 @@ class Calendar extends React.Component<CalendarProps, CalendarState> {
   render() {
     // const { todos } = this.state;
     const { todos, minTime, maxTime, loading } = this.props;
+    console.log("Calendar.render", todos);
     return (
       <div>
         {loading ? (
-          <Spinner animation="border" role="status">
-            <span className="sr-only">Loading...</span>
-          </Spinner>
-        ) : (
-          <DnDCalendar
-            defaultDate={Time.current()}
-            defaultView="week"
-            events={todos}
-            localizer={localizer}
-            step={15}
-            selectable
-            resizable
-            min={minTime}
-            max={maxTime}
-            showMultiDayTimes={true}
-            getNow={() => Time.current()}
-            eventPropGetter={this.getEventStyle}
-            onEventResize={({ event, start, end }) => {
-              this.handleTodoSave({
-                ...event,
-                estimate: moment
-                  .duration(moment(end).diff(moment(start)))
-                  .asMinutes()
-              });
+          <Toast
+            show={loading}
+            transition={false}
+            style={{
+              position: "absolute",
+              top: 0,
+              right: 0
             }}
-            onEventDrop={({ event, start }) => {
-              this.handleTodoSave({ ...event, start: start as Date });
-            }}
-            onSelectSlot={({ start, end }) => {
-              start = new Date(start);
-              const todo = new TodoModel({
-                id: Time.now(),
-                title: "",
-                description: "",
+          >
+            <Toast.Header>
+              <strong className="mr-auto">Working...</strong>
+              <small>⏱</small>
+            </Toast.Header>
+            <Toast.Body>
+              <p>Scheduling your todo list...</p>
+            </Toast.Body>
+          </Toast>
+        ) : null}
+        <DnDCalendar
+          defaultDate={Time.current()}
+          defaultView="week"
+          events={todos}
+          localizer={localizer}
+          step={15}
+          selectable
+          resizable
+          min={minTime}
+          max={maxTime}
+          showMultiDayTimes={true}
+          getNow={() => Time.current()}
+          eventPropGetter={this.getEventStyle}
+          onEventResize={({ event, start, end }) => {
+            this.handleTodoSave({
+              ...event,
+              estimate: moment
+                .duration(moment(end).diff(moment(start)))
+                .asMinutes()
+            });
+          }}
+          onEventDrop={({ event, start }) => {
+            this.handleTodoSave({ ...event, start: start as Date });
+          }}
+          onSelectSlot={({ start, end }) => {
+            start = new Date(start);
+            const todo = new TodoModel({
+              id: Time.now(),
+              title: "",
+              description: "",
+              start,
+              estimate: TodoModel.periodToEstimate({
                 start,
-                estimate: TodoModel.periodToEstimate({
-                  start,
-                  end: new Date(end)
-                })
-              });
-              this.handleTodoShowSelected(todo);
-            }}
-            onDoubleClickEvent={this.handleTodoShowSelected}
-          />
-        )}
-
+                end: new Date(end)
+              })
+            });
+            this.handleTodoShowSelected(todo);
+          }}
+          onDoubleClickEvent={this.handleTodoShowSelected}
+        />
         {this.state.selectedTodo ? (
           <TodoModal
             show={!!this.state.selectedTodo}
