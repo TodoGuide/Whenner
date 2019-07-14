@@ -8,6 +8,7 @@ import {
   Modal,
   Button
 } from "react-bootstrap";
+import { Time } from "../../models/time";
 
 interface TodoModalProps extends ModalProps {
   todo?: ITodo;
@@ -24,52 +25,67 @@ export default class TodoModal extends React.Component<
 > {
   constructor(props: TodoModalProps) {
     super(props);
-    console.log("TodoModal constructor", props.todo);
-    const todo = new TodoModel(props.todo);
-    this.state = { todo };
+    this.state = { todo: new TodoModel(props.todo) };
   }
 
-  handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const { id, value, checked } = event.currentTarget;
-    const [, , propName, propType] = id.split("-");
-    const state = {
-      ...this.state,
-      todo: {
-        ...this.state.todo,
-        [propName]:
-          propType === "bool"
-            ? checked
-            : propType === "int"
-            ? parseInt(value)
-            : value
-      }
-    };
-    this.setState(state);
-  };
+  readInput({
+    id,
+    value,
+    checked
+  }: {
+    id?: string;
+    value?: string;
+    checked?: boolean;
+  }) {
+    const { propType } = this.propInfoFromTarget({ id });
+    return propType === "bool"
+      ? checked || false
+      : propType === "int"
+      ? parseInt(value || "")
+      : value;
+  }
 
-  handleFormControlChange = (event: FormEvent<FormControlProps>) => {
-    const { id, value } = event.currentTarget;
-    if (!id) {
-      throw new Error("Event was triggered on form control without an ID");
+  propInfoFromTarget({ id }: { id?: string }) {
+    const [, , propName, propType] = (id || "").split("-");
+    if (!propName || !propType) {
+      throw new Error("Could not extract propName and propType from ID " + id);
     }
-    const [, , propName, propType] = id.split("-");
-    const state = {
-      ...this.state,
-      todo: {
-        ...this.state.todo,
-        [propName]: propType === "int" ? parseInt(value || "") : value
-      }
-    };
-    this.setState(state);
+    return { propName, propType };
+  }
+
+  handleInputChange = (
+    event: ChangeEvent<HTMLInputElement> | FormEvent<FormControlProps>
+  ) => {
+    const { propName } = this.propInfoFromTarget(event.currentTarget);
+    if (propName === "done") {
+      const todo = new TodoModel(this.state.todo);
+      todo.done = this.readInput(event.currentTarget)
+        ? Time.current()
+        : undefined;
+      this.setState({
+        ...this.state,
+        todo
+      });
+    } else {
+      this.setState({
+        ...this.state,
+        todo: {
+          ...this.state.todo,
+          [propName]: this.readInput(event.currentTarget)
+        }
+      });
+    }
   };
 
   render() {
     const { todo } = this.state;
-    const { onSaveTodo } = this.props;
+    const { onSaveTodo, ...modalProps } = { ...this.props };
     return (
-      <Modal {...this.props}>
+      <Modal {...modalProps}>
         <Modal.Header closeButton>
-          <Modal.Title>{todo.title || "What do you want to get done?"}</Modal.Title>
+          <Modal.Title>
+            {todo.title || "What do you want to get done?"}
+          </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form>
@@ -81,7 +97,7 @@ export default class TodoModal extends React.Component<
                 type="text"
                 placeholder="What do you want to get done?"
                 value={todo.title}
-                onChange={this.handleFormControlChange}
+                onChange={this.handleInputChange}
               />
             </Form.Group>
 
@@ -93,7 +109,7 @@ export default class TodoModal extends React.Component<
                   type="text"
                   placeholder="How long will it take?"
                   value={(todo.estimate || "0").toString()}
-                  onChange={this.handleFormControlChange}
+                  onChange={this.handleInputChange}
                 />
                 <InputGroup.Append>
                   <InputGroup.Text>Minutes</InputGroup.Text>
@@ -109,23 +125,21 @@ export default class TodoModal extends React.Component<
                 as="textarea"
                 placeholder="More details!"
                 value={todo.description}
-                onChange={this.handleFormControlChange}
+                onChange={this.handleInputChange}
               />
             </Form.Group>
 
             <Form.Check
               id={"todo-" + todo.id + "-done-bool"}
               checked={!!todo.done}
-              onChange={this.handleChange}
+              onChange={this.handleInputChange}
               label="Done"
               type="checkbox"
             />
           </Form>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" 
-          onClick={this.props.onHide}
-          >
+          <Button variant="secondary" onClick={this.props.onHide}>
             Close
           </Button>
           <Button variant="primary" onClick={() => onSaveTodo(this.state.todo)}>

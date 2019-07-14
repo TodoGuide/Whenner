@@ -10,20 +10,36 @@ export interface ITodo extends StartEstimated {
 }
 
 export class Todo implements ITodo, Period, EndEstimated {
+  private _done?: Date;
+
   id: number = Time.now();
   title: string = "";
   description: string = "";
   estimate: number = 60;
   start: Date = Time.current();
-  done?: Date;
   
   constructor(todo?: ITodo) {
     Object.assign(this, todo);
     this.start = new Date(this.start || Time.now()); // JavaScript stores dates as strings when serializing
+    if(this._done){
+      this._done = new Date(this._done);
+    }
+  }
+
+  get done() {
+    return this._done;
+  }
+
+  set done(done: Date | undefined){
+    const changed = this._done !== done;
+    this._done = done;
+    if(changed && done){
+      this.start = Todo.calculateStart(this);  
+    }
   }
 
   get end() {
-    return Todo.calculateEnd(this);
+    return this.done || Todo.calculateEnd(this);
   }
 
   set end(end: Date) {
