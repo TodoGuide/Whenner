@@ -19,7 +19,7 @@ import { upsertTodo } from "../redux/todos/actions/upsertTodo";
 import { WhennerState } from "../redux";
 import { WhennerAction } from "../redux/common/actions";
 import { Chronotype } from "../models/Chronotype";
-import { Spinner, Modal, Button } from "react-bootstrap";
+import { Spinner } from "react-bootstrap";
 import TodoModal from "./todo/TodoModal";
 
 moment.locale(navigator.language, {
@@ -185,8 +185,14 @@ const mapStateToProps = ({
 }: WhennerState): CalendarStateProps => {
   return {
     todos,
-    minTime: Chronotype.getStartOf(Time.current(), chronotype),
-    maxTime: Chronotype.getEndOf(Time.current(), chronotype),
+    minTime: Time.earliest(
+      Chronotype.getStartOf(Time.current(), chronotype),
+      Time.current()
+    ),
+    maxTime: Time.latest(
+      Chronotype.getEndOf(Time.current(), chronotype),
+      Time.current()
+    ),
     loading: loadsInProgress > 0
   };
 };
