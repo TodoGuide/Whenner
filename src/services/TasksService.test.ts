@@ -1,15 +1,15 @@
-import { TodosService, defaultTodos } from "./TodosService";
-import { ITodo } from "../models/Todo";
-import { oneHourTodo } from "../test/data";
+import { TasksService, defaultTasks } from "./TasksService";
+import { Todo } from "../models/Todo";
+import { oneHourTask } from "../test/data";
 import { customMatchers } from "../test/matchers";
 import { defaultChronotype } from "../models/Chronotype";
 import { Time } from "../models/time";
 
-describe("The Todos Service", () => {
-  let todosService: TodosService;
+describe("The Tasks Service", () => {
+  let tasksService: TasksService;
 
   beforeEach(() => {
-    todosService = new TodosService(defaultChronotype);
+    tasksService = new TasksService(defaultChronotype);
     jasmine.addMatchers(customMatchers);
     Time.set(new Date(2019, 6, 5, 12, 0, 0, 0)); // 2019-07-05 at Noon
   });
@@ -20,30 +20,30 @@ describe("The Todos Service", () => {
     });
 
     describe("When all() is called, it...", () => {
-      let allResult: ITodo[];
+      let allResult: Todo[];
       beforeEach(async function() {
-        allResult = await todosService.all();
+        allResult = await tasksService.all();
       });
 
-      it("Returns the default todos", () => {
+      it("Returns the default tasks", () => {
         allResult.forEach((item, index) =>
-          expect(item).toBeScheduledCopyOf(defaultTodos[index])
+          expect(item).toBeScheduledCopyOf(defaultTasks[index])
         );
       });
     });
 
     describe("When upsert is called with a new Todo, it...", () => {
-      let upsertResult: ITodo;
+      let upsertResult: Todo;
 
       beforeEach(async function() {
-        upsertResult = await todosService.upsert(oneHourTodo);
+        upsertResult = await tasksService.upsert(oneHourTask);
         expect(upsertResult).toBeDefined();
       });
 
       it("Inserts the provided Todo", async function() {
-        const found = await todosService.byId(upsertResult.id);
+        const found = await tasksService.byId(upsertResult.id);
         console.log("found", found);
-        expect(found).toBeScheduledCopyOf(oneHourTodo);
+        expect(found).toBeScheduledCopyOf(oneHourTask);
       });
     });
   });

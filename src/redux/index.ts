@@ -1,31 +1,31 @@
 import { settings } from "./settings/reducers";
 import { combineReducers } from "redux";
-import { todos } from "./todos/reducers";
+import { tasks } from "./todos/reducers";
 import { Settings } from "../models/Settings";
-import { ITodo } from "../models/Todo";
 import { defaultSettings } from "../services/SettingsService";
-import { defaultTodos } from "../services/TodosService";
+import { defaultTasks } from "../services/TasksService";
 import { loadsInProgress } from "./common/reducers"
+import { ITask } from "../models/Task";
 
 // State //
 
 export interface WhennerState {
   settings: Settings;
-  todos: ITodo[];
+  tasks: ITask[];
   loadsInProgress: number;
   // appointments: IAppointment[];
 }
 
 export const initialState: WhennerState = {
   settings: defaultSettings,
-  todos: defaultTodos,
+  tasks: defaultTasks,
   loadsInProgress: 0
 };
 
 // Reducer //
 
 export const reducer = combineReducers({
-  todos: todos,
+  tasks,
   settings,
   loadsInProgress
 });
@@ -36,11 +36,11 @@ export const reducer = combineReducers({
 // ): State {
 //   console.log("whenner reducer", { state, action });
 //   const result = {
-//     todos: todos(state.todos, action),
+//     tasks: tasks(state.tasks, action),
 //     settings: settings(state.settings, action)
 //   };
 //   // console.log("New State", result);
 //   localStorage.setItem("WhennerState", JSON.stringify(result));
-//   localStorage.setItem("Whenner.Todos", JSON.stringify(result.todos));
+//   localStorage.setItem("Whenner.Tasks", JSON.stringify(result.tasks));
 //   return result;
 // }

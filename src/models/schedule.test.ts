@@ -1,10 +1,10 @@
 import { Time } from "./time";
 import { schedule } from "./schedule";
-import { Todo, ITodo } from "./Todo";
 import moment from "moment";
-import { oneHourTodo, twoHourTodo } from "../test/data";
+import { oneHourTask, twoHourTask } from "../test/data";
 import { customMatchers } from "../test/matchers";
 import { IChronotype, defaultChronotype } from "./Chronotype";
+import { ITask, Task } from "./Task";
 
 describe("The schedule method", () => {
   beforeEach(() => {
@@ -12,40 +12,42 @@ describe("The schedule method", () => {
     Time.set(new Date(2019, 6, 5, 12, 0, 0, 0)); // 2019-07-05 at Noon
   });
 
-  describe("Given two NOT done todos", () => {
-    const twoNotDoneTodos = [
+  describe("Given two incomplete tasks", () => {
+    const twoNotDoneTasks = [
       {
         id: 1,
-        title: "ITodo Instance One",
+        title: "ITask Instance One",
         description: "",
         estimate: 1,
         start: new Date(2019, 5, 15, 8, 53, 52, 51),
+        priority: 1,
         done: false
       },
       {
         id: 2,
-        title: "ITodo Instance Two",
+        title: "ITask Instance Two",
         description: "",
         estimate: 1,
         start: new Date(2019, 5, 15, 8, 54, 53, 52),
+        priority: 2,
         done: false
       }
     ];
 
     describe("When the schedule method is called", () => {
-      let scheduledTodos: ITodo[];
+      let scheduledTasks: ITask[];
 
       beforeEach(() => {
-        scheduledTodos = schedule(defaultChronotype, ...twoNotDoneTodos);
+        scheduledTasks = schedule(defaultChronotype, ...twoNotDoneTasks);
       });
 
       it("Schedules the higher priority Todo for the current date and time", () => {
-        expect(scheduledTodos[0].start.getTime()).toEqual(Time.now());
+        expect(scheduledTasks[0].start.getTime()).toEqual(Time.now());
       });
 
       it("Schedules the lower priority Todo to immediately follow the higher priority item", () => {
-        expect(scheduledTodos[1].start.getTime()).toBe(
-          Todo.calculateEnd(scheduledTodos[0]).getTime()
+        expect(scheduledTasks[1].start.getTime()).toBe(
+          Task.calculateEnd(scheduledTasks[0]).getTime()
         );
       });
     });
@@ -59,48 +61,48 @@ describe("The schedule method", () => {
 
     describe("AND a 2-hour Todo", () => {
       describe("When schedule is called, it..", () => {
-        let scheduledTodos: ITodo[];
+        let scheduledTasks: ITask[];
         beforeEach(() => {
-          scheduledTodos = schedule(oneHourWindow, twoHourTodo);
+          scheduledTasks = schedule(oneHourWindow, twoHourTask);
         });
 
         it("Schedules the Todo for the current date and time", () => {
-          expect(scheduledTodos[0].start.getTime()).toEqual(Time.now());
+          expect(scheduledTasks[0].start.getTime()).toEqual(Time.now());
         });
       });
     }); 
 
     describe("AND a 1-hour Todo", () => {
       describe("When schedule is called, it..", () => {
-        let scheduledTodos: ITodo[];
+        let scheduledTasks: ITask[];
         beforeEach(() => {
-          scheduledTodos = schedule(oneHourWindow, oneHourTodo);          
+          scheduledTasks = schedule(oneHourWindow, oneHourTask);          
         });
 
         it("Schedules the Todo for tomorrow", () => {
-          expect(scheduledTodos[0].start).toEqual(Time.tomorrow());
+          expect(scheduledTasks[0].start).toEqual(Time.tomorrow());
         });
       });
     });
 
-    describe("AND 2 1-hour Todos", () => {
+    describe("AND 2 1-hour Tasks", () => {
       describe("When schedule is called, it..", () => {
-        let scheduledTodos: ITodo[];
+        let scheduledTasks: ITask[];
         beforeEach(() => {
           console.log("When schedule is called, beforeEach");
-          scheduledTodos = schedule(
+          scheduledTasks = schedule(
             oneHourWindow,
-            { ...oneHourTodo },
-            { ...oneHourTodo }
+            { ...oneHourTask },
+            { ...oneHourTask }
           );
         });
 
         it("Schedules the higher priority Todo for tomorrow", () => {
-          expect(scheduledTodos[0].start).toEqual(Time.tomorrow());
+          expect(scheduledTasks[0].start).toEqual(Time.tomorrow());
         }); 
 
         it("Schedules the lower priority Todo for the day after tomorrow", () => {
-          expect(scheduledTodos[1].start).toEqual(Time.dayAfterTomorrow());
+          expect(scheduledTasks[1].start).toEqual(Time.dayAfterTomorrow());
         });
       });
     });

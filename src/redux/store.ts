@@ -8,7 +8,7 @@ import { reducer, WhennerState, initialState } from ".";
 import reduxImmutableStateInvariant from "redux-immutable-state-invariant";
 import thunk from "redux-thunk";
 import { WhennerAction } from "./common/actions";
-import { logger, thunkCounter, reloadTodosOnUpsertSuccess } from "./middleware";
+import { logger, thunkCounter, reloadTasksOnUpsertSuccess } from "./middleware";
 
 declare global {
   interface Window {
@@ -52,7 +52,7 @@ export class Store {
           // Log actions
           logger,
           //
-          reloadTodosOnUpsertSuccess,
+          reloadTasksOnUpsertSuccess,
           // Die if state mutations are detected
           reduxImmutableStateInvariant()
         )

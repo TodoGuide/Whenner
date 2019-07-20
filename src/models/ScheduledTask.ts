@@ -1,17 +1,25 @@
-import { Todo } from "./Todo";
 import { IChronotype, Chronotype } from "./Chronotype";
 import { Time, Start, End, Estimated } from "./time";
+import { Task, ITask } from "./Task";
 
-export class ScheduledTodo extends Todo {
-  constructor(chronotype: Chronotype, current: Todo, previousIncomplete?: Todo) {
-    if(previousIncomplete && previousIncomplete.done){
+export class ScheduledTask extends Task implements ITask {
+  constructor(
+    chronotype: Chronotype,
+    current: Task,
+    previousIncomplete?: Task
+  ) {
+    if (previousIncomplete && previousIncomplete.completed) {
       throw new Error("Previous value cannot be marked as done");
     }
     super({
       ...current,
-      start: !!current.done
-        ? current.start
-        : ScheduledTodo.firstAvailableStartDate(chronotype, current, previousIncomplete)
+      priority: !!current.completed
+        ? current.start.getTime()
+        : ScheduledTask.firstAvailableStartDate(
+            chronotype,
+            current,
+            previousIncomplete
+          ).getTime()
     });
   }
 
@@ -44,13 +52,13 @@ export class ScheduledTodo extends Todo {
    * Calculates the earliest date and time the todo can be started based on the provided Chronotype.
    */
   private static earliestStartDatePermitted(
-    { start: todoStart }: Start,
+    { start: theStart }: Start,
     { start: chronotypeStart }: IChronotype
   ) {
-    const dayStart = Chronotype.getStartOf(todoStart, {
+    const dayStart = Chronotype.getStartOf(theStart, {
       start: chronotypeStart
     });
-    return todoStart < dayStart ? dayStart : todoStart;
+    return theStart < dayStart ? dayStart : theStart;
   }
 
   /**
@@ -59,20 +67,20 @@ export class ScheduledTodo extends Todo {
    */
   private static firstAvailableStartDate(
     chronotype: Chronotype,
-    current: Todo,
-    previous?: Todo
+    current: Task,
+    previous?: Task
   ): Date {
     // console.log("firstAvailableStartDate", {current, previous})
-    const candidateStart = ScheduledTodo.earliestStartDateCandidate(
+    const candidateStart = ScheduledTask.earliestStartDateCandidate(
       { start: (previous || { end: Time.current() }).end },
       chronotype
     );
     const estimated = { ...current, start: candidateStart };
-    const candidateEnd = Todo.calculateEnd(estimated);
+    const candidateEnd = Task.calculateEnd(estimated);
     const result =
-      !ScheduledTodo.canBeCompletedSameDay({ end: candidateEnd }, chronotype) &&
-      ScheduledTodo.canBeCompletedWithinOneDay(estimated, chronotype)
-        ? ScheduledTodo.earliestStartDatePermitted(
+      !ScheduledTask.canBeCompletedSameDay({ end: candidateEnd }, chronotype) &&
+      ScheduledTask.canBeCompletedWithinOneDay(estimated, chronotype)
+        ? ScheduledTask.earliestStartDatePermitted(
             {
               start: Time.dayAfter(candidateStart)
             },

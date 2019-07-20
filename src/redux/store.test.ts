@@ -2,7 +2,8 @@ import { Store } from "./store";
 import { Store as ReduxStore } from "redux";
 import { customMatchers } from "../test/matchers";
 import { Time } from "../models/time";
-import { WhennerAction, WhennerState, initialState } from ".";
+import { WhennerState, initialState } from ".";
+import { WhennerAction } from "./common/actions";
 
 describe("The Whenner Store", () => {
   beforeEach(() => {
@@ -18,11 +19,11 @@ describe("The Whenner Store", () => {
     });
 
     it("Contains the default Todo", () => {
-      const todos = store.getState().todos;
-      expect(todos.length).toBe(1);
+      const tasks = store.getState().tasks;
+      expect(tasks.length).toBe(1);
 
       // Check that the default Todo was scheduled
-      expect(todos[0]).toBeScheduledCopyOf(initialState.todos[0]);
+      expect(tasks[0]).toBeScheduledCopyOf(initialState.tasks[0]);
     });
   });
 });

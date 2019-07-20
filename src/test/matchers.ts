@@ -1,5 +1,5 @@
-import { ITodo, Todo } from "../models/Todo";
 import { Time } from "../models/time";
+import { Task } from "../models/Task";
 
 export const customMatchers = {
   // toBeWithinTheLast300ms: function(util?: any, customEqualityTesters?: any) {
@@ -23,10 +23,10 @@ export const customMatchers = {
 
   toBeScheduledCopyOf: function(util: any, customEqualityTesters: any) {
     return {
-      compare: function(actual: ITodo, expected: ITodo) {
+      compare: function(actual: Task, expected: Task) {
         // Normalize
-        actual = new Todo(actual);
-        expected = new Todo(expected);
+        actual = new Task(actual);
+        expected = new Task(expected);
 
         const actualStart = new Date(actual.start).getTime();
         const pass = actualStart >= Time.now();

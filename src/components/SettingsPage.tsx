@@ -1,5 +1,4 @@
 import React from "react";
-import Header from "./common/Header";
 import { Form } from "react-bootstrap";
 
 const SettingsPage: React.FC = () => {

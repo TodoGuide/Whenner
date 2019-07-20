@@ -1,8 +1,8 @@
 import { Dispatch, Middleware, MiddlewareAPI } from "redux";
 import { WhennerState } from ".";
-import { TODO_ACTION_PREFIX } from "./common/actions";
+import { TASK_ACTION_PREFIX } from "./common/actions";
 import { beginLoad } from "./common/actions/beginLoad";
-import { loadTodos } from "./todos/actions/loadTodos";
+import { loadTasks } from "./todos/actions/loadTasks";
 
 export const logger: Middleware = () => (next: Dispatch) => action => {
   console.log("Action Dispatched", action);
@@ -34,9 +34,9 @@ export const thunkCounter = autoDispatcher(
   beginLoad
 );
 
-export const reloadTodosOnUpsertSuccess = autoDispatcher(
+export const reloadTasksOnUpsertSuccess = autoDispatcher(
   action =>
-    action.type.startsWith(TODO_ACTION_PREFIX) &&
-    !action.type.startsWith(TODO_ACTION_PREFIX + "Load."),
-  loadTodos
+    action.type.startsWith(TASK_ACTION_PREFIX) &&
+    !action.type.startsWith(TASK_ACTION_PREFIX + "Load."),
+  loadTasks
 );

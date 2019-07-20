@@ -1,5 +1,4 @@
 import React, { FormEvent, ChangeEvent } from "react";
-import { ITodo, Todo as TodoModel } from "../../models/Todo";
 import {
   Form,
   FormControlProps,
@@ -9,23 +8,24 @@ import {
   Button
 } from "react-bootstrap";
 import { Time } from "../../models/time";
+import { ITask, Task } from "../../models/Task";
 
-interface TodoModalProps extends ModalProps {
-  todo?: ITodo;
-  onSaveTodo: (todo: ITodo) => void;
+interface TaskModalProps extends ModalProps {
+  task?: ITask;
+  onSaveTodo: (task: ITask) => void;
 }
 
 type TodoModalState = {
-  todo: ITodo;
+  task: ITask;
 };
 
-export default class TodoModal extends React.Component<
-  TodoModalProps,
+export default class TaskModal extends React.Component<
+  TaskModalProps,
   TodoModalState
 > {
-  constructor(props: TodoModalProps) {
+  constructor(props: TaskModalProps) {
     super(props);
-    this.state = { todo: new TodoModel(props.todo) };
+    this.state = { task: new Task(props.task) };
   }
 
   readInput({
@@ -58,19 +58,19 @@ export default class TodoModal extends React.Component<
   ) => {
     const { propName } = this.propInfoFromTarget(event.currentTarget);
     if (propName === "done") {
-      const todo = new TodoModel(this.state.todo);
-      todo.done = this.readInput(event.currentTarget)
+      const todo = new Task(this.state.task);
+      todo.completed = this.readInput(event.currentTarget)
         ? Time.current()
         : undefined;
       this.setState({
         ...this.state,
-        todo
+        task: todo
       });
     } else {
       this.setState({
         ...this.state,
-        todo: {
-          ...this.state.todo,
+        task: {
+          ...this.state.task,
           [propName]: this.readInput(event.currentTarget)
         }
       });
@@ -78,11 +78,11 @@ export default class TodoModal extends React.Component<
   };
 
   handleSubmit = () => {
-    this.props.onSaveTodo(this.state.todo);
+    this.props.onSaveTodo(this.state.task);
   }
 
   render() {
-    const { todo } = this.state;
+    const { task: todo } = this.state;
     const { onSaveTodo, ...modalProps } = { ...this.props };
     return (
       <Modal {...modalProps}>
@@ -137,7 +137,7 @@ export default class TodoModal extends React.Component<
 
             <Form.Check
               id={"todo-" + todo.id + "-done-bool"}
-              checked={!!todo.done}
+              checked={!!todo.completed}
               onChange={this.handleInputChange}
               label="Done"
               type="checkbox"

@@ -1,24 +1,23 @@
-import { TodosResultAction, TodoAction } from "./actions";
-import { ITodo, Todo } from "../../models/Todo";
-import { defaultTodos } from "../../services/TodosService";
+import { TasksResultAction, TaskAction } from "./actions";
+import { defaultTasks } from "../../services/TasksService";
 import { WhennerActionType } from "../common/actions";
-import { schedule, quickSchedule } from "../../models/schedule";
+import { ITask } from "../../models/Task";
 
-export function todos(
-  todos: ITodo[] = defaultTodos,
-  action: /* WhennerAction | */ TodoAction | TodosResultAction
-): ITodo[] {
+export function tasks(
+  tasks: ITask[] = defaultTasks,
+  action: /* WhennerAction | */ TaskAction | TasksResultAction
+): ITask[] {
   switch (action.type) {
-    case WhennerActionType.LoadTodosSuccess:
-      return action.todos;
-    case WhennerActionType.InsertTodoSuccess:
-      // return quickSchedule(...[...todos, new Todo(action.todo)]);
-    case WhennerActionType.UpdateTodoSuccess:
-      // return todos.map(todo =>
+    case WhennerActionType.LoadTasksSuccess:
+      return action.tasks;
+    case WhennerActionType.InsertTaskSuccess:
+      // return quickSchedule(...[...tasks, new Todo(action.todo)]);
+    case WhennerActionType.UpdateTaskSuccess:
+      // return tasks.map(todo =>
       //   todo.id === action.todo.id ? action.todo : todo
       // );
     default:
       break;
   }
-  return todos;
+  return tasks;
 }

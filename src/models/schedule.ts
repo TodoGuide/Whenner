@@ -1,29 +1,35 @@
-import { ITodo, sortedTodoList, Todo } from "./Todo";
 import { IChronotype, Chronotype, defaultChronotype } from "./Chronotype";
-import { ScheduledTodo } from "./ScheduledTodo";
+import { ScheduledTask } from "./ScheduledTask";
+import { Task, ITask } from "./Task";
 
 let lastChronotype = defaultChronotype;
 
-export function schedule(chronotype: IChronotype, ...todos: ITodo[]): ITodo[] {
-  if (todos.length === 0) {
-    return todos;
+export function schedule(chronotype: IChronotype, ...tasks: ITask[]): ITask[] {
+  if (tasks.length === 0) {
+    return tasks;
   }
 
-  const result: ITodo[] = sortedTodoList(...todos);
+  const result: ITask[] = sortedTaskList(...tasks);
   const chronotypeHelper = new Chronotype(chronotype);
-  let lastIncomplete: Todo | undefined = undefined;
+  let lastIncomplete: Task | undefined = undefined;
   
   for (let i = 0; i < result.length; i++) {
-    const previous = result[i - 1] as Todo;
-    const current = result[i] as Todo;
-    lastIncomplete = (previous && previous.done) ? lastIncomplete : previous;
-    result[i] = new ScheduledTodo(chronotypeHelper, current, lastIncomplete);
+    const previous = result[i - 1] as Task;
+    const current = result[i] as Task;
+    lastIncomplete = (previous && previous.completed) ? lastIncomplete : previous;
+    result[i] = new ScheduledTask(chronotypeHelper, current, lastIncomplete);
   }
 
   lastChronotype = chronotype;
   return result;
 }
 
-export function quickSchedule(...todos: ITodo[]): ITodo[] {
-  return schedule(lastChronotype, ...todos);
+export function quickSchedule(...tasks: ITask[]): ITask[] {
+  return schedule(lastChronotype, ...tasks);
+}
+
+export function sortedTaskList(...tasks: ITask[]){
+  return tasks
+    .map(task => new Task(task))
+    .sort((a, b) => a.priority - b.priority);
 }

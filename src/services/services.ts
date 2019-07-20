@@ -1,11 +1,11 @@
 import { SettingsService } from "./SettingsService";
-import { TodosService } from "./TodosService";
+import { TasksService } from "./TasksService";
 import { defaultChronotype } from "../models/Chronotype";
 
 export const settingsService = new SettingsService();
 
-export const todosService = new TodosService(defaultChronotype);
+export const tasksService = new TasksService(defaultChronotype);
 
 settingsService
   .settings()
-  .then(settings => (todosService.chronotype = settings.chronotype));
+  .then(settings => (tasksService.chronotype = settings.chronotype));

@@ -1,23 +1,23 @@
-import { ITodo } from "../../../models/Todo";
 import { Dispatch } from "redux";
 import { WhennerAction } from "../../common/actions";
+import { ITask } from "../../../models/Task";
 
 
 // TODO: Update redux-thunk when new NPM package is available: https://github.com/reduxjs/redux-thunk/pull/224
 //   This will allow bindActionCreators to return the proper signature/type.
 
-export interface TodoAction extends WhennerAction {
-  todo: ITodo;
+export interface TaskAction extends WhennerAction {
+  task: ITask;
 }
 
-export interface TodoActionThunk {
-  (todo: ITodo): { (dispatch: Dispatch): Promise<TodoAction> }
+export interface TaskActionThunk {
+  (task: ITask): { (dispatch: Dispatch): Promise<TaskAction> }
 }
 
-export interface TodosResultAction extends WhennerAction {
-  todos: ITodo[];
+export interface TasksResultAction extends WhennerAction {
+  tasks: ITask[];
 }
 
-export interface TodosResultActionThunk {
-  (): { (dispatch: Dispatch): Promise<TodosResultAction> }
+export interface TasksResultActionThunk {
+  (): { (dispatch: Dispatch): Promise<TasksResultAction> }
 }

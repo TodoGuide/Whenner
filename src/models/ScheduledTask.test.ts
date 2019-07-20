@@ -1,28 +1,28 @@
-import { ScheduledTodo } from "./ScheduledTodo";
-import { ITodo, Todo } from "./Todo";
-import { oneHourTodo, twoHourTodo } from "../test/data";
+import { ScheduledTask } from "./ScheduledTask";
+import { oneHourTask, twoHourTask } from "../test/data";
 import { defaultChronotype, Chronotype } from "./Chronotype";
 import { customMatchers } from "../test/matchers";
 import { Time } from "./time";
+import { Task } from "./Task";
 
-describe("The ScheduledTodo class", () => {
+describe("A ScheduledTask", () => {
   beforeEach(() => {
     jasmine.addMatchers(customMatchers);
     Time.set(new Date(2019, 6, 5, 12, 0, 0, 0)); // 2019-07-05 at Noon
   });
 
-  describe("Given a current Todo", () => {
-    let current: Todo;
+  describe("Given a Task", () => {
+    let task: Task;
     beforeEach(() => {
-      current = new Todo(oneHourTodo);
+      task = new Task(oneHourTask);
     });
 
     describe("When a ScheduledTodo is created, it...", () => {
-      let scheduledTodo: ScheduledTodo;
+      let scheduledTodo: ScheduledTask;
       beforeEach(() => {
-        scheduledTodo = new ScheduledTodo(
+        scheduledTodo = new ScheduledTask(
           new Chronotype(defaultChronotype),
-          current
+          task
         );
       });
 
@@ -33,11 +33,11 @@ describe("The ScheduledTodo class", () => {
   });
 
   describe("Given a current and previous todo", () => {
-    let previous: Todo, current: Todo, scheduledTodo: ScheduledTodo;
+    let previous: Task, current: Task, scheduledTodo: ScheduledTask;
     beforeEach(() => {
-      previous = new Todo(oneHourTodo);
-      current = new Todo(twoHourTodo);
-      scheduledTodo = new ScheduledTodo(
+      previous = new Task(oneHourTask);
+      current = new Task(twoHourTask);
+      scheduledTodo = new ScheduledTask(
         new Chronotype(defaultChronotype),
         current,
         previous
@@ -45,9 +45,9 @@ describe("The ScheduledTodo class", () => {
     });
 
     describe("When a ScheduledTodo is created, it...", () => {
-      let scheduledTodo: ScheduledTodo;
+      let scheduledTodo: ScheduledTask;
       beforeEach(() => {
-        scheduledTodo = new ScheduledTodo(
+        scheduledTodo = new ScheduledTask(
           new Chronotype(defaultChronotype),
           current,
           previous
