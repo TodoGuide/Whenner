@@ -1,3 +1,5 @@
+
+const MILLISECONDS_PER_HOUR = 3600000;
 const MILLISECONDS_PER_DAY = 86400000;
 
 /**
@@ -39,3 +41,7 @@ export interface Estimated {
 export type StartEstimated = Start & Estimated;
 export type EndEstimated = End & Estimated;
 export type Period = Start & End;
+
+export function addHour(toDate: Date){
+  return new Date(toDate.getTime() + MILLISECONDS_PER_HOUR);
+}

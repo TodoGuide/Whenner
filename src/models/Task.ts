@@ -12,8 +12,8 @@ export class Task implements ITask, EndEstimated, Period {
   estimate: number = 60;
   start: Date = Time.current();
 
-  constructor(task?: ITask | EstimatedTodo | Todo) {
-    Object.assign(this, task);
+  constructor(todo?: ITask | EstimatedTodo | Todo) {
+    Object.assign(this, todo);
 
     // JavaScript stores dates as strings when serializing,
     // so re-construct in case we received a string
