@@ -29,7 +29,7 @@ export function quickSchedule(...tasks: ITask[]): ITask[] {
   return schedule(lastChronotype, ...tasks);
 }
 
-export function sortedTaskList(...tasks: ITask[]){
+export function sortedTaskList<T extends ITask>(...tasks: T[]){
   return inPriorityOrder(...tasks
     .map(task => new Task(task)));
 }

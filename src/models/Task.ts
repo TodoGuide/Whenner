@@ -1,4 +1,4 @@
-import { Time, Period, EstimatByStart, EstimateByEnd } from "./time";
+import { Time, Period, EstimatByStart, EstimateByEnd, Estimate } from "./time";
 import { Todo, EstimatedTodo } from "./Todo";
 import moment, { Duration } from "moment";
 
@@ -63,19 +63,19 @@ export class Task implements ITask, EstimateByEnd, Period {
   // Utility Methods
   //
 
-  static calculateEnd({ start, estimate }: StartEstimated) {
+  static calculateEnd({ start, estimate }: EstimatByStart) {
     return moment(start)
       .add(Task.estimateToDuration({ estimate }))
       .toDate();
   }
 
-  static calculateStart({ end, estimate }: EndEstimated) {
+  static calculateStart({ end, estimate }: EstimateByEnd) {
     return moment(end)
       .subtract(Task.estimateToDuration({ estimate }))
       .toDate();
   }
 
-  static estimateToDuration({ estimate }: Estimated) {
+  static estimateToDuration({ estimate }: Estimate) {
     return moment.duration(estimate, "minutes");
   }
 

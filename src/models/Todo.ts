@@ -1,4 +1,4 @@
-import { Estimated } from "./time";
+import { Estimate } from "./time";
 
 export interface Id {
   id: number;
@@ -24,8 +24,8 @@ export interface Todo extends Article, Priority {
   // Predecessors: number[];
 }
 
-export interface EstimatedTodo extends Todo, Estimated {}
+export interface EstimatedTodo extends Todo, Estimate {}
 
-export function inPriorityOrder(...priorities: Priority[]) {
+export function inPriorityOrder<T extends Priority>(...priorities: T[]) {
   return priorities.sort((a, b) => a.priority - b.priority);
 }
