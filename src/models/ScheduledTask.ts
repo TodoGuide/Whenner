@@ -1,5 +1,5 @@
 import { IChronotype, Chronotype } from "./Chronotype";
-import { Time, Start, End, Estimated } from "./time";
+import { Time, Start, End, Estimate } from "./time";
 import { Task, ITask } from "./Task";
 
 export class ScheduledTask extends Task implements ITask {
@@ -42,7 +42,7 @@ export class ScheduledTask extends Task implements ITask {
    * Determines if the todo can be within the a single Chronotype period
    */
   private static canBeCompletedWithinOneDay(
-    { estimate }: Estimated,
+    { estimate }: Estimate,
     { minutes }: Chronotype
   ) {
     return estimate <= minutes;

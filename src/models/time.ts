@@ -34,12 +34,12 @@ export interface End {
   end: Date;
 }
 
-export interface Estimated {
+export interface Estimate {
   estimate: number;
 }
 
-export type StartEstimated = Start & Estimated;
-export type EndEstimated = End & Estimated;
+export type EstimatByStart = Start & Estimate;
+export type EstimateByEnd = End & Estimate;
 export type Period = Start & End;
 
 export function addHour(toDate: Date){

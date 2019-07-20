@@ -1,35 +1,24 @@
-import { IChronotype, Chronotype, defaultChronotype } from "./Chronotype";
-import { ScheduledTask } from "./ScheduledTask";
-import { Task, ITask } from "./Task";
+import { ITask } from "./Task";
+import { IAppointment, Appointment } from "./Appointment";
+import { inPriorityOrder } from "./Todo";
 
-let lastChronotype = defaultChronotype;
 
-export function schedule(chronotype: IChronotype, ...tasks: ITask[]): ITask[] {
-  if (tasks.length === 0) {
-    return tasks;
-  }
-
-  const result: ITask[] = sortedTaskList(...tasks);
-  const chronotypeHelper = new Chronotype(chronotype);
-  let lastIncomplete: Task | undefined = undefined;
-  
-  for (let i = 0; i < result.length; i++) {
-    const previous = result[i - 1] as Task;
-    const current = result[i] as Task;
-    lastIncomplete = (previous && previous.completed) ? lastIncomplete : previous;
-    result[i] = new ScheduledTask(chronotypeHelper, current, lastIncomplete);
-  }
-
-  lastChronotype = chronotype;
-  return result;
+export interface ISchedule {
+  appointments: IAppointment[];
+  tasks: ITask[];
 }
 
-export function quickSchedule(...tasks: ITask[]): ITask[] {
-  return schedule(lastChronotype, ...tasks);
-}
+export class Schedule implements ISchedule {
+  appointments: IAppointment[];
+  tasks: ITask[];
 
-export function sortedTaskList(...tasks: ITask[]){
-  return tasks
-    .map(task => new Task(task))
-    .sort((a, b) => a.priority - b.priority);
+  constructor({appointments, tasks}: ISchedule){
+    this.appointments = appointments;
+    this.tasks = tasks;
+  }
+
+  buildSchedule(){
+    const scheduledTasks = this.tasks.map(task => new Appointment(task));
+    const all = inPriorityOrder(...[ ...this.appointments, ...this.tasks ]);
+  }
 }

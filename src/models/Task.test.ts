@@ -1,7 +1,6 @@
 import { customMatchers } from "../test/matchers";
 import { Time } from "./time";
 import { ITask, Task } from "./Task";
-import moment from "moment";
 
 describe("A Task", () => {
   beforeEach(() => {

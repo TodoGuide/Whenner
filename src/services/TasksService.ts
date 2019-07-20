@@ -1,5 +1,5 @@
 import { IChronotype } from "../models/Chronotype";
-import { schedule } from "../models/schedule";
+import { schedule } from "../models/scheduler";
 import { Time } from "../models/time";
 import { ITask, Task } from "../models/Task";
 
