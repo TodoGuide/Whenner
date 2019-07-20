@@ -1,4 +1,4 @@
-import { ITodo } from "../models/Todo";
+import { ITodo, Todo } from "../models/Todo";
 import { Time } from "../models/time";
 
 export const customMatchers = {
@@ -24,10 +24,16 @@ export const customMatchers = {
   toBeScheduledCopyOf: function(util: any, customEqualityTesters: any) {
     return {
       compare: function(actual: ITodo, expected: ITodo) {
+        // Normalize
+        actual = new Todo(actual);
+        expected = new Todo(expected);
+
         const actualStart = new Date(actual.start).getTime();
         const pass = actualStart >= Time.now();
 
-        expect({ ...actual, start: expected.start, id: expected.id }).toEqual(expected);
+        expect({ ...actual, start: expected.start, id: expected.id }).toEqual(
+          expected
+        );
 
         return {
           pass,
