@@ -21,6 +21,7 @@ import Toast from "react-bootstrap/Toast";
 import TaskModal from "./todo/TaskModal";
 import { Task, ITask, defaultTasks } from "../models/Task";
 import { IAppointment } from "../models/Appointment";
+import { ISchedule } from "../models/Schedule";
 
 moment.locale(navigator.language, {
   week: {
@@ -44,7 +45,7 @@ interface CalendarOwnState {
  * The state of the Calendar component initialized by props
  */
 interface CalendarStateProps {
-  tasks: ITask[];
+  schedule: ISchedule;
   loading: boolean;
   minTime: Date;
   maxTime: Date;
@@ -73,7 +74,7 @@ class Calendar extends React.Component<CalendarProps, CalendarState> {
   }
 
   componentDidMount() {
-    const { tasks } = this.props;
+    const { tasks } = this.props.schedule;
     if (
       tasks.length === defaultTasks.length &&
       tasks.every((value, index) => value.id === defaultTasks[index].id)
@@ -117,7 +118,7 @@ class Calendar extends React.Component<CalendarProps, CalendarState> {
 
   render() {
     // const { todos } = this.state;
-    const { tasks, minTime, maxTime, loading } = this.props;
+    const { schedule: { tasks }, minTime, maxTime, loading } = this.props;
     console.log("Calendar.render", tasks);
     return (
       <div>
@@ -200,7 +201,7 @@ const mapStateToProps = ({
   settings: { chronotype }
 }: WhennerState): CalendarStateProps => {
   return {
-    tasks: schedule.tasks,
+    schedule,
     minTime: Time.earliest(
       Chronotype.getStartOf(Time.current(), chronotype),
       Time.current()
