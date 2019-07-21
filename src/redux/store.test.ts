@@ -19,11 +19,11 @@ describe("The Whenner Store", () => {
     });
 
     it("Contains the default Todo", () => {
-      const tasks = store.getState().tasks;
+      const tasks = store.getState().schedule.tasks;
       expect(tasks.length).toBe(1);
 
       // Check that the default Todo was scheduled
-      expect(tasks[0]).toBeScheduledCopyOf(initialState.tasks[0]);
+      expect(tasks[0]).toBeScheduledCopyOf(initialState.schedule.tasks[0]);
     });
   });
 });
