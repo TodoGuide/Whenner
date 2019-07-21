@@ -9,8 +9,6 @@ import {
 } from "react-bootstrap";
 import { Time } from "../../models/time";
 import { Task, ITask } from "../../models/Task";
-import { IAppointment } from "../../models/Appointment";
-import { Todo } from "../../models/Todo";
 import { TaskOrAppointment } from "../../models/Schedule";
 
 interface TaskModalProps extends ModalProps {
