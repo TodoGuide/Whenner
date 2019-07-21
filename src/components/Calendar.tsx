@@ -20,8 +20,7 @@ import { Chronotype } from "../models/Chronotype";
 import Toast from "react-bootstrap/Toast";
 import TaskModal from "./todo/TaskModal";
 import { Task, ITask, defaultTasks } from "../models/Task";
-import { IAppointment } from "../models/Appointment";
-import { ISchedule } from "../models/Schedule";
+import { ISchedule, Schedule } from "../models/Schedule";
 
 moment.locale(navigator.language, {
   week: {
@@ -118,8 +117,9 @@ class Calendar extends React.Component<CalendarProps, CalendarState> {
 
   render() {
     // const { todos } = this.state;
-    const { schedule: { tasks }, minTime, maxTime, loading } = this.props;
-    console.log("Calendar.render", tasks);
+    const { schedule, minTime, maxTime, loading } = this.props;
+    const events = new Schedule(schedule).buildSchedule();
+    console.log("Calendar.render", events);
     return (
       <div>
         {loading ? (
@@ -144,7 +144,7 @@ class Calendar extends React.Component<CalendarProps, CalendarState> {
         <DnDCalendar
           defaultDate={Time.current()}
           defaultView="week"
-          events={tasks}
+          events={events}
           localizer={localizer}
           step={15}
           selectable
