@@ -1,8 +1,18 @@
-import { TasksResultAction, TaskAction } from "./actions";
 import { WhennerActionType } from "../common/actions";
 import { ITask, defaultTasks } from "../../models/Task";
+import { IAppointment, defaultAppointments } from "../../models/Appointment";
+import { combineReducers } from "redux";
+import { TasksResultAction, TaskAction } from "../todos/actions";
 
-export function tasks(
+ function appointments(
+  appointments: IAppointment[] = defaultAppointments,
+  action: /* WhennerAction | */ TaskAction | TasksResultAction
+): IAppointment[] {
+  // TODO: Finish appointments reducer
+  return appointments;
+}
+
+ function tasks(
   tasks: ITask[] = defaultTasks,
   action: /* WhennerAction | */ TaskAction | TasksResultAction
 ): ITask[] {
@@ -20,3 +30,8 @@ export function tasks(
   }
   return tasks;
 }
+
+ export const schedule = combineReducers({
+  appointments,
+  tasks,
+});

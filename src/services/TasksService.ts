@@ -1,19 +1,9 @@
 import { IChronotype } from "../models/Chronotype";
 import { schedule } from "../models/scheduler";
 import { Time } from "../models/time";
-import { ITask, Task } from "../models/Task";
+import { ITask, defaultTasks } from "../models/Task";
 
 export const TASKS_KEY = "Whenner.Tasks";
-
-export const defaultTasks: ITask[] = [
-  new Task({
-    id: 1,
-    title: "Get started with Whenner",
-    description: "Click stuff, learn how the app works",
-    estimate: 5,
-    priority: Time.now()
-  })
-];
 
 async function readTasks(): Promise<ITask[]> {
   return new Promise((resolve, reject) => {

@@ -1,31 +1,30 @@
 import { settings } from "./settings/reducers";
 import { combineReducers } from "redux";
-import { tasks } from "./todos/reducers";
+import { schedule } from "./schedule/reducers";
 import { Settings } from "../models/Settings";
 import { defaultSettings } from "../services/SettingsService";
-import { defaultTasks } from "../services/TasksService";
 import { loadsInProgress } from "./common/reducers"
-import { ITask } from "../models/Task";
+import { ISchedule, defaultSchedule } from "../models/Schedule";
 
 // State //
 
 export interface WhennerState {
   settings: Settings;
-  tasks: ITask[];
+  schedule: ISchedule;
   loadsInProgress: number;
   // appointments: IAppointment[];
 }
 
 export const initialState: WhennerState = {
   settings: defaultSettings,
-  tasks: defaultTasks,
+  schedule: defaultSchedule,
   loadsInProgress: 0
 };
 
 // Reducer //
 
 export const reducer = combineReducers({
-  tasks,
+  schedule,
   settings,
   loadsInProgress
 });
