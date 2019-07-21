@@ -3,6 +3,8 @@ import { Todo, Id } from "../models/Todo";
 import { TasksService } from "./TasksService";
 import { IChronotype } from "../models/Chronotype";
 import { AppointmentsService } from "./AppointmentsService";
+import { isTask } from "../models/Task";
+import { isAppointment } from "../models/Appointment";
 
 export class TodosService implements CrudService<Todo[]> {
   private readonly _tasksService: TasksService;
