@@ -1,8 +1,8 @@
-import { TasksResultAction, TasksResultActionThunk } from ".";
 import { Dispatch } from "redux";
 import { tasksService } from "../../../services/services";
 import { WhennerActionType } from "../../common/actions";
 import { ITask } from "../../../models/Task";
+import { TasksResultAction, TasksResultActionThunk } from ".";
 
 function loadTasksSuccess(tasks: ITask[]): TasksResultAction {
   return {
@@ -18,7 +18,7 @@ function loadTasksSuccess(tasks: ITask[]): TasksResultAction {
 export const loadTasks: TasksResultActionThunk = () => {
   return function(dispatch: Dispatch) {
     return tasksService
-      .all()
+      .read()
       .then(tasks => dispatch(loadTasksSuccess(tasks)))
       .catch(e => {
         console.log("loadTasks error", e);

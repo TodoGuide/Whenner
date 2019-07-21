@@ -1,10 +1,8 @@
 import { CrudService } from "./LocalStorageCrudService";
 import { Todo, Id } from "../models/Todo";
 import { TasksService } from "./TasksService";
-import { Chronotype, IChronotype } from "../models/Chronotype";
-import { isTask, ITask } from "../models/Task";
+import { IChronotype } from "../models/Chronotype";
 import { AppointmentsService } from "./AppointmentsService";
-import { isAppointment } from "../models/Appointment";
 
 export class TodosService implements CrudService<Todo[]> {
   private readonly _tasksService: TasksService;
