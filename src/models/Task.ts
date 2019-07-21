@@ -84,6 +84,16 @@ export class Task implements ITask, EstimateByEnd, Period {
   }
 }
 
+export function isTask(thing: any){
+  try {
+    const taskProperties = Object.keys(new Task());
+    const thingProperties = Object.keys(thing);
+    return taskProperties.every(property => thingProperties.indexOf(property) >= 0)
+  }catch {
+    return false;
+  }
+}
+
 export const defaultTasks: ITask[] = [
   new Task({
     id: 1,

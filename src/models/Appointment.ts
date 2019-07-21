@@ -34,3 +34,15 @@ export const defaultAppointments: Appointment[] = [
     end: addHour(Time.current())
   }
 ]
+
+export function isAppointment(thing: any) {
+  try {
+    const appointmentProperties = Object.keys(new Appointment());
+    const thingProperties = Object.keys(thing);
+    return appointmentProperties.every(
+      property => thingProperties.indexOf(property) >= 0
+    );
+  } catch {
+    return false;
+  }
+}
