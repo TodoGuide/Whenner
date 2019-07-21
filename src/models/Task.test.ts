@@ -83,3 +83,21 @@ describe("A Task", () => {
     });
   });
 });
+
+describe("The isTask function", () => {
+  it("Returns true when given a task", () => {
+    expect(isTask(new Task())).toBeTruthy();
+  });
+
+  it("Returns true when given a task with extra properties", () => {
+    expect(isTask({...new Task(), extraProp: "Hello!"})).toBeTruthy();
+  });
+
+  it("Returns false when not given a task", () => {
+    expect(isTask({ hello: "workd" })).toBeFalsy();
+  });
+
+  it("Returns false when given an empty object", () => {
+    expect(isTask({})).toBeFalsy();
+  });
+});
