@@ -93,7 +93,7 @@ describe("The isTask function", () => {
   });
 
   it("Returns false when not given a task", () => {
-    expect(isTask({ hello: "workd" })).toBeFalsy();
+    expect(isTask({ hello: "world" })).toBeFalsy();
   });
 
   it("Returns false when given an empty object", () => {
