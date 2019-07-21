@@ -1,27 +1,23 @@
 import { defaultChronotype } from "../models/Chronotype";
 import { Settings } from "../models/Settings";
+import { LocalStorageService } from "./LocalStorageService";
 
 export const SETTINGS_KEY = "Whenner.Settings";
 
 export const defaultSettings: Settings = {
   chronotype: defaultChronotype
 }
+export class SettingsService extends LocalStorageService<Settings> {
 
-async function readSettings(): Promise<Settings> {
-  return JSON.parse(localStorage.getItem(SETTINGS_KEY) || "null") || defaultSettings;
-}
+  constructor(){
+    super(SETTINGS_KEY, defaultSettings);
+  }
 
-async function writeSettings(settings: Settings): Promise<Settings> {
-  localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings));
-  return settings;
-}
-
-export class SettingsService {
   async save(settings: Settings): Promise<Settings> {
-    return await writeSettings(settings);
+    return await this.write(settings);
   }
 
   async settings() {
-    return await readSettings();
+    return await this.read();
   }
 }
