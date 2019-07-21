@@ -12,7 +12,7 @@ export class TasksService extends LocalStorageCrudService<ITask[]> {
     super(TASKS_KEY, defaultTasks);
   }
 
-  async all() {
-    return schedule(this.chronotype, ...(await super.all()));
+  async read() {
+    return schedule(this.chronotype, ...(await super.read()));
   }
 }

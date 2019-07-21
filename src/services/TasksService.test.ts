@@ -23,7 +23,7 @@ describe("The Tasks Service", () => {
     describe("When all() is called, it...", () => {
       let allResult: Todo[];
       beforeEach(async function() {
-        allResult = await tasksService.all();
+        allResult = await tasksService.read();
       });
 
       it("Returns the default tasks", () => {

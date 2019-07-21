@@ -5,7 +5,7 @@ import { IAppointment, defaultAppointments } from "../models/Appointment";
 export const APPOINTMENTS_KEY = "Whenner.Appointments";
 
 export class AppointmentsService extends LocalStorageCrudService<IAppointment[]> {
-  constructor(public chronotype: IChronotype) {
+  constructor() {
     super(APPOINTMENTS_KEY, defaultAppointments);
   }
 }

@@ -3,10 +3,17 @@ import { Id } from "../models/Todo";
 import { Time } from "../models/time";
 
 
-export class LocalStorageCrudService<T extends Array<Id>> extends LocalStorageService<T> {
+export interface CrudService<T extends Array<Id>> {
+  upsert<TItem extends Id>(item: TItem): Promise<TItem>;
+  byId<TItem extends Id>(id: number): Promise<TItem | undefined>;
+  byIds<TItem extends Id>(...ids: number[]): Promise<TItem[]>;
+  read(): Promise<T>;
+}
+
+export class LocalStorageCrudService<T extends Array<Id>> extends LocalStorageService<T> implements CrudService<T> {
 
   private async update<TItem extends Id>(item: Id): Promise<TItem | undefined> {
-    const items = await this.all();
+    const items = await this.read();
     const existing = items.find(existing => existing.id === item.id);
     if (existing) {
       items[items.indexOf(existing)] = { ...item };
@@ -22,7 +29,7 @@ export class LocalStorageCrudService<T extends Array<Id>> extends LocalStorageSe
         `Cannot insert todo with ID ${item.id} because it already exists`
       );
     }
-    const items = await this.all();
+    const items = await this.read();
     const insertTodo = { ...item, id: Time.now() };
     items.push(insertTodo);
     await this.write(items);
@@ -31,10 +38,6 @@ export class LocalStorageCrudService<T extends Array<Id>> extends LocalStorageSe
 
   constructor(key: string, defaultReadValue: T){
     super(key, defaultReadValue);
-  }
-
-  async all(): Promise<T> {
-    return await this.read();
   }
 
   async upsert<TItem extends Id>(item: TItem): Promise<TItem> {
@@ -46,7 +49,7 @@ export class LocalStorageCrudService<T extends Array<Id>> extends LocalStorageSe
   }
 
   async byIds<TItem extends Id>(...ids: number[]): Promise<TItem[]> {
-    const tasks = await this.all();
+    const tasks = await this.read();
     const result = ids.map(id => tasks.find(item => item.id === id)) || [];
     return result.filter(Boolean) as TItem[];
   }
