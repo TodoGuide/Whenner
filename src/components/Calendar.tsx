@@ -7,10 +7,6 @@ import BigCalendar, { stringOrDate } from "react-big-calendar";
 import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop";
 import { connect } from "react-redux";
 import { Dispatch, bindActionCreators } from "redux";
-import {
-  TasksResultActionThunk,
-  TaskActionThunk
-} from "../redux/todos/actions";
 import { Time } from "../models/time";
 import { loadTasks } from "../redux/todos/actions/loadTasks";
 import { upsertTask } from "../redux/todos/actions/upsertTask";
@@ -18,8 +14,9 @@ import { WhennerState } from "../redux";
 import { WhennerAction } from "../redux/common/actions";
 import { Chronotype } from "../models/Chronotype";
 import Toast from "react-bootstrap/Toast";
-import TaskModal from "./todo/TaskModal";
 import { Task, ITask, defaultTasks } from "../models/Task";
+import TodoModal from "./todo/TodoModal";
+import { TaskActionThunk, TasksResultActionThunk } from "../redux/todos/actions";
 
 moment.locale(navigator.language, {
   week: {
@@ -180,9 +177,9 @@ class Calendar extends React.Component<CalendarProps, CalendarState> {
           onDoubleClickEvent={this.handleTaskShowSelected}
         />
         {this.state.selectedTask ? (
-          <TaskModal
+          <TodoModal
             show={!!this.state.selectedTask}
-            task={this.state.selectedTask}
+            taskOrAppointment={this.state.selectedTask}
             onSaveTodo={this.handleTaskSave}
             onHide={this.handleTaskHideSelected}
           />
@@ -194,12 +191,12 @@ class Calendar extends React.Component<CalendarProps, CalendarState> {
 
 // Map application State to component props
 const mapStateToProps = ({
-  tasks: tasks,
+  schedule,
   loadsInProgress,
   settings: { chronotype }
 }: WhennerState): CalendarStateProps => {
   return {
-    tasks: tasks,
+    tasks: schedule.tasks,
     minTime: Time.earliest(
       Chronotype.getStartOf(Time.current(), chronotype),
       Time.current()

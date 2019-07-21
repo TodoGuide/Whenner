@@ -8,14 +8,14 @@ import {
   Button
 } from "react-bootstrap";
 import { Time } from "../../models/time";
-import { ITask, Task } from "../../models/Task";
+import { Task, ITask } from "../../models/Task";
 import { IAppointment } from "../../models/Appointment";
 import { Todo } from "../../models/Todo";
 import { TaskOrAppointment } from "../../models/Schedule";
 
 interface TaskModalProps extends ModalProps {
   taskOrAppointment?: TaskOrAppointment;
-  onSaveTodo: (taskOrAppointment: TaskOrAppointment) => void;
+  onSaveTodo: (task: ITask) => void;
 }
 
 type TodoModalState = {
@@ -81,7 +81,7 @@ export default class TodoModal extends React.Component<
   };
 
   handleSubmit = () => {
-    this.props.onSaveTodo(this.state.taskOrAppointment);
+    this.props.onSaveTodo(this.state.taskOrAppointment as ITask);
   }
 
   render() {
