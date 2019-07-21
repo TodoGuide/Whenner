@@ -21,6 +21,7 @@ import { Chronotype } from "../models/Chronotype";
 import Toast from "react-bootstrap/Toast";
 import TaskModal from "./todo/TaskModal";
 import { Task, ITask } from "../models/Task";
+import { IAppointment } from "../models/Appointment";
 
 moment.locale(navigator.language, {
   week: {
