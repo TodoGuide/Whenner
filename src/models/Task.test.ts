@@ -1,6 +1,6 @@
 import { customMatchers } from "../test/matchers";
 import { Time } from "./time";
-import { ITask, Task } from "./Task";
+import { ITask, Task, isTask } from "./Task";
 import moment from "moment";
 
 describe("A Task", () => {
@@ -94,7 +94,7 @@ describe("The isTask function", () => {
   });
 
   it("Returns false when not given a task", () => {
-    expect(isTask({ hello: "workd" })).toBeFalsy();
+    expect(isTask({ hello: "world" })).toBeFalsy();
   });
 
   it("Returns false when given an empty object", () => {

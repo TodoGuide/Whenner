@@ -83,3 +83,13 @@ export class Task implements ITask, EndEstimated, Period {
     return moment.duration(moment(end).diff(start)).asMinutes();
   }
 }
+
+export function isTask(thing: any){
+  try {
+    const taskProperties = Object.keys(new Task());
+    const thingProperties = Object.keys(thing);
+    return taskProperties.every(property => thingProperties.indexOf(property) >= 0)
+  }catch {
+    return false;
+  }
+}
