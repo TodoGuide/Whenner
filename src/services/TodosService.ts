@@ -16,7 +16,7 @@ export class TodosService implements CrudService<Todo[]> {
   upsert<TTodo extends Id>(todo: TTodo): Promise<TTodo> {
     if (isTask(todo)) {
       return this._tasksService.upsert(todo);
-    } else if (isAppointment) {
+    } else if (isAppointment(todo)) {
       return this._appointmentsService.upsert(todo);
     }
 
