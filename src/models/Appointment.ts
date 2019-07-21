@@ -23,3 +23,14 @@ export class Appointment implements IAppointment {
     this.end = new Date(this.end);
   }
 }
+
+export const defaultAppointments: Appointment[] = [
+  {
+    id: Time.now(),
+    title: "Call someone you love",
+    description: "Let them know how much you appreciate them",
+    priority: Time.now(),
+    start: Time.current(),
+    end: addHour(Time.current())
+  }
+]

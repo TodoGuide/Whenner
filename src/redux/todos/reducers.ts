@@ -1,7 +1,6 @@
 import { TasksResultAction, TaskAction } from "./actions";
-import { defaultTasks } from "../../services/TasksService";
 import { WhennerActionType } from "../common/actions";
-import { ITask } from "../../models/Task";
+import { ITask, defaultTasks } from "../../models/Task";
 
 export function tasks(
   tasks: ITask[] = defaultTasks,

@@ -1,4 +1,4 @@
-import { ITask, defaultTasks, Task } from "./Task";
+import { ITask, Task, defaultTasks } from "./Task";
 import { IAppointment, Appointment, defaultAppointments } from "./Appointment";
 import { Start } from "./time";
 

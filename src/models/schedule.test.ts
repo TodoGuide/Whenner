@@ -7,8 +7,20 @@ import { toAppointment, Schedule, toTask } from "./Schedule";
 describe("A Schedule", () => {
   describe("Given a task that can't completed before an appointment", () => {
     let schedule: Schedule;
-    const task: ITask = {};
-    const appointment: IAppointment = {};
+    const task: ITask = {
+      id: 1,
+      title: "Task",
+      description: "Description",
+      estimate: 20,
+      priority: Time.now() - 1
+    };
+    const appointment: IAppointment = {
+      id: 2,
+      title: "Appointment",
+      description: "Description",
+      start: Time.current(),
+      end: addHour(Time.current())
+    };
 
     beforeEach(() => {
       schedule = new Schedule({ appointments: [appointment], tasks: [task] });
@@ -70,10 +82,6 @@ describe("The toTask method", () => {
       estimate: 60
     });
     const actualTask = toTask(appointment);
-    expect(actualTask).toEqual({
-      ...expectedTask,
-      estimate: 60,
-      priority: Time.now()
-    });
+    expect(actualTask).toEqual(expectedTask);
   });
 });

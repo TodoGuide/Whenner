@@ -11,7 +11,6 @@ import {
   TasksResultActionThunk,
   TaskActionThunk
 } from "../redux/todos/actions";
-import { defaultTasks } from "../services/TasksService";
 import { Time } from "../models/time";
 import { loadTasks } from "../redux/todos/actions/loadTasks";
 import { upsertTask } from "../redux/todos/actions/upsertTask";
@@ -20,7 +19,7 @@ import { WhennerAction } from "../redux/common/actions";
 import { Chronotype } from "../models/Chronotype";
 import Toast from "react-bootstrap/Toast";
 import TaskModal from "./todo/TaskModal";
-import { Task, ITask } from "../models/Task";
+import { Task, ITask, defaultTasks } from "../models/Task";
 
 moment.locale(navigator.language, {
   week: {

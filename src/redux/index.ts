@@ -3,9 +3,8 @@ import { combineReducers } from "redux";
 import { tasks } from "./todos/reducers";
 import { Settings } from "../models/Settings";
 import { defaultSettings } from "../services/SettingsService";
-import { defaultTasks } from "../services/TasksService";
 import { loadsInProgress } from "./common/reducers"
-import { ITask } from "../models/Task";
+import { ITask, defaultTasks } from "../models/Task";
 
 // State //
 

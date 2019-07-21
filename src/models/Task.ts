@@ -83,3 +83,13 @@ export class Task implements ITask, EstimateByEnd, Period {
     return moment.duration(moment(end).diff(start)).asMinutes();
   }
 }
+
+export const defaultTasks: ITask[] = [
+  new Task({
+    id: 1,
+    title: "Get started with Whenner",
+    description: "Click stuff, learn how the app works",
+    estimate: 5,
+    priority: Time.now()
+  })
+];
