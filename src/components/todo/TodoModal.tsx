@@ -9,23 +9,26 @@ import {
 } from "react-bootstrap";
 import { Time } from "../../models/time";
 import { ITask, Task } from "../../models/Task";
+import { IAppointment } from "../../models/Appointment";
+import { Todo } from "../../models/Todo";
+import { TaskOrAppointment } from "../../models/Schedule";
 
 interface TaskModalProps extends ModalProps {
-  task?: ITask;
-  onSaveTodo: (task: ITask) => void;
+  taskOrAppointment?: TaskOrAppointment;
+  onSaveTodo: (taskOrAppointment: TaskOrAppointment) => void;
 }
 
 type TodoModalState = {
-  task: ITask;
+  taskOrAppointment: TaskOrAppointment;
 };
 
-export default class TaskModal extends React.Component<
+export default class TodoModal extends React.Component<
   TaskModalProps,
   TodoModalState
 > {
   constructor(props: TaskModalProps) {
     super(props);
-    this.state = { task: new Task(props.task) };
+    this.state = { taskOrAppointment: new Task(props.taskOrAppointment) };
   }
 
   readInput({
@@ -58,19 +61,19 @@ export default class TaskModal extends React.Component<
   ) => {
     const { propName } = this.propInfoFromTarget(event.currentTarget);
     if (propName === "done") {
-      const todo = new Task(this.state.task);
+      const todo = new Task(this.state.taskOrAppointment);
       todo.completed = this.readInput(event.currentTarget)
         ? Time.current()
         : undefined;
       this.setState({
         ...this.state,
-        task: todo
+        taskOrAppointment: todo
       });
     } else {
       this.setState({
         ...this.state,
-        task: {
-          ...this.state.task,
+        taskOrAppointment: {
+          ...this.state.taskOrAppointment,
           [propName]: this.readInput(event.currentTarget)
         }
       });
@@ -78,11 +81,11 @@ export default class TaskModal extends React.Component<
   };
 
   handleSubmit = () => {
-    this.props.onSaveTodo(this.state.task);
+    this.props.onSaveTodo(this.state.taskOrAppointment);
   }
 
   render() {
-    const { task: todo } = this.state;
+    const { taskOrAppointment: todo } = this.state;
     const { onSaveTodo, ...modalProps } = { ...this.props };
     return (
       <Modal {...modalProps}>
@@ -114,7 +117,7 @@ export default class TaskModal extends React.Component<
                   id={"todo-" + todo.id + "-estimate-int"}
                   type="text"
                   placeholder="How long will it take?"
-                  value={(todo.estimate || "0").toString()}
+                  // value={(todo.estimate || "0").toString()}
                   onChange={this.handleInputChange}
                 />
                 <InputGroup.Append>
