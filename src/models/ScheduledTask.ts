@@ -1,5 +1,5 @@
 import { IChronotype, Chronotype } from "./Chronotype";
-import { Time, Start, End, Estimated } from "./time";
+import { Time, Start, End, Estimated, laterOf } from "./time";
 import { Task, ITask } from "./Task";
 
 export class ScheduledTask extends Task implements ITask {
@@ -27,8 +27,7 @@ export class ScheduledTask extends Task implements ITask {
     { start }: Start,
     chronotype: Chronotype
   ) {
-    const dayStart = chronotype.startOf(start);
-    return start < dayStart ? dayStart : start;
+    return laterOf(chronotype.startOf(start), start);
   }
 
   /**
