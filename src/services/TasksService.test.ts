@@ -43,7 +43,6 @@ describe("The Tasks Service", () => {
 
       it("Inserts the provided Todo", async function() {
         const found = await tasksService.byId(upsertResult.id);
-        console.log("found", found);
         expect(found).toBeScheduledCopyOf(oneHourTask);
       });
     });

@@ -1,6 +1,7 @@
 import { IChronotype, Chronotype, defaultChronotype } from "./Chronotype";
 import { ScheduledTask } from "./ScheduledTask";
 import { Task, ITask } from "./Task";
+import { inPriorityOrder } from "./Todo";
 
 let lastChronotype = defaultChronotype;
 
@@ -9,7 +10,7 @@ export function schedule(chronotype: IChronotype, ...tasks: ITask[]): ITask[] {
     return tasks;
   }
 
-  const result: ITask[] = sortedTaskList(...tasks);
+  const result: ITask[] = inPriorityOrder(...tasks.map(t => new Task(t)));
   const chronotypeHelper = new Chronotype(chronotype);
   let lastIncomplete: Task | undefined = undefined;
   
@@ -26,10 +27,4 @@ export function schedule(chronotype: IChronotype, ...tasks: ITask[]): ITask[] {
 
 export function quickSchedule(...tasks: ITask[]): ITask[] {
   return schedule(lastChronotype, ...tasks);
-}
-
-export function sortedTaskList(...tasks: ITask[]){
-  return tasks
-    .map(task => new Task(task))
-    .sort((a, b) => a.priority - b.priority);
 }
