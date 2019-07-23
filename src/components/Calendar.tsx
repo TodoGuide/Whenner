@@ -119,7 +119,7 @@ class Calendar extends React.Component<CalendarProps, CalendarState> {
   render() {
     // const { todos } = this.state;
     const { schedule: { tasks }, minTime, maxTime, loading } = this.props;
-    console.log("Calendar.render", tasks);
+    // console.log("Calendar.render", tasks);
     return (
       <div>
         {loading ? (
