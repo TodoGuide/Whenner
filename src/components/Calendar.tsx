@@ -16,7 +16,7 @@ import { loadTasks } from "../redux/todos/actions/loadTasks";
 import { upsertTask } from "../redux/todos/actions/upsertTask";
 import { WhennerState } from "../redux";
 import { WhennerAction } from "../redux/common/actions";
-import { Chronotype } from "../models/Chronotype";
+import { Chronotype, defaultChronotype } from "../models/Chronotype";
 import Toast from "react-bootstrap/Toast";
 import TaskModal from "./todo/TaskModal";
 import { Task, ITask, defaultTasks } from "../models/Task";
@@ -118,7 +118,7 @@ class Calendar extends React.Component<CalendarProps, CalendarState> {
   render() {
     // const { todos } = this.state;
     const { schedule, minTime, maxTime, loading } = this.props;
-    const events = new Schedule(schedule).buildSchedule();
+    const events = new Schedule(defaultChronotype, schedule).buildSchedule();
     console.log("Calendar.render", events);
     return (
       <div>
@@ -157,13 +157,14 @@ class Calendar extends React.Component<CalendarProps, CalendarState> {
           onEventResize={({ event, start, end }) => {
             this.handleTaskSave({
               ...event,
+              priority: new Date(start).getTime(),
               estimate: moment
                 .duration(moment(end).diff(moment(start)))
                 .asMinutes()
             });
           }}
           onEventDrop={({ event, start }) => {
-            this.handleTaskSave({ ...event, start: start as Date });
+            this.handleTaskSave({ ...event, start: start as Date, priority: new Date(start).getTime(), });
           }}
           onSelectSlot={({ start, end }) => {
             start = new Date(start);

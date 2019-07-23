@@ -6,7 +6,7 @@ export interface IAppointment extends Todo, Period {
 }
 
 export class Appointment implements IAppointment {
-  completed?: Date;
+  _completed?: Date;
   description: string = "";
   end: Date = addHour(Time.current());
   id: number = Time.now();
@@ -22,6 +22,17 @@ export class Appointment implements IAppointment {
     this.start = new Date(this.start);
     this.end = new Date(this.end);
   }
+
+  get completed() {
+    if(!this._completed && this.end <= Time.current()){
+      this._completed = this.end;
+    }
+    return this._completed;
+  }
+
+  set completed(completed: Date | undefined){
+    this._completed = completed;
+  }
 }
 
 export const defaultAppointments: Appointment[] = [
@@ -30,7 +41,8 @@ export const defaultAppointments: Appointment[] = [
     title: "Call someone you love",
     description: "Let them know how much you appreciate them",
     priority: Time.now(),
-    start: Time.current(),
-    end: addHour(Time.current())
+    start: addHour(Time.current()),
+    end: addHour(addHour(Time.current())),
+    completed: undefined
   }
 ]
