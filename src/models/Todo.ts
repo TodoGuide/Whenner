@@ -26,6 +26,6 @@ export interface Todo extends Article, Priority {
 
 export interface EstimatedTodo extends Todo, Estimated {}
 
-export function inPriorityOrder(...priorities: Priority[]) {
+export function inPriorityOrder<T extends Priority>(...priorities: T[]) {
   return priorities.sort((a, b) => a.priority - b.priority);
 }
