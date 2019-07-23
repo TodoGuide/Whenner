@@ -11,12 +11,12 @@ import {
   TasksResultActionThunk,
   TaskActionThunk
 } from "../redux/todos/actions";
-import { Time } from "../models/time";
+import { Time } from "../models/Time";
 import { loadTasks } from "../redux/todos/actions/loadTasks";
 import { upsertTask } from "../redux/todos/actions/upsertTask";
 import { WhennerState } from "../redux";
 import { WhennerAction } from "../redux/common/actions";
-import { Chronotype, defaultChronotype } from "../models/Chronotype";
+import { Chronotype, defaultChronotype, IChronotype } from "../models/Chronotype";
 import Toast from "react-bootstrap/Toast";
 import TaskModal from "./todo/TaskModal";
 import { Task, ITask, defaultTasks } from "../models/Task";
@@ -45,6 +45,7 @@ interface CalendarOwnState {
  */
 interface CalendarStateProps {
   schedule: ISchedule;
+  chronotype: IChronotype;
   loading: boolean;
   minTime: Date;
   maxTime: Date;
@@ -118,7 +119,7 @@ class Calendar extends React.Component<CalendarProps, CalendarState> {
   render() {
     // const { todos } = this.state;
     const { schedule, minTime, maxTime, loading } = this.props;
-    const events = new Schedule(defaultChronotype, schedule).buildSchedule();
+    const events = new Schedule(this.props.chronotype, schedule).todos.map(t => new Task(t));
     console.log("Calendar.render", events);
     return (
       <div>
@@ -203,6 +204,7 @@ const mapStateToProps = ({
 }: WhennerState): CalendarStateProps => {
   return {
     schedule,
+    chronotype,
     minTime: Time.earliest(
       Chronotype.getStartOf(Time.current(), chronotype),
       Time.current()

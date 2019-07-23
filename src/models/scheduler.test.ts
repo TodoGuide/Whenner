@@ -1,4 +1,4 @@
-import { Time } from "./time";
+import { Time } from "./Time";
 import { schedule } from "./scheduler";
 import moment from "moment";
 import { oneHourTask, twoHourTask } from "../test/data";

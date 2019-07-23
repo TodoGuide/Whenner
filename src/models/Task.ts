@@ -1,4 +1,4 @@
-import { Time, StartEstimated, Period, EndEstimated, Estimated } from "./time";
+import { Time, StartEstimated, Period, EndEstimated, Estimated } from "./Time";
 import { Todo, EstimatedTodo } from "./Todo";
 import moment, { Duration } from "moment";
 

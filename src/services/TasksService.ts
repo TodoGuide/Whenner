@@ -1,6 +1,6 @@
 import { IChronotype } from "../models/Chronotype";
 import { schedule } from "../models/scheduler";
-import { Time } from "../models/time";
+import { Time } from "../models/Time";
 import { ITask, defaultTasks } from "../models/Task";
 
 export const TASKS_KEY = "Whenner.Tasks";

@@ -1,5 +1,5 @@
 import { Todo } from "./Todo";
-import { Period, Time, addHour } from "./time";
+import { Period, Time, addHour } from "./Time";
 
 export interface IAppointment extends Todo, Period {
 

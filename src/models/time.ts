@@ -1,4 +1,4 @@
-
+const MILLISECONDS_PER_MINUTE = 60000;
 const MILLISECONDS_PER_HOUR = 3600000;
 const MILLISECONDS_PER_DAY = 86400000;
 
@@ -30,6 +30,10 @@ export interface Start {
   start: Date;
 }
 
+export function inStartOrder<T extends Start>(...starts: T[]) {
+  return starts.sort((a, b) => a.start.getTime() - b.start.getTime());
+}
+
 export interface End {
   end: Date;
 }
@@ -42,6 +46,21 @@ export type StartEstimated = Start & Estimated;
 export type EndEstimated = End & Estimated;
 export type Period = Start & End;
 
-export function addHour(toDate: Date){
+export function periodsOverlap(period1: Period, period2: Period) {
+  return (
+    (period1.start < period2.start && period1.end > period2.start) ||
+    (period1.start > period2.start && period1.start < period2.end)
+  );
+}
+
+export function addHour(toDate: Date) {
   return new Date(toDate.getTime() + MILLISECONDS_PER_HOUR);
+}
+
+export function add30Minutes(toDate: Date) {
+  return new Date(toDate.getTime() + MILLISECONDS_PER_MINUTE * 30);
+}
+
+export function laterOf(date1: Date, date2: Date) {
+  return date1 < date2 ? date2 : date1;
 }

@@ -1,7 +1,7 @@
 import { Store } from "./store";
 import { Store as ReduxStore } from "redux";
 import { customMatchers } from "../test/matchers";
-import { Time } from "../models/time";
+import { Time } from "../models/Time";
 import { WhennerState, initialState } from ".";
 import { WhennerAction } from "./common/actions";
 import { defaultTasks } from "../models/Task";

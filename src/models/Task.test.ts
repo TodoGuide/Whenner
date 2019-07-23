@@ -1,5 +1,5 @@
 import { customMatchers } from "../test/matchers";
-import { Time } from "./time";
+import { Time } from "./Time";
 import { ITask, Task, isTask } from "./Task";
 import moment from "moment";
 

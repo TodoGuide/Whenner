@@ -3,7 +3,7 @@ import { Todo } from "../models/Todo";
 import { oneHourTask } from "../test/data";
 import { customMatchers } from "../test/matchers";
 import { defaultChronotype } from "../models/Chronotype";
-import { Time } from "../models/time";
+import { Time } from "../models/Time";
 import { defaultTasks } from "../models/Task";
 
 describe("The Tasks Service", () => {
@@ -43,7 +43,6 @@ describe("The Tasks Service", () => {
 
       it("Inserts the provided Todo", async function() {
         const found = await tasksService.byId(upsertResult.id);
-        console.log("found", found);
         expect(found).toBeScheduledCopyOf(oneHourTask);
       });
     });
