@@ -35,8 +35,6 @@ export class Schedule implements ISchedule {
       ...tasks.map(task => new Task(task))
     );
 
-    console.log("First task in stack", this.tasks[0]);
-
     this.todos = Schedule.mutations.scheduleTasks(
       this.chronotype,
       this.appointments,
@@ -86,7 +84,12 @@ export class Schedule implements ISchedule {
         // Only stack incomplete Tasks
 
         if (!current.completed) {
-          start = latestOf(start, chronotype.startOf(start), (lastIncomplete || { end: start }).end)
+          start = latestOf(
+            start,
+            chronotype.startOf(start),
+            (lastIncomplete || { end: start }).end
+          );
+
           current.priority = start.getTime();
 
           if (
@@ -110,8 +113,18 @@ export class Schedule implements ISchedule {
       tasks: Task[]
     ) {
       const result = inPriorityOrder(...[...appointments, ...tasks]);
+
+      let lastAppointmentIndex = 0;
+      const isAppointment = (todo: any) => {
+        const index = appointments.indexOf(todo, lastAppointmentIndex);
+        if(index >= 0){
+          lastAppointmentIndex = index;
+          return true;
+        }
+        return false;
+      };
+
       for (let i = 0; i < result.length; i++) {
-        const isAppointment = (todo: any) => appointments.indexOf(todo, i) >= 0;
         const current = result[i];
         const next = result[i + 1];
 
@@ -122,13 +135,15 @@ export class Schedule implements ISchedule {
 
         // `current` is an incomplete Task
 
-        console.log("checking next and periods overlap", { current, next });
         if (next && periodsOverlap(current, next)) {
-          console.log("next and periods overlap", { current, next });
           const nextStartDate = isAppointment(next) ? next.end : current.start;
           const currentTaskIndex = tasks.indexOf(current as any);
           const remainingTasks = tasks.slice(currentTaskIndex);
-          Schedule.mutations.stackTasks(nextStartDate, chronotype, ...remainingTasks);
+          Schedule.mutations.stackTasks(
+            nextStartDate,
+            chronotype,
+            ...remainingTasks
+          );
         }
       }
 
