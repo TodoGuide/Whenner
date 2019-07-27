@@ -82,26 +82,26 @@ export class Schedule implements ISchedule {
         lastIncomplete =
           previous && previous.completed ? lastIncomplete : previous;
 
-        // Only stack incomplete Tasks
+        if (current.completed) {
+          // Only stack incomplete Tasks
+          continue;
+        }
 
-        if (!current.completed) {
-          start = latestOf(
-            start,
-            chronotype.startOf(start),
-            (lastIncomplete || { end: start }).end
-          );
+        start = latestOf(
+          start,
+          chronotype.startOf(start),
+          (lastIncomplete || { end: start }).end
+        );
 
+        current.priority = start.getTime();
+
+        if (
+          !Schedule.canBeCompletedSameDay(current, chronotype) &&
+          Schedule.canBeCompletedWithinOneDay(current, chronotype)
+        ) {
+          // Task cannot be completed today, so move it to tomorrow
+          start = chronotype.startOf(Time.dayAfter(start));
           current.priority = start.getTime();
-
-          if (
-            !Schedule.canBeCompletedSameDay(current, chronotype) &&
-            Schedule.canBeCompletedWithinOneDay(current, chronotype)
-          ) {
-            // Task cannot be completed today, so move it to tomorrow
-            current.priority = chronotype
-              .startOf(new Date(current.priority))
-              .getTime();
-          }
         }
       }
 
@@ -118,7 +118,7 @@ export class Schedule implements ISchedule {
       let lastAppointmentIndex = 0;
       const isAppointment = (todo: any) => {
         const index = appointments.indexOf(todo, lastAppointmentIndex);
-        if(index >= 0){
+        if (index >= 0) {
           lastAppointmentIndex = index;
           return true;
         }
