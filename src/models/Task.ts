@@ -1,4 +1,4 @@
-import { Time, StartEstimated, Period, EndEstimated, Estimated } from "./Time";
+import { Time, StartEstimated, Period, EndEstimated, Estimated, period, estimated } from "./Time";
 import { Todo, EstimatedTodo } from "./Todo";
 import moment, { Duration } from "moment";
 
@@ -20,6 +20,11 @@ export class Task implements ITask, EndEstimated, Period {
     this.priority = new Date(this.start || this.priority || Time.now()).getTime();
     if (this._completed) {
       this._completed = new Date(this._completed);
+    }
+
+    const todoPeriod = period(todo);
+    if(todoPeriod && !estimated(todo)){
+      this.estimate = Task.periodToEstimate(todoPeriod);
     }
   }
 
