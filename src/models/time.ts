@@ -13,7 +13,7 @@ export const Time = {
   dayAfterTomorrow: () =>
     new Date(Time.tomorrow().getTime() + MILLISECONDS_PER_DAY),
   dayAfter: (date: Date) =>
-    new Date(date.setHours(0, 0, 0, 0) + MILLISECONDS_PER_DAY),
+    new Date(new Date(date).setHours(0, 0, 0, 0) + MILLISECONDS_PER_DAY),
 
   earliest: (...dates: Date[]) =>
     dates.reduce((prev, current) => (current < prev ? current : prev)),
@@ -61,6 +61,8 @@ export function add30Minutes(toDate: Date) {
   return new Date(toDate.getTime() + MILLISECONDS_PER_MINUTE * 30);
 }
 
-export function laterOf(date1: Date, date2: Date) {
-  return date1 < date2 ? date2 : date1;
+export function latestOf(...dates: Date[]) {
+  return dates.reduce(function(date1, date2) {
+    return date1 > date2 ? date1 : date2;
+  });
 }
