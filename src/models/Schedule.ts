@@ -1,6 +1,6 @@
 import { IAppointment, defaultAppointments, Appointment } from "./Appointment";
 import { ITask, defaultTasks, Task } from "./Task";
-import { Chronotype, IChronotype } from "./Chronotype";
+import { Chronotype, IChronotype, defaultChronotype } from "./Chronotype";
 import {
   latestOf,
   Time,
@@ -13,16 +13,17 @@ import { inPriorityOrder } from "./Todo";
 
 export interface ISchedule {
   readonly appointments: IAppointment[];
+  readonly chronotype: IChronotype;
   readonly tasks: ITask[];
 }
 
 export class Schedule implements ISchedule {
   readonly appointments: Appointment[];
-  readonly tasks: Task[];
   readonly chronotype: Chronotype;
+  readonly tasks: Task[];
   readonly todos: Array<Appointment | Task>;
 
-  constructor(chronotype: IChronotype, { appointments, tasks }: ISchedule) {
+  constructor({ chronotype, appointments, tasks }: ISchedule) {
     this.chronotype = new Chronotype(chronotype);
 
     this.appointments = inStartOrder(
@@ -153,6 +154,7 @@ export class Schedule implements ISchedule {
 }
 
 export const defaultSchedule: ISchedule = {
-  tasks: defaultTasks,
-  appointments: defaultAppointments
+  chronotype: defaultChronotype,
+  appointments: defaultAppointments,
+  tasks: defaultTasks
 };

@@ -25,7 +25,7 @@ import { ISchedule, Schedule } from "../models/Schedule";
 moment.locale(navigator.language, {
   week: {
     // Always start the week "today"
-    dow: Time.current().getDay(),
+    dow: Time.yesterday().getDay(),
     doy: 1
   }
 });
@@ -45,7 +45,6 @@ interface CalendarOwnState {
  */
 interface CalendarStateProps {
   schedule: ISchedule;
-  chronotype: IChronotype;
   loading: boolean;
   minTime: Date;
   maxTime: Date;
@@ -119,7 +118,7 @@ class Calendar extends React.Component<CalendarProps, CalendarState> {
   render() {
     // const { todos } = this.state;
     const { schedule, minTime, maxTime, loading } = this.props;
-    const events = new Schedule(this.props.chronotype, schedule).todos.map(t => new Task(t));
+    const events = new Schedule(schedule).todos.map(t => new Task(t));
     console.log("Calendar.render", events);
     return (
       <div>
@@ -204,7 +203,6 @@ const mapStateToProps = ({
 }: WhennerState): CalendarStateProps => {
   return {
     schedule,
-    chronotype,
     minTime: Time.earliest(
       Chronotype.getStartOf(Time.current(), chronotype),
       Time.current()
