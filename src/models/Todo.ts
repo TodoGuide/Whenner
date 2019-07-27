@@ -19,7 +19,7 @@ export interface Priority {
 }
 
 export interface Todo extends Article, Priority {
-  priority: number;
+  priority: number; // TODO: Only tasks should have priority
   completed?: Date;
   // Predecessors: number[];
 }

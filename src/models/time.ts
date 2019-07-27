@@ -46,6 +46,22 @@ export type StartEstimated = Start & Estimated;
 export type EndEstimated = End & Estimated;
 export type Period = Start & End;
 
+export function period(item: any): Period | undefined {
+  if(item && item.start && item.end){
+    return item;
+  }
+
+  return undefined;
+}
+
+export function estimated(item: any): Estimated | undefined {
+  if(item && item.estimate){
+    return item;
+  }
+
+  return undefined;
+}
+
 export function periodsOverlap(period1: Period, period2: Period) {
   return (
     (period1.start < period2.start && period1.end > period2.start) ||
