@@ -1,7 +1,8 @@
+import { IAppointment } from "./Appointment";
 import { customMatchers } from "../test/matchers";
-import { Time } from "./Time";
+import { Time, addHour, add30Minutes } from "./Time";
 import { ITask, Task, isTask } from "./Task";
-import moment from "moment";
+import moment from "moment"
 
 describe("A Task", () => {
   beforeEach(() => {
@@ -82,6 +83,48 @@ describe("A Task", () => {
       });
     });
   });
+
+  describe("Given an IAppointment", () => {
+    let iappointment: IAppointment;
+    beforeEach(() => {
+      iappointment = {
+        id: 1,
+        title: "IAppointment Instance",
+        description: "This is a valid instance of an IAppointment",
+        priority: Time.current().getTime(),
+        start: Time.current(),
+        end: add30Minutes(Time.current())
+      };
+    });
+
+    describe("When the instance is passed to the Task constructor, it...", () => {
+      let task: Task;
+      beforeEach(() => {
+        task = new Task(iappointment);
+      });
+
+      it("Assigns the ITask instance properties to the Task instance", () => {
+        const { description, estimate, id, start, title, priority, end } = task;
+        expect({
+          description,
+          estimate: estimate || "none",
+          id,
+          start,
+          title,
+          priority,
+          end
+        }).toEqual({ ...iappointment, estimate: Task.periodToEstimate(iappointment) });
+      });
+
+      it("Sets the End date based on the Start and Estimate", () => {
+        expect(task.end).toEqual(iappointment.end);
+      });
+
+      it("Sets the Priority based on the Start", () => {
+        expect(task.priority).toEqual(Time.now());
+      });
+    });
+  });
 });
 
 describe("The isTask function", () => {
@@ -90,7 +133,7 @@ describe("The isTask function", () => {
   });
 
   it("Returns true when given a task with extra properties", () => {
-    expect(isTask({...new Task(), extraProp: "Hello!"})).toBeTruthy();
+    expect(isTask({ ...new Task(), extraProp: "Hello!" })).toBeTruthy();
   });
 
   it("Returns false when not given a task", () => {
