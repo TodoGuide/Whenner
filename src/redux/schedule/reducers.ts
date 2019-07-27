@@ -21,10 +21,12 @@ import { TasksResultAction, TaskAction } from "../todos/actions";
       return action.tasks;
     case WhennerActionType.InsertTaskSuccess:
       // return quickSchedule(...[...tasks, new Todo(action.todo)]);
+      break;
     case WhennerActionType.UpdateTaskSuccess:
       // return tasks.map(todo =>
       //   todo.id === action.todo.id ? action.todo : todo
       // );
+      break;
     default:
       break;
   }

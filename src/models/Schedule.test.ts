@@ -35,6 +35,7 @@ describe("Schedule Mutations", () => {
       beforeEach(() => {
         Schedule.mutations.stackTasks(
           Time.current(),
+          new Chronotype(defaultChronotype),
           incompleteTask1,
           incompleteTask2
         );

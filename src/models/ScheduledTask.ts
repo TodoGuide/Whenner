@@ -1,6 +1,7 @@
 import { IChronotype, Chronotype } from "./Chronotype";
-import { Time, Start, End, Estimated, laterOf } from "./Time";
+import { Time, Start, latestOf } from "./Time";
 import { Task, ITask } from "./Task";
+import { Schedule } from "./Schedule";
 
 export class ScheduledTask extends Task implements ITask {
   constructor(
@@ -27,24 +28,7 @@ export class ScheduledTask extends Task implements ITask {
     { start }: Start,
     chronotype: Chronotype
   ) {
-    return laterOf(chronotype.startOf(start), start);
-  }
-
-  /**
-   * Determines if the todo can be completed as-scheduled based on the provided Chronotype
-   */
-  private static canBeCompletedSameDay({ end }: End, chronotype: Chronotype) {
-    return end <= chronotype.endOf(end);
-  }
-
-  /**
-   * Determines if the todo can be within the a single Chronotype period
-   */
-  private static canBeCompletedWithinOneDay(
-    { estimate }: Estimated,
-    { minutes }: Chronotype
-  ) {
-    return estimate <= minutes;
+    return latestOf(chronotype.startOf(start), start);
   }
 
   /**
@@ -77,8 +61,8 @@ export class ScheduledTask extends Task implements ITask {
     const estimated = { ...current, start: candidateStart };
     const candidateEnd = Task.calculateEnd(estimated);
     const result =
-      !ScheduledTask.canBeCompletedSameDay({ end: candidateEnd }, chronotype) &&
-      ScheduledTask.canBeCompletedWithinOneDay(estimated, chronotype)
+      !Schedule.canBeCompletedSameDay({ end: candidateEnd }, chronotype) &&
+      Schedule.canBeCompletedWithinOneDay(estimated, chronotype)
         ? ScheduledTask.earliestStartDatePermitted(
             {
               start: Time.dayAfter(candidateStart)

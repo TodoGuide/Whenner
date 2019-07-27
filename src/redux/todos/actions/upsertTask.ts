@@ -1,4 +1,3 @@
-import { Todo } from "../../../models/Todo";
 import { TaskAction, TaskActionThunk } from ".";
 import { Dispatch } from "redux";
 import { tasksService } from "../../../services/services";
