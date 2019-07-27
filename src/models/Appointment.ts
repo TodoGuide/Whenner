@@ -10,7 +10,6 @@ export class Appointment implements IAppointment {
   description: string = "";
   end: Date = addHour(Time.current());
   id: number = Time.now();
-  priority: number = Time.now();
   start: Date = Time.current();
   title: string = "";
 
@@ -19,7 +18,7 @@ export class Appointment implements IAppointment {
 
     // JavaScript stores dates as strings when serializing,
     // so re-construct in case we received a string
-    this.start = new Date(this.start);
+    this.start = new Date(this.start || this.priority);
     this.end = new Date(this.end);
   }
 
@@ -33,6 +32,15 @@ export class Appointment implements IAppointment {
   set completed(completed: Date | undefined){
     this._completed = completed;
   }
+
+  get priority() {
+    console.log("Appointment, read priority", this.start.getDate());
+    return this.start.getTime();
+  }
+
+  set priority(priority: number) {
+    this.start = new Date(priority);
+  }
 }
 
 export const defaultAppointments: Appointment[] = [
@@ -40,7 +48,7 @@ export const defaultAppointments: Appointment[] = [
     id: Time.now(),
     title: "Call someone you love",
     description: "Let them know how much you appreciate them",
-    priority: Time.now(),
+    priority: addHour(Time.current()).getTime(),
     start: addHour(Time.current()),
     end: addHour(addHour(Time.current())),
     completed: undefined
