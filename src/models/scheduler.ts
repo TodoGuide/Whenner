@@ -23,7 +23,3 @@ export function schedule(chronotype: Chronotype, ...tasks: ITask[]): ITask[] {
   lastChronotype = chronotype;
   return result;
 }
-
-export function quickSchedule(...tasks: ITask[]): ITask[] {
-  return schedule(lastChronotype, ...tasks);
-}
