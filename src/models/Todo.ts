@@ -18,8 +18,7 @@ export interface Priority {
   readonly priority: number;
 }
 
-export interface Todo extends Article, Priority {
-  readonly priority: number; // TODO: Only tasks should have priority
+export interface Todo extends Article {
   readonly completed?: Date;
   // Predecessors: number[];
 }

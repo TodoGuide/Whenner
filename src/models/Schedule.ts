@@ -18,6 +18,9 @@ export interface ISchedule {
 
 // function scheduleBuilder(schedule: ISchedule) {
 
+//   const appointments = inStartOrder(...schedule.appointments);
+//   const tasks = inPriorityOrder(...schedule.tasks);
+
 //   return function (): Array<Appointment | Task> {
 
 //   }

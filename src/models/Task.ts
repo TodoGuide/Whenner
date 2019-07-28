@@ -1,10 +1,10 @@
 import { Time } from "./time";
 import { Period, period } from "./time/Period";
 import { StartEstimated, EndEstimated, Estimated, estimated } from "./time/Estimated";
-import { Todo, EstimatedTodo } from "./Todo";
+import { Todo, EstimatedTodo, Priority } from "./Todo";
 import moment, { Duration } from "moment";
 
-export interface ITask extends Todo, StartEstimated {}
+export interface ITask extends Todo, Priority, StartEstimated {}
 
 export class Task implements ITask, EndEstimated, Period {
   private _completed?: Date;
