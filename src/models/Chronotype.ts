@@ -9,8 +9,8 @@ import { Period } from "./Time";
  * @interface Chronotype
  */
 export interface IChronotype {
-  start: Duration;
-  end: Duration;
+  readonly start: Duration;
+  readonly end: Duration;
 }
 
 export const defaultChronotype: IChronotype = {

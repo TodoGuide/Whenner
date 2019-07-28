@@ -13,5 +13,5 @@ export enum WhennerActionType {
 }
 
 export interface WhennerAction extends AnyAction {
-  type: WhennerActionType;
+  readonly type: WhennerActionType;
 }

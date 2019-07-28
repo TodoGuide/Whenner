@@ -7,7 +7,7 @@ import { ITask } from "../../../models/Task";
 //   This will allow bindActionCreators to return the proper signature/type.
 
 export interface TaskAction extends WhennerAction {
-  task: ITask;
+  readonly task: ITask;
 }
 
 export interface TaskActionThunk {
@@ -15,7 +15,7 @@ export interface TaskActionThunk {
 }
 
 export interface TasksResultAction extends WhennerAction {
-  tasks: ITask[];
+  readonly tasks: ITask[];
 }
 
 export interface TasksResultActionThunk {

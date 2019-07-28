@@ -17,6 +17,13 @@ export interface ISchedule {
   readonly tasks: ITask[];
 }
 
+// function scheduleBuilder(schedule: ISchedule) {
+
+//   return function (): Array<Appointment | Task> {
+
+//   }
+// }
+
 export class Schedule implements ISchedule {
   readonly appointments: Appointment[];
   readonly chronotype: Chronotype;

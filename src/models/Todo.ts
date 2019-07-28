@@ -1,26 +1,26 @@
 import { Estimated } from "./Time";
 
 export interface Id {
-  id: number;
+  readonly id: number;
 }
 
 export interface Title {
-  title: string;
+  readonly title: string;
 }
 
 export interface Description {
-  description: string;
+  readonly description: string;
 }
 
 export interface Article extends Id, Title, Description {}
 
 export interface Priority {
-  priority: number;
+  readonly priority: number;
 }
 
 export interface Todo extends Article, Priority {
-  priority: number; // TODO: Only tasks should have priority
-  completed?: Date;
+  readonly priority: number; // TODO: Only tasks should have priority
+  readonly completed?: Date;
   // Predecessors: number[];
 }
 

@@ -31,7 +31,7 @@ export const Time = {
 };
 
 export interface Start {
-  start: Date;
+  readonly start: Date;
 }
 
 export function inStartOrder<T extends Start>(...starts: T[]) {
@@ -39,11 +39,11 @@ export function inStartOrder<T extends Start>(...starts: T[]) {
 }
 
 export interface End {
-  end: Date;
+  readonly end: Date;
 }
 
 export interface Estimated {
-  estimate: number;
+  readonly estimate: number;
 }
 
 export type StartEstimated = Start & Estimated;

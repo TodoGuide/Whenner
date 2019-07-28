@@ -6,8 +6,8 @@ import { ISchedule, defaultSchedule } from "../models/Schedule";
 // State //
 
 export interface WhennerState {
-  schedule: ISchedule;
-  loadsInProgress: number;
+  readonly schedule: ISchedule;
+  readonly loadsInProgress: number;
   // appointments: IAppointment[];
 }
 
