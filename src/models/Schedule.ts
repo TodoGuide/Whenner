@@ -11,7 +11,7 @@ import { Time } from "./time";
 import { periodsOverlap } from "./time/Period";
 import { Estimated } from "./time/Estimated";
 import { End } from "./time/End";
-import { inStartOrder } from "./time/Start";
+import { orderByStart, Start } from "./time/Start";
 import { latestOf } from "./time/utils";
 import { prioritize } from "./Priority";
 
@@ -40,7 +40,7 @@ export class Schedule implements ISchedule {
   constructor({ chronotype, appointments, tasks }: ISchedule) {
     this.chronotype = chronotype;
 
-    this.appointments = inStartOrder(
+    this.appointments = orderByStart(
       ...appointments.map(appointment => new Appointment(appointment))
     );
 

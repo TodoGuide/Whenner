@@ -18,3 +18,19 @@ export const Time = {
     Time.now = () => to.getTime();
   }
 };
+
+/**
+ * A function that takes an object and returns a start date
+ */
+export interface Dater<T = {}> { 
+  (item: T): Date;
+}
+
+/**
+ * The given set of objects, ordered by their date
+ * @param dater The Dater function
+ * @param items The items to order
+ */
+export function orderByDate<T>(dater: Dater<T>, ...items: T[]) {
+  return items.sort((a, b) => dater(a).getTime() - dater(b).getTime());
+}
