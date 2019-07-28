@@ -1,4 +1,5 @@
 import { Estimated } from "./time/Estimated";
+import { Priority, Prioritizer } from "./Priority";
 
 export interface Id {
   readonly id: number;
@@ -14,17 +15,9 @@ export interface Description {
 
 export interface Article extends Id, Title, Description {}
 
-export interface Priority {
-  readonly priority: number;
-}
-
 export interface Todo extends Article {
   readonly completed?: Date;
   // Predecessors: number[];
 }
 
 export interface EstimatedTodo extends Todo, Estimated {}
-
-export function inPriorityOrder<T extends Priority>(...priorities: T[]) {
-  return priorities.sort((a, b) => a.priority - b.priority);
-}

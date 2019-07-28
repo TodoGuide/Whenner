@@ -1,14 +1,19 @@
 import { IAppointment, defaultAppointments, Appointment } from "./Appointment";
-import { ITask, defaultTasks, Task } from "./Task";
-import { Chronotype, defaultChronotype, startOf, endOf, lengthInMinutes } from "./Chronotype";
+import { ITask, defaultTasks, Task, taskPrioritizer } from "./Task";
 import {
-  Time} from "./time";
+  Chronotype,
+  defaultChronotype,
+  startOf,
+  endOf,
+  lengthInMinutes
+} from "./Chronotype";
+import { Time } from "./time";
 import { periodsOverlap } from "./time/Period";
 import { Estimated } from "./time/Estimated";
 import { End } from "./time/End";
 import { inStartOrder } from "./time/Start";
-import { inPriorityOrder } from "./Todo";
 import { latestOf } from "./time/utils";
+import { prioritize } from "./Priority";
 
 export interface ISchedule {
   readonly appointments: IAppointment[];
@@ -114,7 +119,7 @@ export class Schedule implements ISchedule {
         }
       }
 
-      return inPriorityOrder(...tasks);
+      return prioritize(taskPrioritizer, ...tasks);
     },
 
     scheduleTasks: function(
@@ -122,7 +127,10 @@ export class Schedule implements ISchedule {
       appointments: Appointment[],
       tasks: Task[]
     ) {
-      const result = inPriorityOrder(...[...appointments, ...tasks]);
+      const result = prioritize(
+        (item: Appointment | Task) => item.start.getTime(),
+        ...[...appointments, ...tasks]
+      );
 
       let lastAppointmentIndex = 0;
       const isAppointment = (todo: any) => {

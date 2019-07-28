@@ -1,7 +1,8 @@
 import { Time } from "./time";
 import { Period, period } from "./time/Period";
 import { StartEstimated, EndEstimated, Estimated, estimated } from "./time/Estimated";
-import { Todo, EstimatedTodo, Priority } from "./Todo";
+import { Todo, EstimatedTodo } from "./Todo";
+import { Priority, prioritizer } from "./Priority";
 import moment, { Duration } from "moment";
 
 export interface ITask extends Todo, Priority, StartEstimated {}
@@ -100,6 +101,8 @@ export function isTask(thing: any){
     return false;
   }
 }
+
+export const taskPrioritizer = prioritizer;
 
 export const defaultTasks: ITask[] = [
   new Task({
