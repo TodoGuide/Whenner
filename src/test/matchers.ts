@@ -1,4 +1,4 @@
-import { Time } from "../models/Time";
+import { Time } from "../models/time";
 import { Task } from "../models/Task";
 
 export const customMatchers = {

@@ -2,14 +2,13 @@ import { IAppointment, defaultAppointments, Appointment } from "./Appointment";
 import { ITask, defaultTasks, Task } from "./Task";
 import { Chronotype, IChronotype, defaultChronotype } from "./Chronotype";
 import {
-  latestOf,
-  Time,
-  periodsOverlap,
-  inStartOrder,
-  End,
-  Estimated
-} from "./Time";
+  Time} from "./time";
+import { periodsOverlap } from "./time/Period";
+import { Estimated } from "./time/Estimated";
+import { End } from "./time/End";
+import { inStartOrder } from "./time/Start";
 import { inPriorityOrder } from "./Todo";
+import { latestOf } from "./time/utils";
 
 export interface ISchedule {
   readonly appointments: IAppointment[];

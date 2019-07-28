@@ -4,7 +4,8 @@ import { Schedule } from "./Schedule";
 import { oneHourTask, twoHourTask, threeHourTask } from "./../test/data";
 import { defaultChronotype, Chronotype } from "./Chronotype";
 import { Task } from "./Task";
-import { Time, add30Minutes, addHour } from "./Time";
+import { Time } from "./time";
+import { add30Minutes } from "./time/utils";
 // describe("A Schedule", () => {
 
 // });

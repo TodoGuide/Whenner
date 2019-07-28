@@ -1,8 +1,9 @@
 import { IAppointment } from "./Appointment";
 import { customMatchers } from "../test/matchers";
-import { Time, addHour, add30Minutes } from "./Time";
+import { Time } from "./time";
 import { ITask, Task, isTask } from "./Task";
 import moment from "moment"
+import { add30Minutes } from "./time/utils";
 
 describe("A Task", () => {
   beforeEach(() => {

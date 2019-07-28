@@ -1,7 +1,8 @@
 import { customMatchers } from "../test/matchers";
-import { Time, addHour } from "./Time";
+import { Time } from "./time";
 import { Todo } from "./Todo";
 import { Appointment } from "./Appointment";
+import { addHour } from "./time/utils";
 
 describe("An Appointment", () => {
   beforeEach(() => {

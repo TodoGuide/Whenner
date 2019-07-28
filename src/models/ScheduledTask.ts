@@ -1,7 +1,9 @@
 import { IChronotype, Chronotype } from "./Chronotype";
-import { Time, Start, latestOf } from "./Time";
+import { Time } from "./time";
+import { Start } from "./time/Start";
 import { Task, ITask } from "./Task";
 import { Schedule } from "./Schedule";
+import { latestOf } from "./time/utils";
 
 export class ScheduledTask extends Task implements ITask {
   constructor(

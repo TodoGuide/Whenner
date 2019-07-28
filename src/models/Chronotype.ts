@@ -1,6 +1,6 @@
 import moment from "moment";
 import { Duration } from "moment";
-import { Period } from "./Time";
+import { Period } from "./time/Period";
 
 /**
  * The typical period of time during which Todos can be completed.
@@ -20,8 +20,8 @@ export const defaultChronotype: IChronotype = {
 
 export class Chronotype implements IChronotype {
 
-  start: Duration = defaultChronotype.start;
-  end: Duration = defaultChronotype.end;
+  readonly start: Duration = defaultChronotype.start;
+  readonly end: Duration = defaultChronotype.end;
 
   constructor(chronotype: IChronotype = defaultChronotype) {
     Object.assign(this, {

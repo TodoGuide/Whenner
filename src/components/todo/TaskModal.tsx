@@ -7,7 +7,7 @@ import {
   Modal,
   Button
 } from "react-bootstrap";
-import { Time } from "../../models/Time";
+import { Time } from "../../models/time";
 import { ITask, Task } from "../../models/Task";
 
 interface TaskModalProps extends ModalProps {

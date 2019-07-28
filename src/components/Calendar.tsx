@@ -11,7 +11,7 @@ import {
   TasksResultActionThunk,
   TaskActionThunk
 } from "../redux/todos/actions";
-import { Time } from "../models/Time";
+import { Time } from "../models/time";
 import { loadTasks } from "../redux/todos/actions/loadTasks";
 import { upsertTask } from "../redux/todos/actions/upsertTask";
 import { WhennerState } from "../redux";
@@ -21,6 +21,7 @@ import Toast from "react-bootstrap/Toast";
 import TaskModal from "./todo/TaskModal";
 import { Task, ITask, defaultTasks } from "../models/Task";
 import { ISchedule, Schedule } from "../models/Schedule";
+import { earliestOf, latestOf } from "../models/time/utils";
 
 moment.locale(navigator.language, {
   week: {
@@ -203,11 +204,11 @@ const mapStateToProps = ({
   console.log("Calendar mapStateToProps schedule", schedule);
   return {
     schedule,
-    minTime: Time.earliest(
+    minTime: earliestOf(
       Chronotype.getStartOf(Time.current(), schedule.chronotype),
       Time.current()
     ),
-    maxTime: Time.latest(
+    maxTime: latestOf(
       Chronotype.getEndOf(Time.current(), schedule.chronotype),
       Time.current()
     ),

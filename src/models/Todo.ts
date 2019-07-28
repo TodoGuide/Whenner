@@ -1,4 +1,4 @@
-import { Estimated } from "./Time";
+import { Estimated } from "./time/Estimated";
 
 export interface Id {
   readonly id: number;
