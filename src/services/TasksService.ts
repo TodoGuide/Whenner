@@ -1,4 +1,4 @@
-import { IChronotype } from "../models/Chronotype";
+import { Chronotype } from "../models/Chronotype";
 import { schedule } from "../models/scheduler";
 import { Time } from "../models/time";
 import { ITask, defaultTasks } from "../models/Task";
@@ -51,7 +51,7 @@ export class TasksService {
     return (await this.byId(insertTodo.id)) || insertTodo;
   }
 
-  constructor(public chronotype: IChronotype) {}
+  constructor(public chronotype: Chronotype) {}
 
   async upsert(todo: ITask): Promise<ITask> {
     return (await this.update(todo)) || (await this.insert(todo));

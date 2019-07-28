@@ -1,11 +1,11 @@
-import { preferredStart, IChronotype } from "./Chronotype";
+import { preferredStart, Chronotype } from "./Chronotype";
 import { Time } from "./time";
 import { Task, ITask } from "./Task";
 import { Schedule } from "./Schedule";
 
 export class ScheduledTask extends Task implements ITask {
   constructor(
-    chronotype: IChronotype,
+    chronotype: Chronotype,
     current: Task,
     previousIncomplete?: Task
   ) {
@@ -29,7 +29,7 @@ export class ScheduledTask extends Task implements ITask {
    * based on the provided Chronotype.
    */
   private static firstAvailableStartDate(
-    chronotype: IChronotype,
+    chronotype: Chronotype,
     current: Task,
     previous?: Task
   ): Date {

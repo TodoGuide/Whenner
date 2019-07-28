@@ -3,7 +3,7 @@ import { schedule } from "./scheduler";
 import moment from "moment";
 import { oneHourTask, twoHourTask } from "../test/data";
 import { customMatchers } from "../test/matchers";
-import { IChronotype, defaultChronotype } from "./Chronotype";
+import { Chronotype, defaultChronotype } from "./Chronotype";
 import { ITask, Task } from "./Task";
 
 describe("The schedule method", () => {
@@ -54,7 +54,7 @@ describe("The schedule method", () => {
   });
 
   describe("Given a 1 hour Chronotype from midnight to 1AM", () => {
-    const oneHourWindow: IChronotype = {
+    const oneHourWindow: Chronotype = {
       start: moment.duration("0:00"),
       end: moment.duration("1:00")
     };

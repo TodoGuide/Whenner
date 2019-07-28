@@ -3,7 +3,7 @@ import { ITask, defaultTasks } from "../../models/Task";
 import { IAppointment, defaultAppointments } from "../../models/Appointment";
 import { combineReducers } from "redux";
 import { TasksResultAction, TaskAction } from "../todos/actions";
-import { IChronotype, defaultChronotype } from "../../models/Chronotype";
+import { Chronotype, defaultChronotype } from "../../models/Chronotype";
 
 function appointments(
   appointments: IAppointment[] = defaultAppointments,
@@ -14,9 +14,9 @@ function appointments(
 }
 
 function chronotype(
-  chronotype: IChronotype = defaultChronotype,
+  chronotype: Chronotype = defaultChronotype,
   action: WhennerAction
-): IChronotype {
+): Chronotype {
   // TODO: Finish the chronotype reducer
   return chronotype;
 }

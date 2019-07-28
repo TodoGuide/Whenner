@@ -1,6 +1,6 @@
 import { IAppointment, defaultAppointments, Appointment } from "./Appointment";
 import { ITask, defaultTasks, Task } from "./Task";
-import { IChronotype, defaultChronotype, startOf, endOf, lengthInMinutes } from "./Chronotype";
+import { Chronotype, defaultChronotype, startOf, endOf, lengthInMinutes } from "./Chronotype";
 import {
   Time} from "./time";
 import { periodsOverlap } from "./time/Period";
@@ -12,7 +12,7 @@ import { latestOf } from "./time/utils";
 
 export interface ISchedule {
   readonly appointments: IAppointment[];
-  readonly chronotype: IChronotype;
+  readonly chronotype: Chronotype;
   readonly tasks: ITask[];
 }
 
@@ -25,7 +25,7 @@ export interface ISchedule {
 
 export class Schedule implements ISchedule {
   readonly appointments: Appointment[];
-  readonly chronotype: IChronotype;
+  readonly chronotype: Chronotype;
   readonly tasks: Task[];
   readonly todos: Array<Appointment | Task>;
 
@@ -56,7 +56,7 @@ export class Schedule implements ISchedule {
   /**
    * Determines if the End can be completed as-scheduled based on the provided Chronotype
    */
-  static canBeCompletedSameDay({ end }: End, chronotype: IChronotype) {
+  static canBeCompletedSameDay({ end }: End, chronotype: Chronotype) {
     return end <= endOf(end, chronotype);
   }
 
@@ -65,7 +65,7 @@ export class Schedule implements ISchedule {
    */
   static canBeCompletedWithinOneDay(
     { estimate }: Estimated,
-    chronotype: IChronotype
+    chronotype: Chronotype
   ) {
     return estimate <= lengthInMinutes(chronotype);
   }
@@ -77,7 +77,7 @@ export class Schedule implements ISchedule {
   static readonly mutations = {
     stackTasks: function(
       start: Date,
-      chronotype: IChronotype,
+      chronotype: Chronotype,
       ...tasks: Task[]
     ) {
       let lastIncomplete: Task | undefined = undefined;
@@ -115,7 +115,7 @@ export class Schedule implements ISchedule {
     },
 
     scheduleTasks: function(
-      chronotype: IChronotype,
+      chronotype: Chronotype,
       appointments: Appointment[],
       tasks: Task[]
     ) {

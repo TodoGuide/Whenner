@@ -1,11 +1,11 @@
-import { IChronotype, defaultChronotype } from "./Chronotype";
+import { Chronotype, defaultChronotype } from "./Chronotype";
 import { ScheduledTask } from "./ScheduledTask";
 import { Task, ITask } from "./Task";
 import { inPriorityOrder } from "./Todo";
 
 let lastChronotype = defaultChronotype;
 
-export function schedule(chronotype: IChronotype, ...tasks: ITask[]): ITask[] {
+export function schedule(chronotype: Chronotype, ...tasks: ITask[]): ITask[] {
   if (tasks.length === 0) {
     return tasks;
   }
