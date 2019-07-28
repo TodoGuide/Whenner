@@ -1,10 +1,11 @@
-import { WhennerActionType } from "../common/actions";
+import { WhennerActionType, WhennerAction } from "../common/actions";
 import { ITask, defaultTasks } from "../../models/Task";
 import { IAppointment, defaultAppointments } from "../../models/Appointment";
 import { combineReducers } from "redux";
 import { TasksResultAction, TaskAction } from "../todos/actions";
+import { IChronotype, defaultChronotype } from "../../models/Chronotype";
 
- function appointments(
+function appointments(
   appointments: IAppointment[] = defaultAppointments,
   action: /* WhennerAction | */ TaskAction | TasksResultAction
 ): IAppointment[] {
@@ -12,7 +13,15 @@ import { TasksResultAction, TaskAction } from "../todos/actions";
   return appointments;
 }
 
- function tasks(
+function chronotype(
+  chronotype: IChronotype = defaultChronotype,
+  action: WhennerAction
+): IChronotype {
+  // TODO: Finish the chronotype reducer
+  return chronotype;
+}
+
+function tasks(
   tasks: ITask[] = defaultTasks,
   action: /* WhennerAction | */ TaskAction | TasksResultAction
 ): ITask[] {
@@ -33,7 +42,8 @@ import { TasksResultAction, TaskAction } from "../todos/actions";
   return tasks;
 }
 
- export const schedule = combineReducers({
+export const schedule = combineReducers({
   appointments,
-  tasks,
+  chronotype,
+  tasks
 });
