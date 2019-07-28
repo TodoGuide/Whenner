@@ -198,17 +198,17 @@ class Calendar extends React.Component<CalendarProps, CalendarState> {
 // Map application State to component props
 const mapStateToProps = ({
   schedule,
-  loadsInProgress,
-  settings: { chronotype }
+  loadsInProgress
 }: WhennerState): CalendarStateProps => {
+  console.log("Calendar mapStateToProps schedule", schedule);
   return {
     schedule,
     minTime: Time.earliest(
-      Chronotype.getStartOf(Time.current(), chronotype),
+      Chronotype.getStartOf(Time.current(), schedule.chronotype),
       Time.current()
     ),
     maxTime: Time.latest(
-      Chronotype.getEndOf(Time.current(), chronotype),
+      Chronotype.getEndOf(Time.current(), schedule.chronotype),
       Time.current()
     ),
     loading: loadsInProgress > 0
