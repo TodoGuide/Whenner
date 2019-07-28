@@ -1,13 +1,11 @@
-import { IChronotype, Chronotype } from "./Chronotype";
+import { preferredStart, IChronotype } from "./Chronotype";
 import { Time } from "./time";
-import { Start } from "./time/Start";
 import { Task, ITask } from "./Task";
 import { Schedule } from "./Schedule";
-import { latestOf } from "./time/utils";
 
 export class ScheduledTask extends Task implements ITask {
   constructor(
-    chronotype: Chronotype,
+    chronotype: IChronotype,
     current: Task,
     previousIncomplete?: Task
   ) {
@@ -26,38 +24,18 @@ export class ScheduledTask extends Task implements ITask {
     });
   }
 
-  private static earliestStartDateCandidate(
-    { start }: Start,
-    chronotype: Chronotype
-  ) {
-    return latestOf(chronotype.startOf(start), start);
-  }
-
-  /**
-   * Calculates the earliest date and time the todo can be started based on the provided Chronotype.
-   */
-  private static earliestStartDatePermitted(
-    { start: theStart }: Start,
-    { start: chronotypeStart }: IChronotype
-  ) {
-    const dayStart = Chronotype.getStartOf(theStart, {
-      start: chronotypeStart
-    });
-    return theStart < dayStart ? dayStart : theStart;
-  }
-
   /**
    * Calculates the earliest date and time the todo can be started and completed within the same day
    * based on the provided Chronotype.
    */
   private static firstAvailableStartDate(
-    chronotype: Chronotype,
+    chronotype: IChronotype,
     current: Task,
     previous?: Task
   ): Date {
     // console.log("firstAvailableStartDate", {current, previous})
-    const candidateStart = ScheduledTask.earliestStartDateCandidate(
-      { start: (previous || { end: Time.current() }).end },
+    const candidateStart = preferredStart(
+      (previous || { end: Time.current() }).end,
       chronotype
     );
     const estimated = { ...current, start: candidateStart };
@@ -65,12 +43,7 @@ export class ScheduledTask extends Task implements ITask {
     const result =
       !Schedule.canBeCompletedSameDay({ end: candidateEnd }, chronotype) &&
       Schedule.canBeCompletedWithinOneDay(estimated, chronotype)
-        ? ScheduledTask.earliestStartDatePermitted(
-            {
-              start: Time.dayAfter(candidateStart)
-            },
-            chronotype
-          )
+        ? preferredStart(Time.dayAfter(candidateStart), chronotype)
         : candidateStart;
     // console.log("firstAvailableStartDate", { candidate: candidateStart, result });
     return result;

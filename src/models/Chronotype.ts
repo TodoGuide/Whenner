@@ -1,12 +1,11 @@
+import { IChronotype } from "./Chronotype";
 import moment from "moment";
 import { Duration } from "moment";
 import { Period } from "./time/Period";
+import { latestOf } from "./time/utils";
 
 /**
- * The typical period of time during which Todos can be completed.
- *
- * @export
- * @interface Chronotype
+ * A period of time during the day which Todos can be completed.
  */
 export interface IChronotype {
   readonly start: Duration;
@@ -18,59 +17,31 @@ export const defaultChronotype: IChronotype = {
   end: moment.duration("19:00") // 7:00pm
 };
 
-export class Chronotype implements IChronotype {
+export function startOf(date: Date, { start }: { start: Duration }) {
+  return moment(date)
+    .startOf("day")
+    .add(start)
+    .toDate();
+}
 
-  readonly start: Duration = defaultChronotype.start;
-  readonly end: Duration = defaultChronotype.end;
+export function endOf(date: Date, { end }: { end: Duration }) {
+  return moment(date)
+    .startOf("day")
+    .add(end)
+    .toDate();
+}
 
-  constructor(chronotype: IChronotype = defaultChronotype) {
-    Object.assign(this, {
-      start: moment.duration(chronotype.start),
-      end: moment.duration(chronotype.end)
-    });
+export function period(date: Date, chronotype: IChronotype): Period {
+  return {
+    start: startOf(date, chronotype),
+    end: endOf(date, chronotype)
+  };
+}
 
-    if (this.minutes <= 0) {
-      throw new Error("Cannot create a negative Chronotype");
-    }
-  }
+export function preferredStart(candidateStart: Date, chronotype: IChronotype) {
+  return latestOf(startOf(candidateStart, chronotype), candidateStart);
+}
 
-  get minutes() {
-    return Chronotype.getMinutes(this);
-  }
-
-  /**
-   * The earliest available time within date according to the Chronotype
-   */
-  startOf(date: Date) {
-    return Chronotype.getStartOf(date, this);
-  }
-
-  endOf(date: Date) {
-    return Chronotype.getEndOf(date, this);
-  }
-
-  activityPeriod(date: Date): Period {
-    return {
-      start: this.startOf(date),
-      end: this.endOf(date)
-    };
-  }
-
-  static getMinutes({ start, end }: IChronotype) {
-    return end.asMinutes() - start.asMinutes();
-  }
-
-  static getStartOf(date: Date, { start }: IChronotype | { start: Duration }) {
-    return moment(date)
-      .startOf("day")
-      .add(start)
-      .toDate();
-  }
-
-  static getEndOf(date: Date, { end }: IChronotype | { end: Duration }) {
-    return moment(date)
-      .startOf("day")
-      .add(end)
-      .toDate();
-  }
+export function lengthInMinutes({ start, end }: IChronotype){
+  return end.asMinutes() - start.asMinutes();
 }

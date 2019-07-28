@@ -2,7 +2,7 @@ import { Appointment } from "./Appointment";
 import { customMatchers } from "./../test/matchers";
 import { Schedule } from "./Schedule";
 import { oneHourTask, twoHourTask, threeHourTask } from "./../test/data";
-import { defaultChronotype, Chronotype } from "./Chronotype";
+import { defaultChronotype } from "./Chronotype";
 import { Task } from "./Task";
 import { Time } from "./time";
 import { add30Minutes } from "./time/utils";
@@ -36,7 +36,7 @@ describe("Schedule Mutations", () => {
       beforeEach(() => {
         Schedule.mutations.stackTasks(
           Time.current(),
-          new Chronotype(defaultChronotype),
+          defaultChronotype,
           incompleteTask1,
           incompleteTask2
         );
@@ -69,7 +69,7 @@ describe("Schedule Mutations", () => {
       describe("When scheduleTasks is called, it...", () => {
         beforeEach(() => {
           Schedule.mutations.scheduleTasks(
-            new Chronotype(),
+            defaultChronotype,
             [overlappingAppointment],
             [incompleteTask1, incompleteTask2, completedTask]
           );

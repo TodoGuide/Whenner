@@ -1,6 +1,6 @@
 import { ScheduledTask } from "./ScheduledTask";
 import { oneHourTask, twoHourTask } from "../test/data";
-import { defaultChronotype, Chronotype } from "./Chronotype";
+import { defaultChronotype } from "./Chronotype";
 import { customMatchers } from "../test/matchers";
 import { Time } from "./time";
 import { Task } from "./Task";
@@ -21,7 +21,7 @@ describe("A ScheduledTask", () => {
       let scheduledTodo: ScheduledTask;
       beforeEach(() => {
         scheduledTodo = new ScheduledTask(
-          new Chronotype(defaultChronotype),
+          defaultChronotype,
           task
         );
       });
@@ -38,7 +38,7 @@ describe("A ScheduledTask", () => {
       previous = new Task(oneHourTask);
       current = new Task(twoHourTask);
       scheduledTodo = new ScheduledTask(
-        new Chronotype(defaultChronotype),
+        defaultChronotype,
         current,
         previous
       );
@@ -48,7 +48,7 @@ describe("A ScheduledTask", () => {
       let scheduledTodo: ScheduledTask;
       beforeEach(() => {
         scheduledTodo = new ScheduledTask(
-          new Chronotype(defaultChronotype),
+          defaultChronotype,
           current,
           previous
         );

@@ -16,7 +16,7 @@ import { loadTasks } from "../redux/todos/actions/loadTasks";
 import { upsertTask } from "../redux/todos/actions/upsertTask";
 import { WhennerState } from "../redux";
 import { WhennerAction } from "../redux/common/actions";
-import { Chronotype } from "../models/Chronotype";
+import { startOf, endOf } from "../models/Chronotype";
 import Toast from "react-bootstrap/Toast";
 import TaskModal from "./todo/TaskModal";
 import { Task, ITask, defaultTasks } from "../models/Task";
@@ -205,11 +205,11 @@ const mapStateToProps = ({
   return {
     schedule,
     minTime: earliestOf(
-      Chronotype.getStartOf(Time.current(), schedule.chronotype),
+      startOf(Time.current(), schedule.chronotype),
       Time.current()
     ),
     maxTime: latestOf(
-      Chronotype.getEndOf(Time.current(), schedule.chronotype),
+      endOf(Time.current(), schedule.chronotype),
       Time.current()
     ),
     loading: loadsInProgress > 0

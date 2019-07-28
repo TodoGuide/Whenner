@@ -1,6 +1,6 @@
 import { IAppointment, defaultAppointments, Appointment } from "./Appointment";
 import { ITask, defaultTasks, Task } from "./Task";
-import { Chronotype, IChronotype, defaultChronotype } from "./Chronotype";
+import { IChronotype, defaultChronotype, startOf, endOf, lengthInMinutes } from "./Chronotype";
 import {
   Time} from "./time";
 import { periodsOverlap } from "./time/Period";
@@ -25,12 +25,12 @@ export interface ISchedule {
 
 export class Schedule implements ISchedule {
   readonly appointments: Appointment[];
-  readonly chronotype: Chronotype;
+  readonly chronotype: IChronotype;
   readonly tasks: Task[];
   readonly todos: Array<Appointment | Task>;
 
   constructor({ chronotype, appointments, tasks }: ISchedule) {
-    this.chronotype = new Chronotype(chronotype);
+    this.chronotype = chronotype;
 
     this.appointments = inStartOrder(
       ...appointments.map(appointment => new Appointment(appointment))
@@ -56,8 +56,8 @@ export class Schedule implements ISchedule {
   /**
    * Determines if the End can be completed as-scheduled based on the provided Chronotype
    */
-  static canBeCompletedSameDay({ end }: End, chronotype: Chronotype) {
-    return end <= chronotype.endOf(end);
+  static canBeCompletedSameDay({ end }: End, chronotype: IChronotype) {
+    return end <= endOf(end, chronotype);
   }
 
   /**
@@ -65,9 +65,9 @@ export class Schedule implements ISchedule {
    */
   static canBeCompletedWithinOneDay(
     { estimate }: Estimated,
-    { minutes }: Chronotype
+    chronotype: IChronotype
   ) {
-    return estimate <= minutes;
+    return estimate <= lengthInMinutes(chronotype);
   }
 
   //
@@ -77,7 +77,7 @@ export class Schedule implements ISchedule {
   static readonly mutations = {
     stackTasks: function(
       start: Date,
-      chronotype: Chronotype,
+      chronotype: IChronotype,
       ...tasks: Task[]
     ) {
       let lastIncomplete: Task | undefined = undefined;
@@ -95,7 +95,7 @@ export class Schedule implements ISchedule {
 
         start = latestOf(
           start,
-          chronotype.startOf(start),
+          startOf(start, chronotype),
           (lastIncomplete || { end: start }).end
         );
 
@@ -106,7 +106,7 @@ export class Schedule implements ISchedule {
           Schedule.canBeCompletedWithinOneDay(current, chronotype)
         ) {
           // Task cannot be completed today, so move it to tomorrow
-          start = chronotype.startOf(Time.dayAfter(start));
+          start = startOf(Time.dayAfter(start), chronotype);
           current.priority = start.getTime();
         }
       }
@@ -115,7 +115,7 @@ export class Schedule implements ISchedule {
     },
 
     scheduleTasks: function(
-      chronotype: Chronotype,
+      chronotype: IChronotype,
       appointments: Appointment[],
       tasks: Task[]
     ) {
