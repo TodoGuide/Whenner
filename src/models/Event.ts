@@ -1,7 +1,7 @@
-import { IAppointment } from './Appointment';
-import { ITask } from './Task';
+import { Appointment } from "./Appointment";
+import { Task } from "./Task";
 
 
-export interface Event extends ITask, IAppointment {
+export interface Event extends Task, Appointment {
 
 }

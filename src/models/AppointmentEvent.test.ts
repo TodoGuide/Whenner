@@ -1,7 +1,7 @@
 import { customMatchers } from "../test/matchers";
 import { Time } from "./time";
 import { Todo } from "./Todo";
-import { AppointmentEvent } from "./Appointment";
+import { AppointmentEvent } from "./AppointmentEvent";
 import { addHour } from "./time/utils";
 
 describe("An Appointment", () => {
@@ -17,7 +17,6 @@ describe("An Appointment", () => {
         id: 1,
         title: "Todo Instance",
         description: "This is a valid instance of the Todo interface",
-        priority: Time.now()
       };
     });
 
@@ -28,7 +27,7 @@ describe("An Appointment", () => {
       });
 
       it("Assigns the Todo properties to the Appointment", () => {
-        expect({ ...appointment, completed: todo.completed, priority: todo.priority }).toEqual({
+        expect({ ...appointment, completed: todo.completed }).toEqual({
           ...todo,
           _completed: appointment.completed, 
           start: Time.current(),

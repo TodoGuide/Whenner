@@ -4,7 +4,8 @@ import moment from "moment";
 import { oneHourTask, twoHourTask } from "../test/data";
 import { customMatchers } from "../test/matchers";
 import { Chronotype, defaultChronotype } from "./Chronotype";
-import { ITask, TaskEvent } from "./Task";
+import { TaskEvent } from "./TaskEvent";
+import { Task } from "./Task";
 
 describe("The schedule method", () => {
   beforeEach(() => {
@@ -35,7 +36,7 @@ describe("The schedule method", () => {
     ];
 
     describe("When the schedule method is called", () => {
-      let scheduledTasks: ITask[];
+      let scheduledTasks: Task[];
 
       beforeEach(() => {
         scheduledTasks = schedule(defaultChronotype, ...twoNotDoneTasks);
@@ -61,7 +62,7 @@ describe("The schedule method", () => {
 
     describe("AND a 2-hour Todo", () => {
       describe("When schedule is called, it..", () => {
-        let scheduledTasks: ITask[];
+        let scheduledTasks: Task[];
         beforeEach(() => {
           scheduledTasks = schedule(oneHourWindow, twoHourTask);
         });
@@ -74,7 +75,7 @@ describe("The schedule method", () => {
 
     describe("AND a 1-hour Todo", () => {
       describe("When schedule is called, it..", () => {
-        let scheduledTasks: ITask[];
+        let scheduledTasks: Task[];
         beforeEach(() => {
           scheduledTasks = schedule(oneHourWindow, oneHourTask);          
         });
@@ -87,7 +88,7 @@ describe("The schedule method", () => {
 
     describe("AND 2 1-hour Tasks", () => {
       describe("When schedule is called, it..", () => {
-        let scheduledTasks: ITask[];
+        let scheduledTasks: Task[];
         beforeEach(() => {
           console.log("When schedule is called, beforeEach");
           scheduledTasks = schedule(

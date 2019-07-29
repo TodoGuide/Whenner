@@ -1,5 +1,7 @@
-import { IAppointment, defaultAppointments, AppointmentEvent } from "./Appointment";
-import { ITask, defaultTasks, TaskEvent, taskPrioritizer } from "./Task";
+import { defaultAppointments, AppointmentEvent } from "./AppointmentEvent";
+import { Appointment } from "./Appointment";
+import { defaultTasks, TaskEvent, taskPrioritizer } from "./TaskEvent";
+import { Task } from "./Task";
 import {
   Chronotype,
   defaultChronotype,
@@ -16,9 +18,9 @@ import { latestOf } from "./time/utils";
 import { prioritize } from "./Priority";
 
 export interface ISchedule {
-  readonly appointments: IAppointment[];
+  readonly appointments: Appointment[];
   readonly chronotype: Chronotype;
-  readonly tasks: ITask[];
+  readonly tasks: Task[];
 }
 
 // function scheduleBuilder(schedule: ISchedule) {
@@ -35,7 +37,7 @@ export class Schedule implements ISchedule {
   readonly appointments: AppointmentEvent[];
   readonly chronotype: Chronotype;
   readonly tasks: TaskEvent[];
-  readonly todos: Array<IAppointment | ITask>;
+  readonly todos: Array<Appointment | Task>;
 
   constructor({ chronotype, appointments, tasks }: ISchedule) {
     this.chronotype = chronotype;

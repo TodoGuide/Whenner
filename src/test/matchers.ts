@@ -1,5 +1,5 @@
 import { Time } from "../models/time";
-import { TaskEvent } from "../models/Task";
+import { TaskEvent } from "../models/TaskEvent";
 
 export const customMatchers = {
   // toBeWithinTheLast300ms: function(util?: any, customEqualityTesters?: any) {

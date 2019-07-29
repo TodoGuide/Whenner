@@ -2,12 +2,12 @@ import { TaskAction, TaskActionThunk } from ".";
 import { Dispatch } from "redux";
 import { tasksService } from "../../../services/services";
 import { WhennerActionType } from "../../common/actions";
-import { ITask } from "../../../models/Task";
+import { Task } from "../../../models/Task";
 
 // Action Creators
 
 function insertTaskSuccess(
-  task: ITask
+  task: Task
 ): TaskAction {
   return {
     type: WhennerActionType.InsertTaskSuccess,
@@ -16,7 +16,7 @@ function insertTaskSuccess(
 }
 
 function updateTaskSuccess(
-  task: ITask
+  task: Task
 ): TaskAction {
   return {
     type: WhennerActionType.UpdateTaskSuccess,
@@ -26,7 +26,7 @@ function updateTaskSuccess(
 
 // Action Thunks //
 
-export const upsertTask: TaskActionThunk = (task: ITask) => {
+export const upsertTask: TaskActionThunk = (task: Task) => {
   return function(dispatch: Dispatch) {
     const result = tasksService
       .upsert(task)

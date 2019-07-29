@@ -1,11 +1,12 @@
 import { TasksResultAction, TaskAction } from "./actions";
 import { WhennerActionType } from "../common/actions";
-import { ITask, defaultTasks } from "../../models/Task";
+import { defaultTasks } from "../../models/TaskEvent";
+import { Task } from "../../models/Task";
 
 export function tasks(
-  tasks: ITask[] = defaultTasks,
+  tasks: Task[] = defaultTasks,
   action: /* WhennerAction | */ TaskAction | TasksResultAction
-): ITask[] {
+): Task[] {
   switch (action.type) {
     case WhennerActionType.LoadTasksSuccess:
       return action.tasks;

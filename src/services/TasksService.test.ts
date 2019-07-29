@@ -4,7 +4,7 @@ import { oneHourTask } from "../test/data";
 import { customMatchers } from "../test/matchers";
 import { defaultChronotype } from "../models/Chronotype";
 import { Time } from "../models/time";
-import { defaultTasks } from "../models/Task";
+import { defaultTasks } from "../models/TaskEvent";
 
 describe("The Tasks Service", () => {
   let tasksService: TasksService;

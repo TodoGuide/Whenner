@@ -1,14 +1,16 @@
 import { WhennerActionType, WhennerAction } from "../common/actions";
-import { ITask, defaultTasks } from "../../models/Task";
-import { IAppointment, defaultAppointments } from "../../models/Appointment";
+import { defaultTasks } from "../../models/TaskEvent";
+import { Task } from "../../models/Task";
+import { defaultAppointments } from "../../models/AppointmentEvent";
+import { Appointment } from "../../models/Appointment";
 import { combineReducers } from "redux";
 import { TasksResultAction, TaskAction } from "../todos/actions";
 import { Chronotype, defaultChronotype } from "../../models/Chronotype";
 
 function appointments(
-  appointments: IAppointment[] = defaultAppointments,
+  appointments: Appointment[] = defaultAppointments,
   action: /* WhennerAction | */ TaskAction | TasksResultAction
-): IAppointment[] {
+): Appointment[] {
   // TODO: Finish appointments reducer
   return appointments;
 }
@@ -22,9 +24,9 @@ function chronotype(
 }
 
 function tasks(
-  tasks: ITask[] = defaultTasks,
+  tasks: Task[] = defaultTasks,
   action: /* WhennerAction | */ TaskAction | TasksResultAction
-): ITask[] {
+): Task[] {
   switch (action.type) {
     case WhennerActionType.LoadTasksSuccess:
       return action.tasks;

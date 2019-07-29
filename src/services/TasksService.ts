@@ -1,11 +1,12 @@
 import { Chronotype } from "../models/Chronotype";
 import { schedule } from "../models/scheduler";
 import { Time } from "../models/time";
-import { ITask, defaultTasks } from "../models/Task";
+import { defaultTasks } from "../models/TaskEvent";
+import { Task } from "../models/Task";
 
 export const TASKS_KEY = "Whenner.Tasks";
 
-async function readTasks(): Promise<ITask[]> {
+async function readTasks(): Promise<Task[]> {
   return new Promise((resolve, reject) => {
     // Simulate slow read
     setTimeout(function() {
@@ -16,7 +17,7 @@ async function readTasks(): Promise<ITask[]> {
   });
 }
 
-async function writeTasks(tasks: ITask[]): Promise<ITask[]> {
+async function writeTasks(tasks: Task[]): Promise<Task[]> {
   return new Promise((resolve, reject) => {
     // Simulate slow write
     setTimeout(function() {
@@ -27,7 +28,7 @@ async function writeTasks(tasks: ITask[]): Promise<ITask[]> {
 }
 
 export class TasksService {
-  private async update(task: ITask): Promise<ITask | undefined> {
+  private async update(task: Task): Promise<Task | undefined> {
     const tasks = await this.all();
     const existing = tasks.find(t => t.id === task.id);
     if (existing) {
@@ -37,7 +38,7 @@ export class TasksService {
     }
   }
 
-  private async insert(todo: ITask): Promise<ITask> {
+  private async insert(todo: Task): Promise<Task> {
     const existing = await this.byId(todo.id);
     if (existing) {
       throw new Error(
@@ -53,18 +54,18 @@ export class TasksService {
 
   constructor(public chronotype: Chronotype) {}
 
-  async upsert(todo: ITask): Promise<ITask> {
+  async upsert(todo: Task): Promise<Task> {
     return (await this.update(todo)) || (await this.insert(todo));
   }
 
-  async byId(id: number): Promise<ITask | undefined> {
+  async byId(id: number): Promise<Task | undefined> {
     return (await this.byIds(id))[0];
   }
 
-  async byIds(...ids: number[]): Promise<ITask[]> {
+  async byIds(...ids: number[]): Promise<Task[]> {
     const tasks = await this.all();
     const result = ids.map(id => tasks.find(task => task.id === id)) || [];
-    return result.filter(Boolean) as ITask[];
+    return result.filter(Boolean) as Task[];
   }
 
   async all() {

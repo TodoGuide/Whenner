@@ -3,7 +3,7 @@ import { oneHourTask, twoHourTask } from "../test/data";
 import { defaultChronotype } from "./Chronotype";
 import { customMatchers } from "../test/matchers";
 import { Time } from "./time";
-import { TaskEvent } from "./Task";
+import { TaskEvent } from "./TaskEvent";
 
 describe("A ScheduledTask", () => {
   beforeEach(() => {

@@ -1,9 +1,9 @@
-import { AppointmentEvent } from "./Appointment";
+import { AppointmentEvent } from "./AppointmentEvent";
 import { customMatchers } from "./../test/matchers";
 import { Schedule } from "./Schedule";
 import { oneHourTask, twoHourTask, threeHourTask } from "./../test/data";
 import { defaultChronotype } from "./Chronotype";
-import { TaskEvent } from "./Task";
+import { TaskEvent } from "./TaskEvent";
 import { Time } from "./time";
 import { add30Minutes } from "./time/utils";
 // describe("A Schedule", () => {

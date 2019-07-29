@@ -2,9 +2,9 @@ import { TasksResultAction, TasksResultActionThunk } from ".";
 import { Dispatch } from "redux";
 import { tasksService } from "../../../services/services";
 import { WhennerActionType } from "../../common/actions";
-import { ITask } from "../../../models/Task";
+import { Task } from "../../../models/Task";
 
-function loadTasksSuccess(tasks: ITask[]): TasksResultAction {
+function loadTasksSuccess(tasks: Task[]): TasksResultAction {
   return {
     type: WhennerActionType.LoadTasksSuccess,
     tasks: tasks

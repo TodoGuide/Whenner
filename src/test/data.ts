@@ -1,6 +1,6 @@
-import { ITask } from "../models/Task";
+import { Task } from "../models/Task";
 
-export const oneHourTask: ITask = {
+export const oneHourTask: Task = {
   id: 100,
   title: "One hour task",
   description: "This is a one hour task",
@@ -10,7 +10,7 @@ export const oneHourTask: ITask = {
 };
 
 
-export const twoHourTask: ITask = {
+export const twoHourTask: Task = {
   id: 101,
   title: "Two hour task",
   description: "This is a two hour task",
@@ -19,7 +19,7 @@ export const twoHourTask: ITask = {
   start: new Date(2019, 5, 15, 10, 46, 45, 44)
 };
 
-export const threeHourTask: ITask = {
+export const threeHourTask: Task = {
   id: 103,
   title: "Three hour task",
   description: "This is a three hour task",

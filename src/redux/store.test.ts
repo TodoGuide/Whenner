@@ -4,7 +4,7 @@ import { customMatchers } from "../test/matchers";
 import { Time } from "../models/time";
 import { WhennerState, initialState } from ".";
 import { WhennerAction } from "./common/actions";
-import { defaultTasks } from "../models/Task";
+import { defaultTasks } from "../models/TaskEvent";
 
 describe("The Whenner Store", () => {
   beforeEach(() => {

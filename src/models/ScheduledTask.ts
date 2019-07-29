@@ -1,9 +1,10 @@
 import { preferredStart, Chronotype } from "./Chronotype";
 import { Time } from "./time";
-import { TaskEvent, ITask } from "./Task";
+import { TaskEvent } from "./TaskEvent";
+import { Task } from "./Task";
 import { Schedule } from "./Schedule";
 
-export class ScheduledTask extends TaskEvent implements ITask {
+export class ScheduledTask extends TaskEvent implements Task {
   constructor(
     chronotype: Chronotype,
     current: TaskEvent,

@@ -1,8 +1,8 @@
-import { IAppointment } from "./Appointment";
+import { Appointment } from "./Appointment";
 import { customMatchers } from "../test/matchers";
 import { Time } from "./time";
-import { ITask, TaskEvent, isTask } from "./Task";
-import moment from "moment"
+import { TaskEvent, isTask } from "./TaskEvent";
+import { Task } from "./Task";
 import { add30Minutes } from "./time/utils";
 
 describe("A Task", () => {
@@ -12,7 +12,7 @@ describe("A Task", () => {
   });
 
   describe("Given an ITask", () => {
-    let itask: ITask;
+    let itask: Task;
     beforeEach(() => {
       itask = {
         id: 1,
@@ -86,13 +86,12 @@ describe("A Task", () => {
   });
 
   describe("Given an IAppointment", () => {
-    let iappointment: IAppointment;
+    let iappointment: Appointment;
     beforeEach(() => {
       iappointment = {
         id: 1,
         title: "IAppointment Instance",
         description: "This is a valid instance of an IAppointment",
-        priority: Time.current().getTime(),
         start: Time.current(),
         end: add30Minutes(Time.current())
       };
@@ -105,14 +104,13 @@ describe("A Task", () => {
       });
 
       it("Assigns the ITask instance properties to the Task instance", () => {
-        const { description, estimate, id, start, title, priority, end } = task;
+        const { description, estimate, id, start, title, end } = task;
         expect({
           description,
           estimate: estimate || "none",
           id,
           start,
           title,
-          priority,
           end
         }).toEqual({ ...iappointment, estimate: TaskEvent.periodToEstimate(iappointment) });
       });
