@@ -18,10 +18,11 @@ import { WhennerState } from "../redux";
 import { WhennerAction } from "../redux/common/actions";
 import { startOf, endOf } from "../models/Chronotype";
 import Toast from "react-bootstrap/Toast";
-import TaskModal from "./todo/TaskModal";
-import { TaskEvent, ITask, defaultTasks } from "../models/Task";
+import EventModal from "./todo/EventModal";
+import { TaskEvent, defaultTasks } from "../models/TaskEvent";
 import { ISchedule, Schedule } from "../models/Schedule";
 import { earliestOf, latestOf } from "../models/time/utils";
+import { Event } from "../models/Event";
 
 moment.locale(navigator.language, {
   week: {
@@ -38,7 +39,7 @@ const DnDCalendar = withDragAndDrop(BigCalendar);
  * The internal state of the Calendar component
  */
 interface CalendarOwnState {
-  selectedEvent?: ITask;
+  selectedEvent?: Event;
 }
 
 /**
@@ -61,7 +62,7 @@ type CalendarState = CalendarOwnState & CalendarStateProps;
  * Properties of the Calendar component that dispatch Redux actions
  */
 interface CalendarDispatchProps {
-  upsertTodo: TaskActionThunk;
+  upsertTask: TaskActionThunk;
   loadTasks: TasksResultActionThunk;
 }
 
@@ -85,7 +86,7 @@ class Calendar extends React.Component<CalendarProps, CalendarState> {
   }
 
   getEventStyle(
-    event: ITask,
+    event: Event,
     start: stringOrDate,
     end: stringOrDate,
     isSelected: boolean
@@ -100,19 +101,20 @@ class Calendar extends React.Component<CalendarProps, CalendarState> {
     };
   }
 
-  handleTaskShowSelected = (event: ITask) => {
+  handleEventShowSelected = (event: Event) => {
     this.setState({ ...this.state, selectedEvent: event });
   };
 
-  handleTaskHideSelected = () => {
+  handleEventHideSelected = () => {
     this.setState({ ...this.state, selectedEvent: undefined });
   };
 
-  handleTaskSave = (event: ITask | undefined = this.state.selectedEvent) => {
+  handleEventSave = (event: Event | undefined = this.state.selectedEvent) => {
     if (!event) {
-      throw Error("No todo was specified to save in the handleTaskSave event");
+      throw Error("No todo was specified to save in the handleEventSave event");
     }
-    this.props.upsertTodo(event);
+    console.log("handleEventSave event", event);
+    this.props.upsertTask(event);
     this.setState({ ...this.state, selectedEvent: undefined });
   };
 
@@ -156,20 +158,27 @@ class Calendar extends React.Component<CalendarProps, CalendarState> {
           getNow={() => Time.current()}
           eventPropGetter={this.getEventStyle}
           onEventResize={({ event, start, end }) => {
-            this.handleTaskSave({
+            this.handleEventSave({
               ...event,
               priority: new Date(start).getTime(),
               estimate: moment
                 .duration(moment(end).diff(moment(start)))
-                .asMinutes()
+                .asMinutes(),
+              end: new Date(end)
             });
           }}
-          onEventDrop={({ event, start }) => {
-            this.handleTaskSave({ ...event, start: start as Date, priority: new Date(start).getTime(), });
+          onEventDrop={({ event, start, end }) => {
+            this.handleEventSave({
+              ...event,
+              start: new Date(start),
+              priority: new Date(start).getTime(),
+              estimate: event.estimate,
+              end: new Date(end)
+            });
           }}
           onSelectSlot={({ start, end }) => {
             start = new Date(start);
-            const task = new TaskEvent({
+            const event = new TaskEvent({
               id: Time.now(),
               title: "",
               description: "",
@@ -179,16 +188,16 @@ class Calendar extends React.Component<CalendarProps, CalendarState> {
                 end: new Date(end)
               })
             });
-            this.handleTaskShowSelected(task);
+            this.handleEventShowSelected(event);
           }}
-          onDoubleClickEvent={this.handleTaskShowSelected}
+          onDoubleClickEvent={this.handleEventShowSelected}
         />
         {this.state.selectedEvent ? (
-          <TaskModal
+          <EventModal
             show={!!this.state.selectedEvent}
-            task={this.state.selectedEvent}
-            onSaveTodo={this.handleTaskSave}
-            onHide={this.handleTaskHideSelected}
+            event={this.state.selectedEvent}
+            onSaveTodo={this.handleEventSave}
+            onHide={this.handleEventHideSelected}
           />
         ) : null}
       </div>
@@ -221,7 +230,7 @@ const mapDispatchToProps = (
   dispatch: Dispatch<WhennerAction>
 ): CalendarDispatchProps => {
   return {
-    upsertTodo: bindActionCreators(upsertTask, dispatch),
+    upsertTask: bindActionCreators(upsertTask, dispatch),
     loadTasks: bindActionCreators(loadTasks, dispatch)
   };
 };

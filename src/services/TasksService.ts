@@ -54,8 +54,8 @@ export class TasksService {
 
   constructor(public chronotype: Chronotype) {}
 
-  async upsert(todo: Task): Promise<Task> {
-    return (await this.update(todo)) || (await this.insert(todo));
+  async upsert(task: Task): Promise<Task> {
+    return (await this.update(task)) || (await this.insert(task));
   }
 
   async byId(id: number): Promise<Task | undefined> {

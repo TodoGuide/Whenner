@@ -8,24 +8,25 @@ import {
   Button
 } from "react-bootstrap";
 import { Time } from "../../models/time";
-import { ITask, TaskEvent } from "../../models/Task";
+import { TaskEvent } from "../../models/TaskEvent";
+import { Event } from "../../models/Event";
 
-interface TaskModalProps extends ModalProps {
-  task?: ITask;
-  onSaveTodo: (task: ITask) => void;
+interface EventModalProps extends ModalProps {
+  event?: Event;
+  onSaveTodo: (event: Event) => void;
 }
 
-type TodoModalState = {
-  task: ITask;
+type EventModalState = {
+  event: Event;
 };
 
-export default class TaskModal extends React.Component<
-  TaskModalProps,
-  TodoModalState
+export default class EventModal extends React.Component<
+  EventModalProps,
+  EventModalState
 > {
-  constructor(props: TaskModalProps) {
+  constructor(props: EventModalProps) {
     super(props);
-    this.state = { task: new TaskEvent(props.task) };
+    this.state = { event: new TaskEvent(props.event) };
   }
 
   readInput({
@@ -58,19 +59,19 @@ export default class TaskModal extends React.Component<
   ) => {
     const { propName } = this.propInfoFromTarget(event.currentTarget);
     if (propName === "done") {
-      const todo = new TaskEvent(this.state.task);
+      const todo = new TaskEvent(this.state.event);
       todo.completed = this.readInput(event.currentTarget)
         ? Time.current()
         : undefined;
       this.setState({
         ...this.state,
-        task: todo
+        event: todo
       });
     } else {
       this.setState({
         ...this.state,
-        task: {
-          ...this.state.task,
+        event: {
+          ...this.state.event,
           [propName]: this.readInput(event.currentTarget)
         }
       });
@@ -78,11 +79,11 @@ export default class TaskModal extends React.Component<
   };
 
   handleSubmit = () => {
-    this.props.onSaveTodo(this.state.task);
+    this.props.onSaveTodo(this.state.event);
   }
 
   render() {
-    const { task: todo } = this.state;
+    const { event: todo } = this.state;
     const { onSaveTodo, ...modalProps } = { ...this.props };
     return (
       <Modal {...modalProps}>

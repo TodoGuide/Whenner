@@ -30,13 +30,12 @@ export const upsertTask: TaskActionThunk = (task: Task) => {
   return function(dispatch: Dispatch) {
     const result = tasksService
       .upsert(task)
-      .then(upsertedTodo =>
-        upsertedTodo.id === task.id
-          ? dispatch(updateTaskSuccess(upsertedTodo))
-          : dispatch(insertTaskSuccess(upsertedTodo))
+      .then(upsertedTask =>
+        upsertedTask.id === task.id
+          ? dispatch(updateTaskSuccess(upsertedTask))
+          : dispatch(insertTaskSuccess(upsertedTask))
       )
       .catch(e => {
-        console.log("upsertTodo error", e);
         throw e;
       });
     return result;
