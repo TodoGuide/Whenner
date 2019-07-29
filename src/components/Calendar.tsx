@@ -19,7 +19,7 @@ import { WhennerAction } from "../redux/common/actions";
 import { startOf, endOf } from "../models/Chronotype";
 import Toast from "react-bootstrap/Toast";
 import TaskModal from "./todo/TaskModal";
-import { Task, ITask, defaultTasks } from "../models/Task";
+import { TaskEvent, ITask, defaultTasks } from "../models/Task";
 import { ISchedule, Schedule } from "../models/Schedule";
 import { earliestOf, latestOf } from "../models/time/utils";
 
@@ -38,7 +38,7 @@ const DnDCalendar = withDragAndDrop(BigCalendar);
  * The internal state of the Calendar component
  */
 interface CalendarOwnState {
-  selectedTask?: ITask;
+  selectedEvent?: ITask;
 }
 
 /**
@@ -101,25 +101,25 @@ class Calendar extends React.Component<CalendarProps, CalendarState> {
   }
 
   handleTaskShowSelected = (event: ITask) => {
-    this.setState({ ...this.state, selectedTask: event });
+    this.setState({ ...this.state, selectedEvent: event });
   };
 
   handleTaskHideSelected = () => {
-    this.setState({ ...this.state, selectedTask: undefined });
+    this.setState({ ...this.state, selectedEvent: undefined });
   };
 
-  handleTaskSave = (event: ITask | undefined = this.state.selectedTask) => {
+  handleTaskSave = (event: ITask | undefined = this.state.selectedEvent) => {
     if (!event) {
       throw Error("No todo was specified to save in the handleTaskSave event");
     }
     this.props.upsertTodo(event);
-    this.setState({ ...this.state, selectedTask: undefined });
+    this.setState({ ...this.state, selectedEvent: undefined });
   };
 
   render() {
     // const { todos } = this.state;
     const { schedule, minTime, maxTime, loading } = this.props;
-    const events = new Schedule(schedule).todos.map(t => new Task(t));
+    const events = new Schedule(schedule).todos.map(t => new TaskEvent(t));
     console.log("Calendar.render", events);
     return (
       <div>
@@ -169,12 +169,12 @@ class Calendar extends React.Component<CalendarProps, CalendarState> {
           }}
           onSelectSlot={({ start, end }) => {
             start = new Date(start);
-            const task = new Task({
+            const task = new TaskEvent({
               id: Time.now(),
               title: "",
               description: "",
               priority: start.getTime(),
-              estimate: Task.periodToEstimate({
+              estimate: TaskEvent.periodToEstimate({
                 start,
                 end: new Date(end)
               })
@@ -183,10 +183,10 @@ class Calendar extends React.Component<CalendarProps, CalendarState> {
           }}
           onDoubleClickEvent={this.handleTaskShowSelected}
         />
-        {this.state.selectedTask ? (
+        {this.state.selectedEvent ? (
           <TaskModal
-            show={!!this.state.selectedTask}
-            task={this.state.selectedTask}
+            show={!!this.state.selectedEvent}
+            task={this.state.selectedEvent}
             onSaveTodo={this.handleTaskSave}
             onHide={this.handleTaskHideSelected}
           />

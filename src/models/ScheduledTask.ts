@@ -1,13 +1,13 @@
 import { preferredStart, Chronotype } from "./Chronotype";
 import { Time } from "./time";
-import { Task, ITask } from "./Task";
+import { TaskEvent, ITask } from "./Task";
 import { Schedule } from "./Schedule";
 
-export class ScheduledTask extends Task implements ITask {
+export class ScheduledTask extends TaskEvent implements ITask {
   constructor(
     chronotype: Chronotype,
-    current: Task,
-    previousIncomplete?: Task
+    current: TaskEvent,
+    previousIncomplete?: TaskEvent
   ) {
     if (previousIncomplete && previousIncomplete.completed) {
       throw new Error("Previous value cannot be marked as done");
@@ -30,8 +30,8 @@ export class ScheduledTask extends Task implements ITask {
    */
   private static firstAvailableStartDate(
     chronotype: Chronotype,
-    current: Task,
-    previous?: Task
+    current: TaskEvent,
+    previous?: TaskEvent
   ): Date {
     // console.log("firstAvailableStartDate", {current, previous})
     const candidateStart = preferredStart(
@@ -39,7 +39,7 @@ export class ScheduledTask extends Task implements ITask {
       chronotype
     );
     const estimated = { ...current, start: candidateStart };
-    const candidateEnd = Task.calculateEnd(estimated);
+    const candidateEnd = TaskEvent.calculateEnd(estimated);
     const result =
       !Schedule.canBeCompletedSameDay({ end: candidateEnd }, chronotype) &&
       Schedule.canBeCompletedWithinOneDay(estimated, chronotype)

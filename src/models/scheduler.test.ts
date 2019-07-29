@@ -4,7 +4,7 @@ import moment from "moment";
 import { oneHourTask, twoHourTask } from "../test/data";
 import { customMatchers } from "../test/matchers";
 import { Chronotype, defaultChronotype } from "./Chronotype";
-import { ITask, Task } from "./Task";
+import { ITask, TaskEvent } from "./Task";
 
 describe("The schedule method", () => {
   beforeEach(() => {
@@ -47,7 +47,7 @@ describe("The schedule method", () => {
 
       it("Schedules the lower priority Todo to immediately follow the higher priority item", () => {
         expect(scheduledTasks[1].start.getTime()).toBe(
-          Task.calculateEnd(scheduledTasks[0]).getTime()
+          TaskEvent.calculateEnd(scheduledTasks[0]).getTime()
         );
       });
     });

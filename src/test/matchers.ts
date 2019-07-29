@@ -1,5 +1,5 @@
 import { Time } from "../models/time";
-import { Task } from "../models/Task";
+import { TaskEvent } from "../models/Task";
 
 export const customMatchers = {
   // toBeWithinTheLast300ms: function(util?: any, customEqualityTesters?: any) {
@@ -23,10 +23,10 @@ export const customMatchers = {
 
   toBeScheduledCopyOf: function(util: any, customEqualityTesters: any) {
     return {
-      compare: function(actual: Task, expected: Task) {
+      compare: function(actual: TaskEvent, expected: TaskEvent) {
         // Normalize
-        actual = new Task(actual);
-        expected = new Task(expected);
+        actual = new TaskEvent(actual);
+        expected = new TaskEvent(expected);
 
         const actualStart = new Date(actual.start).getTime();
         const pass = actualStart >= Time.now();

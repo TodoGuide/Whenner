@@ -1,15 +1,16 @@
 import { Todo } from "./Todo";
 import { Priority, Prioritizer } from "./Priority";
 import { Time } from "./time";
-import { Period } from "./time/Period";
+import { Period, lengthInMinutes } from "./time/Period";
 import { addHour } from "./time/utils";
-import { Start } from "./time/Start";
+import { Event } from "./Event";
+import moment from "moment";
 
 export interface IAppointment extends Todo, Period {
 
 }
 
-export class Appointment implements IAppointment {
+export class AppointmentEvent implements IAppointment, Event {
   _completed?: Date;
   description: string = "";
   end: Date = addHour(Time.current());
@@ -36,11 +37,27 @@ export class Appointment implements IAppointment {
   set completed(completed: Date | undefined){
     this._completed = completed;
   }
+
+  get estimate() {
+    return lengthInMinutes(this);
+  }
+
+  set estimate(estimate: number) {
+    this.end = moment(this.start).add(estimate, "minutes").toDate();
+  }
+
+  get priority() {
+    return this.start.getTime();
+  }
+
+  set priority(priority: number) {
+    this.start = new Date(priority);
+  }
 }
 
 export const appointmentPrioritizer: Prioritizer<IAppointment> = (item) => item.start.getTime();
 
-export const defaultAppointments: Appointment[] = [
+export const defaultAppointments: IAppointment[] = [
   {
     id: Time.now(),
     title: "Call someone you love",

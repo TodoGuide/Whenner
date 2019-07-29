@@ -1,9 +1,9 @@
-import { Appointment } from "./Appointment";
+import { AppointmentEvent } from "./Appointment";
 import { customMatchers } from "./../test/matchers";
 import { Schedule } from "./Schedule";
 import { oneHourTask, twoHourTask, threeHourTask } from "./../test/data";
 import { defaultChronotype } from "./Chronotype";
-import { Task } from "./Task";
+import { TaskEvent } from "./Task";
 import { Time } from "./time";
 import { add30Minutes } from "./time/utils";
 // describe("A Schedule", () => {
@@ -17,18 +17,18 @@ describe("Schedule Mutations", () => {
   });
 
   describe("Given two overlapping incomplete tasks and one completed task", () => {
-    let incompleteTask1: Task, incompleteTask2: Task, completedTask: Task;
+    let incompleteTask1: TaskEvent, incompleteTask2: TaskEvent, completedTask: TaskEvent;
     beforeEach(() => {
-      incompleteTask1 = new Task({ ...oneHourTask });
-      incompleteTask2 = new Task({
+      incompleteTask1 = new TaskEvent({ ...oneHourTask });
+      incompleteTask2 = new TaskEvent({
         ...twoHourTask,
         start: add30Minutes(oneHourTask.start)
       });
-      completedTask = new Task({
+      completedTask = new TaskEvent({
         ...threeHourTask,
         start: add30Minutes(oneHourTask.start)
       });
-      completedTask.completed = Task.calculateEnd(completedTask);
+      completedTask.completed = TaskEvent.calculateEnd(completedTask);
     });
 
     describe("When stackTasks is called, it...", () => {
@@ -56,9 +56,9 @@ describe("Schedule Mutations", () => {
     });
 
     describe("AND an appointment that overlaps the incomplete tasks", () => {
-      let overlappingAppointment: Appointment;
+      let overlappingAppointment: AppointmentEvent;
       beforeEach(() => {
-        overlappingAppointment = new Appointment({
+        overlappingAppointment = new AppointmentEvent({
           ...incompleteTask1,
           start: add30Minutes(incompleteTask1.start),
           priority: add30Minutes(incompleteTask1.start).getTime(),

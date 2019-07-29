@@ -4,10 +4,11 @@ import { StartEstimated, EndEstimated, Estimated, estimated } from "./time/Estim
 import { Todo, EstimatedTodo } from "./Todo";
 import { Priority, prioritizer } from "./Priority";
 import moment, { Duration } from "moment";
+import { Event } from "./Event";
 
 export interface ITask extends Todo, Priority, StartEstimated {}
 
-export class Task implements ITask, EndEstimated, Period {
+export class TaskEvent implements ITask, Event {
   private _completed?: Date;
   id: number = Time.now();
   title: string = "";
@@ -27,7 +28,7 @@ export class Task implements ITask, EndEstimated, Period {
 
     const todoPeriod = period(todo);
     if(todoPeriod && !estimated(todo)){
-      this.estimate = Task.periodToEstimate(todoPeriod);
+      this.estimate = TaskEvent.periodToEstimate(todoPeriod);
     }
   }
 
@@ -39,12 +40,12 @@ export class Task implements ITask, EndEstimated, Period {
     const changed = this._completed !== completed;
     this._completed = completed;
     if (changed && completed) {
-      this.start = Task.calculateStart(this);
+      this.start = TaskEvent.calculateStart(this);
     }
   }
 
   get duration() {
-    return Task.estimateToDuration(this);
+    return TaskEvent.estimateToDuration(this);
   }
 
   set duration(duration: Duration) {
@@ -52,7 +53,7 @@ export class Task implements ITask, EndEstimated, Period {
   }
 
   get end() {
-    return this.completed || Task.calculateEnd(this);
+    return this.completed || TaskEvent.calculateEnd(this);
   }
 
   set end(end: Date) {
@@ -73,13 +74,13 @@ export class Task implements ITask, EndEstimated, Period {
 
   static calculateEnd({ start, estimate }: StartEstimated) {
     return moment(start)
-      .add(Task.estimateToDuration({ estimate }))
+      .add(TaskEvent.estimateToDuration({ estimate }))
       .toDate();
   }
 
   static calculateStart({ end, estimate }: EndEstimated) {
     return moment(end)
-      .subtract(Task.estimateToDuration({ estimate }))
+      .subtract(TaskEvent.estimateToDuration({ estimate }))
       .toDate();
   }
 
@@ -94,7 +95,7 @@ export class Task implements ITask, EndEstimated, Period {
 
 export function isTask(thing: any){
   try {
-    const taskProperties = Object.keys(new Task());
+    const taskProperties = Object.keys(new TaskEvent());
     const thingProperties = Object.keys(thing);
     return taskProperties.every(property => thingProperties.indexOf(property) >= 0)
   }catch {
@@ -105,7 +106,7 @@ export function isTask(thing: any){
 export const taskPrioritizer = prioritizer;
 
 export const defaultTasks: ITask[] = [
-  new Task({
+  new TaskEvent({
     id: 1,
     title: "Get started with Whenner",
     description: "Click stuff, learn how the app works",

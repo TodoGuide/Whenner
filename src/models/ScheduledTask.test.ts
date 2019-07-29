@@ -3,7 +3,7 @@ import { oneHourTask, twoHourTask } from "../test/data";
 import { defaultChronotype } from "./Chronotype";
 import { customMatchers } from "../test/matchers";
 import { Time } from "./time";
-import { Task } from "./Task";
+import { TaskEvent } from "./Task";
 
 describe("A ScheduledTask", () => {
   beforeEach(() => {
@@ -12,9 +12,9 @@ describe("A ScheduledTask", () => {
   });
 
   describe("Given a Task", () => {
-    let task: Task;
+    let task: TaskEvent;
     beforeEach(() => {
-      task = new Task(oneHourTask);
+      task = new TaskEvent(oneHourTask);
     });
 
     describe("When a ScheduledTodo is created, it...", () => {
@@ -33,10 +33,10 @@ describe("A ScheduledTask", () => {
   });
 
   describe("Given a current and previous todo", () => {
-    let previous: Task, current: Task, scheduledTodo: ScheduledTask;
+    let previous: TaskEvent, current: TaskEvent, scheduledTodo: ScheduledTask;
     beforeEach(() => {
-      previous = new Task(oneHourTask);
-      current = new Task(twoHourTask);
+      previous = new TaskEvent(oneHourTask);
+      current = new TaskEvent(twoHourTask);
       scheduledTodo = new ScheduledTask(
         defaultChronotype,
         current,

@@ -1,5 +1,5 @@
-import { IAppointment, defaultAppointments, Appointment } from "./Appointment";
-import { ITask, defaultTasks, Task, taskPrioritizer } from "./Task";
+import { IAppointment, defaultAppointments, AppointmentEvent } from "./Appointment";
+import { ITask, defaultTasks, TaskEvent, taskPrioritizer } from "./Task";
 import {
   Chronotype,
   defaultChronotype,
@@ -11,7 +11,7 @@ import { Time } from "./time";
 import { periodsOverlap } from "./time/Period";
 import { Estimated } from "./time/Estimated";
 import { End } from "./time/End";
-import { orderByStart, Start } from "./time/Start";
+import { orderByStart } from "./time/Start";
 import { latestOf } from "./time/utils";
 import { prioritize } from "./Priority";
 
@@ -32,22 +32,22 @@ export interface ISchedule {
 // }
 
 export class Schedule implements ISchedule {
-  readonly appointments: Appointment[];
+  readonly appointments: AppointmentEvent[];
   readonly chronotype: Chronotype;
-  readonly tasks: Task[];
-  readonly todos: Array<Appointment | Task>;
+  readonly tasks: TaskEvent[];
+  readonly todos: Array<IAppointment | ITask>;
 
   constructor({ chronotype, appointments, tasks }: ISchedule) {
     this.chronotype = chronotype;
 
     this.appointments = orderByStart(
-      ...appointments.map(appointment => new Appointment(appointment))
+      ...appointments.map(appointment => new AppointmentEvent(appointment))
     );
 
     this.tasks = Schedule.mutations.stackTasks(
       Time.current(),
       this.chronotype,
-      ...tasks.map(task => new Task(task))
+      ...tasks.map(task => new TaskEvent(task))
     );
 
     this.todos = Schedule.mutations.scheduleTasks(
@@ -86,9 +86,9 @@ export class Schedule implements ISchedule {
     stackTasks: function(
       start: Date,
       chronotype: Chronotype,
-      ...tasks: Task[]
+      ...tasks: TaskEvent[]
     ) {
-      let lastIncomplete: Task | undefined = undefined;
+      let lastIncomplete: TaskEvent | undefined = undefined;
       for (let i = 0; i < tasks.length; i++) {
         const previous = tasks[i - 1];
         const current = tasks[i];
@@ -124,11 +124,11 @@ export class Schedule implements ISchedule {
 
     scheduleTasks: function(
       chronotype: Chronotype,
-      appointments: Appointment[],
-      tasks: Task[]
+      appointments: AppointmentEvent[],
+      tasks: TaskEvent[]
     ) {
       const result = prioritize(
-        (item: Appointment | Task) => item.start.getTime(),
+        (item: AppointmentEvent | TaskEvent) => item.start.getTime(),
         ...[...appointments, ...tasks]
       );
 

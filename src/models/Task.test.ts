@@ -1,7 +1,7 @@
 import { IAppointment } from "./Appointment";
 import { customMatchers } from "../test/matchers";
 import { Time } from "./time";
-import { ITask, Task, isTask } from "./Task";
+import { ITask, TaskEvent, isTask } from "./Task";
 import moment from "moment"
 import { add30Minutes } from "./time/utils";
 
@@ -25,9 +25,9 @@ describe("A Task", () => {
     });
 
     describe("When the instance is passed to the Task constructor, it...", () => {
-      let task: Task;
+      let task: TaskEvent;
       beforeEach(() => {
-        task = new Task(itask);
+        task = new TaskEvent(itask);
       });
 
       it("Assigns the ITask instance properties to the Task instance", () => {
@@ -54,9 +54,9 @@ describe("A Task", () => {
 
   describe("Given no ITask instance", () => {
     describe("When nothing is passed to the Todo constructor, it...", () => {
-      let task: Task;
+      let task: TaskEvent;
       beforeEach(() => {
-        task = new Task();
+        task = new TaskEvent();
       });
 
       it("Defaults to an ID of the current date and time", () => {
@@ -99,9 +99,9 @@ describe("A Task", () => {
     });
 
     describe("When the instance is passed to the Task constructor, it...", () => {
-      let task: Task;
+      let task: TaskEvent;
       beforeEach(() => {
-        task = new Task(iappointment);
+        task = new TaskEvent(iappointment);
       });
 
       it("Assigns the ITask instance properties to the Task instance", () => {
@@ -114,7 +114,7 @@ describe("A Task", () => {
           title,
           priority,
           end
-        }).toEqual({ ...iappointment, estimate: Task.periodToEstimate(iappointment) });
+        }).toEqual({ ...iappointment, estimate: TaskEvent.periodToEstimate(iappointment) });
       });
 
       it("Sets the End date based on the Start and Estimate", () => {
@@ -130,11 +130,11 @@ describe("A Task", () => {
 
 describe("The isTask function", () => {
   it("Returns true when given a task", () => {
-    expect(isTask(new Task())).toBeTruthy();
+    expect(isTask(new TaskEvent())).toBeTruthy();
   });
 
   it("Returns true when given a task with extra properties", () => {
-    expect(isTask({ ...new Task(), extraProp: "Hello!" })).toBeTruthy();
+    expect(isTask({ ...new TaskEvent(), extraProp: "Hello!" })).toBeTruthy();
   });
 
   it("Returns false when not given a task", () => {

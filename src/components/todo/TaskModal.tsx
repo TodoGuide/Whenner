@@ -8,7 +8,7 @@ import {
   Button
 } from "react-bootstrap";
 import { Time } from "../../models/time";
-import { ITask, Task } from "../../models/Task";
+import { ITask, TaskEvent } from "../../models/Task";
 
 interface TaskModalProps extends ModalProps {
   task?: ITask;
@@ -25,7 +25,7 @@ export default class TaskModal extends React.Component<
 > {
   constructor(props: TaskModalProps) {
     super(props);
-    this.state = { task: new Task(props.task) };
+    this.state = { task: new TaskEvent(props.task) };
   }
 
   readInput({
@@ -58,7 +58,7 @@ export default class TaskModal extends React.Component<
   ) => {
     const { propName } = this.propInfoFromTarget(event.currentTarget);
     if (propName === "done") {
-      const todo = new Task(this.state.task);
+      const todo = new TaskEvent(this.state.task);
       todo.completed = this.readInput(event.currentTarget)
         ? Time.current()
         : undefined;

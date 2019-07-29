@@ -1,7 +1,7 @@
 import { customMatchers } from "../test/matchers";
 import { Time } from "./time";
 import { Todo } from "./Todo";
-import { Appointment } from "./Appointment";
+import { AppointmentEvent } from "./Appointment";
 import { addHour } from "./time/utils";
 
 describe("An Appointment", () => {
@@ -22,9 +22,9 @@ describe("An Appointment", () => {
     });
 
     describe("When the instance is passed to the Appointment constructor, it...", () => {
-      let appointment: Appointment;
+      let appointment: AppointmentEvent;
       beforeEach(() => {
-        appointment = new Appointment(todo);
+        appointment = new AppointmentEvent(todo);
       });
 
       it("Assigns the Todo properties to the Appointment", () => {
@@ -41,9 +41,9 @@ describe("An Appointment", () => {
 
   describe("Given no Todo", () => {
     describe("When nothing is passed to the Appointment constructor, it...", () => {
-      let appointment: Appointment;
+      let appointment: AppointmentEvent;
       beforeEach(() => {
-        appointment = new Appointment();
+        appointment = new AppointmentEvent();
       });
 
       it("Defaults to an ID of the current date and time", () => {
