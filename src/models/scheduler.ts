@@ -1,9 +1,7 @@
-import { Chronotype, defaultChronotype } from "./Chronotype";
+import { Chronotype } from "./Chronotype";
 import { ScheduledTask } from "./ScheduledTask";
 import { Task, ITask, taskPrioritizer } from "./Task";
 import { prioritize } from "./Priority";
-
-let lastChronotype = defaultChronotype;
 
 export function schedule(chronotype: Chronotype, ...tasks: ITask[]): ITask[] {
   if (tasks.length === 0) {
@@ -20,6 +18,5 @@ export function schedule(chronotype: Chronotype, ...tasks: ITask[]): ITask[] {
     result[i] = new ScheduledTask(chronotype, current, lastIncomplete);
   }
 
-  lastChronotype = chronotype;
   return result;
 }
