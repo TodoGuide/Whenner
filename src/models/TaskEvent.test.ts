@@ -5,7 +5,7 @@ import { TaskEvent, isTask } from "./TaskEvent";
 import { Task } from "./Task";
 import { add30Minutes } from "./time/utils";
 
-describe("A Task", () => {
+describe("A TaskEvent", () => {
   beforeEach(() => {
     jasmine.addMatchers(customMatchers);
     Time.set(new Date(2019, 6, 20, 13, 1, 0, 0)); // 2019-07-20 at 1:01PM
@@ -18,25 +18,23 @@ describe("A Task", () => {
         id: 1,
         title: "ITask Instance",
         description: "This is a valid instance of the ITask interface",
-        priority: 1,
-        start: Time.current(),
+        priority: Time.now(),
         estimate: 1
       };
     });
 
-    describe("When the instance is passed to the Task constructor, it...", () => {
+    describe("When the instance is passed to the TaskEvent constructor, it...", () => {
       let task: TaskEvent;
       beforeEach(() => {
         task = new TaskEvent(itask);
       });
 
       it("Assigns the ITask instance properties to the Task instance", () => {
-        const { description, estimate, id, start, title, priority } = task;
+        const { description, estimate, id, title, priority } = task;
         expect({
           description,
           estimate,
           id,
-          start,
           title,
           priority
         }).toEqual({ ...itask, priority: Time.now() });
