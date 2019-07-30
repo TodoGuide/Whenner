@@ -5,8 +5,7 @@ export const oneHourTask: Task = {
   title: "One hour task",
   description: "This is a one hour task",
   priority: 1,
-  estimate: 60,
-  start: new Date(2019, 5, 15, 9, 46, 45, 44)
+  estimate: 60
 };
 
 
@@ -16,7 +15,6 @@ export const twoHourTask: Task = {
   description: "This is a two hour task",
   priority: 2,
   estimate: 120,
-  start: new Date(2019, 5, 15, 10, 46, 45, 44)
 };
 
 export const threeHourTask: Task = {
@@ -25,5 +23,4 @@ export const threeHourTask: Task = {
   description: "This is a three hour task",
   priority: 3,
   estimate: 180,
-  start: new Date(2019, 5, 15, 12, 46, 45, 44)
 };
