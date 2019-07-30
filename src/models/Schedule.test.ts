@@ -17,16 +17,17 @@ describe("Schedule Mutations", () => {
   });
 
   describe("Given two overlapping incomplete tasks and one completed task", () => {
-    let incompleteTask1: TaskEvent, incompleteTask2: TaskEvent, completedTask: TaskEvent;
+    let incompleteTask1: TaskEvent,
+      incompleteTask2: TaskEvent,
+      completedTask: TaskEvent;
     beforeEach(() => {
-      incompleteTask1 = new TaskEvent({ ...oneHourTask });
+      incompleteTask1 = new TaskEvent({ ...oneHourTask, priority: Time.now() });
       incompleteTask2 = new TaskEvent({
         ...twoHourTask,
-        start: add30Minutes(oneHourTask.start)
+        priority: add30Minutes(Time.current()).getTime()
       });
       completedTask = new TaskEvent({
-        ...threeHourTask,
-        start: add30Minutes(oneHourTask.start)
+        ...threeHourTask
       });
       completedTask.completed = TaskEvent.calculateEnd(completedTask);
     });
@@ -51,7 +52,7 @@ describe("Schedule Mutations", () => {
       });
 
       it("Does NOT modify the completed task", () => {
-        expect(completedTask.start).toEqual(add30Minutes(oneHourTask.start));
+        expect(completedTask.priority).toEqual(threeHourTask.priority);
       });
     });
 
@@ -61,7 +62,6 @@ describe("Schedule Mutations", () => {
         overlappingAppointment = new AppointmentEvent({
           ...incompleteTask1,
           start: add30Minutes(incompleteTask1.start),
-          priority: add30Minutes(incompleteTask1.start).getTime(),
           end: add30Minutes(incompleteTask1.end)
         });
       });
@@ -84,7 +84,7 @@ describe("Schedule Mutations", () => {
         });
 
         it("Does NOT modify the completed task", () => {
-          expect(completedTask.start).toEqual(add30Minutes(oneHourTask.start));
+          expect(completedTask.priority).toEqual(threeHourTask.priority);
         });
       });
     });

@@ -36,10 +36,10 @@ describe("The schedule method", () => {
     ];
 
     describe("When the schedule method is called", () => {
-      let scheduledTasks: Task[];
+      let scheduledTasks: TaskEvent[];
 
       beforeEach(() => {
-        scheduledTasks = schedule(defaultChronotype, ...twoNotDoneTasks);
+        scheduledTasks = schedule(defaultChronotype, ...twoNotDoneTasks) as TaskEvent[];
       });
 
       it("Schedules the higher priority Todo for the current date and time", () => {
@@ -62,9 +62,9 @@ describe("The schedule method", () => {
 
     describe("AND a 2-hour Todo", () => {
       describe("When schedule is called, it..", () => {
-        let scheduledTasks: Task[];
+        let scheduledTasks: TaskEvent[];
         beforeEach(() => {
-          scheduledTasks = schedule(oneHourWindow, twoHourTask);
+          scheduledTasks = schedule(oneHourWindow, twoHourTask) as TaskEvent[];
         });
 
         it("Schedules the Todo for the current date and time", () => {
@@ -75,9 +75,9 @@ describe("The schedule method", () => {
 
     describe("AND a 1-hour Todo", () => {
       describe("When schedule is called, it..", () => {
-        let scheduledTasks: Task[];
+        let scheduledTasks: TaskEvent[];
         beforeEach(() => {
-          scheduledTasks = schedule(oneHourWindow, oneHourTask);          
+          scheduledTasks = schedule(oneHourWindow, oneHourTask) as TaskEvent[];          
         });
 
         it("Schedules the Todo for tomorrow", () => {
@@ -88,14 +88,14 @@ describe("The schedule method", () => {
 
     describe("AND 2 1-hour Tasks", () => {
       describe("When schedule is called, it..", () => {
-        let scheduledTasks: Task[];
+        let scheduledTasks: TaskEvent[];
         beforeEach(() => {
           console.log("When schedule is called, beforeEach");
           scheduledTasks = schedule(
             oneHourWindow,
             { ...oneHourTask },
             { ...oneHourTask }
-          );
+          ) as TaskEvent[];
         });
 
         it("Schedules the higher priority Todo for tomorrow", () => {
@@ -104,7 +104,7 @@ describe("The schedule method", () => {
 
         it("Schedules the lower priority Todo for the day after tomorrow", () => {
           expect(scheduledTasks[1].start).toEqual(Time.dayAfterTomorrow());
-        });
+        }); 
       });
     });
   });

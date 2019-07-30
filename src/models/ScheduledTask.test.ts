@@ -20,10 +20,7 @@ describe("A ScheduledTask", () => {
     describe("When a ScheduledTodo is created, it...", () => {
       let scheduledTodo: ScheduledTask;
       beforeEach(() => {
-        scheduledTodo = new ScheduledTask(
-          defaultChronotype,
-          task
-        );
+        scheduledTodo = new ScheduledTask(defaultChronotype, task);
       });
 
       it("Has a start of now", () => {
@@ -35,23 +32,15 @@ describe("A ScheduledTask", () => {
   describe("Given a current and previous todo", () => {
     let previous: TaskEvent, current: TaskEvent, scheduledTodo: ScheduledTask;
     beforeEach(() => {
-      previous = new TaskEvent(oneHourTask);
-      current = new TaskEvent(twoHourTask);
-      scheduledTodo = new ScheduledTask(
-        defaultChronotype,
-        current,
-        previous
-      );
+      previous = new TaskEvent({ ...oneHourTask, priority: Time.now() - 1 });
+      current = new TaskEvent({...twoHourTask, priority: Time.now()});
+      scheduledTodo = new ScheduledTask(defaultChronotype, current, previous);
     });
 
     describe("When a ScheduledTodo is created, it...", () => {
       let scheduledTodo: ScheduledTask;
       beforeEach(() => {
-        scheduledTodo = new ScheduledTask(
-          defaultChronotype,
-          current,
-          previous
-        );
+        scheduledTodo = new ScheduledTask(defaultChronotype, current, previous);
       });
 
       it("Has a 'start' value equal to the previous Todo 'end' value", () => {
