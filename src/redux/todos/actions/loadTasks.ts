@@ -18,7 +18,7 @@ function loadTasksSuccess(tasks: Task[]): TasksResultAction {
 export const loadTasks: TasksResultActionThunk = () => {
   return function(dispatch: Dispatch) {
     return tasksService
-      .all()
+      .read()
       .then(tasks => dispatch(loadTasksSuccess(tasks)))
       .catch(e => {
         console.log("loadTasks error", e);

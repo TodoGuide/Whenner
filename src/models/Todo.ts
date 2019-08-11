@@ -1,9 +1,5 @@
 import { Estimated } from "./time/Estimated";
-import { Priority, Prioritizer } from "./Priority";
-
-export interface Id {
-  readonly id: number;
-}
+import Id from "../services/Id";
 
 export interface Title {
   readonly title: string;

@@ -10,7 +10,7 @@ describe("The Tasks Service", () => {
   let tasksService: TasksService;
 
   beforeEach(() => {
-    tasksService = new TasksService(defaultChronotype);
+    tasksService = TasksService.create(defaultChronotype);
     jasmine.addMatchers(customMatchers);
     Time.set(new Date(2019, 6, 5, 12, 0, 0, 0)); // 2019-07-05 at Noon
   });
@@ -20,10 +20,10 @@ describe("The Tasks Service", () => {
       localStorage.clear();
     });
 
-    describe("When all() is called, it...", () => {
+    describe("When read() is called, it...", () => {
       let allResult: Todo[];
       beforeEach(async function() {
-        allResult = await tasksService.all();
+        allResult = await tasksService.read();
       });
 
       it("Returns the default tasks", () => {
@@ -42,7 +42,7 @@ describe("The Tasks Service", () => {
       });
 
       it("Inserts the provided Todo", async function() {
-        const found = await tasksService.byId(upsertResult.id);
+        const found = await tasksService.find(upsertResult.id);
         expect(found).toBeScheduledCopyOf(oneHourTask);
       });
     });

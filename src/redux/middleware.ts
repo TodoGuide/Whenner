@@ -21,7 +21,7 @@ export function autoDispatcher(
       console.debug("autoDispatcher dispatch", { action, autoAction });
       dispatch(autoAction);
     } else {
-      console.debug("autoDispatcher, nothing to dispatch", action);
+      // console.debug("autoDispatcher, nothing to dispatch", action);
     }
     return next(action);
   };

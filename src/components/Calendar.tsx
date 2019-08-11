@@ -122,7 +122,7 @@ class Calendar extends React.Component<CalendarProps, CalendarState> {
     // const { todos } = this.state;
     const { schedule, minTime, maxTime, loading } = this.props;
     const events = new Schedule(schedule).todos.map(t => new TaskEvent(t));
-    console.log("Calendar.render", events);
+    // console.log("Calendar.render", events);
     return (
       <div>
         {loading ? (
@@ -210,7 +210,7 @@ const mapStateToProps = ({
   schedule,
   loadsInProgress
 }: WhennerState): CalendarStateProps => {
-  console.log("Calendar mapStateToProps schedule", schedule);
+  // console.log("Calendar mapStateToProps schedule", schedule);
   return {
     schedule,
     minTime: earliestOf(
