@@ -17,6 +17,7 @@ export class TasksService {
     };
     const read = result.read;
     result.read = async () => schedule(chronotype, ...(await read()));
+    result.find = async (id: number) => result.find(id, await read());
     return result;
   }
 }

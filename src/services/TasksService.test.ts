@@ -5,9 +5,11 @@ import { customMatchers } from "../test/matchers";
 import { defaultChronotype } from "../models/Chronotype";
 import { Time } from "../models/time";
 import { defaultTasks } from "../models/TaskEvent";
+import { Task } from "../models/Task";
+import { Crud } from "./crud";
 
 describe("The Tasks Service", () => {
-  let tasksService: TasksService;
+  let tasksService: Crud<Task>;
 
   beforeEach(() => {
     tasksService = TasksService.create(defaultChronotype);
