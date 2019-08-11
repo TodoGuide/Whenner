@@ -1,3 +1,6 @@
+// Licensed under GPL v3: https://www.gnu.org/licenses/gpl-3.0.txt
+// Copyright (C) 2019  James Tharpe
+
 import Id, { IdGenerator } from "../Id";
 import { Time } from "../../models/time";
 
@@ -19,7 +22,7 @@ export const readListfinder: FinderComposer = <T extends Id>(
   read: Reader<T[]>
 ): Finder<T> => {
   return async function(id: number, list?: T[]) {
-    return (list || await read()).find(t => t.id === id);
+    return (list || (await read())).find(t => t.id === id);
   };
 };
 
@@ -89,7 +92,7 @@ export const upserter: UpserterComposer = <T extends Id>(
   insert: Inserter<T>
 ): Upserter<T> =>
   async function(item: T): Promise<T> {
-    return await update(item) || await insert(item);
+    return (await update(item)) || (await insert(item));
   };
 
 /**

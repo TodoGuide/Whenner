@@ -1,3 +1,6 @@
+// Licensed under GPL v3: https://www.gnu.org/licenses/gpl-3.0.txt
+// Copyright (C) 2019  James Tharpe
+
 import { TaskAction, TaskActionThunk } from ".";
 import { Dispatch } from "redux";
 import { tasksService } from "../../../services/services";
@@ -6,18 +9,14 @@ import { Task } from "../../../models/Task";
 
 // Action Creators
 
-function insertTaskSuccess(
-  task: Task
-): TaskAction {
+function insertTaskSuccess(task: Task): TaskAction {
   return {
     type: WhennerActionType.InsertTaskSuccess,
     task
   };
 }
 
-function updateTaskSuccess(
-  task: Task
-): TaskAction {
+function updateTaskSuccess(task: Task): TaskAction {
   return {
     type: WhennerActionType.UpdateTaskSuccess,
     task

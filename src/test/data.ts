@@ -1,3 +1,6 @@
+// Licensed under GPL v3: https://www.gnu.org/licenses/gpl-3.0.txt
+// Copyright (C) 2019  James Tharpe
+
 import { Task } from "../models/Task";
 
 export const oneHourTask: Task = {
@@ -8,13 +11,12 @@ export const oneHourTask: Task = {
   estimate: 60
 };
 
-
 export const twoHourTask: Task = {
   id: 101,
   title: "Two hour task",
   description: "This is a two hour task",
   priority: 2,
-  estimate: 120,
+  estimate: 120
 };
 
 export const threeHourTask: Task = {
@@ -22,5 +24,5 @@ export const threeHourTask: Task = {
   title: "Three hour task",
   description: "This is a three hour task",
   priority: 3,
-  estimate: 180,
+  estimate: 180
 };

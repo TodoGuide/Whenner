@@ -1,3 +1,6 @@
+// Licensed under GPL v3: https://www.gnu.org/licenses/gpl-3.0.txt
+// Copyright (C) 2019  James Tharpe
+
 import composeCrud, {
   ReaderComposer,
   Reader,
@@ -28,7 +31,7 @@ export const localStorageInserter: InserterComposer = <T extends Id>(
       );
     }
     const insertItem = { ...item, id: nextId() };
-    const items = [...await read(), insertItem];
+    const items = [...(await read()), insertItem];
     write(items);
     return insertItem;
   };

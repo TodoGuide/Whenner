@@ -1,6 +1,14 @@
+// Licensed under GPL v3: https://www.gnu.org/licenses/gpl-3.0.txt
+// Copyright (C) 2019  James Tharpe
+
 import { Time } from "./time";
 import { Period, period } from "./time/Period";
-import { StartEstimated, EndEstimated, Estimated, estimated } from "./time/Estimated";
+import {
+  StartEstimated,
+  EndEstimated,
+  Estimated,
+  estimated
+} from "./time/Estimated";
 import { Todo, EstimatedTodo } from "./Todo";
 import { prioritizer } from "./Priority";
 import moment, { Duration } from "moment";
@@ -20,13 +28,15 @@ export class TaskEvent implements Task, Event {
 
     // JavaScript stores dates as strings when serializing,
     // so re-construct in case we received a string
-    this.priority = new Date(this.start || this.priority || Time.now()).getTime();
+    this.priority = new Date(
+      this.start || this.priority || Time.now()
+    ).getTime();
     if (this._completed) {
       this._completed = new Date(this._completed);
     }
 
     const todoPeriod = period(todo);
-    if(todoPeriod && !estimated(todo)){
+    if (todoPeriod && !estimated(todo)) {
       this.estimate = TaskEvent.periodToEstimate(todoPeriod);
     }
   }
@@ -87,17 +97,19 @@ export class TaskEvent implements Task, Event {
     return moment.duration(estimate, "minutes");
   }
 
-  static periodToEstimate({ start, end }: Period){
+  static periodToEstimate({ start, end }: Period) {
     return moment.duration(moment(end).diff(start)).asMinutes();
   }
 }
 
-export function isTask(thing: any){
+export function isTask(thing: any) {
   try {
     const taskProperties = Object.keys(new TaskEvent());
     const thingProperties = Object.keys(thing);
-    return taskProperties.every(property => thingProperties.indexOf(property) >= 0)
-  }catch {
+    return taskProperties.every(
+      property => thingProperties.indexOf(property) >= 0
+    );
+  } catch {
     return false;
   }
 }

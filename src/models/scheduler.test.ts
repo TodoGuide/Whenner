@@ -1,3 +1,6 @@
+// Licensed under GPL v3: https://www.gnu.org/licenses/gpl-3.0.txt
+// Copyright (C) 2019  James Tharpe
+
 import { Time } from "./time";
 import { schedule } from "./scheduler";
 import moment from "moment";
@@ -5,7 +8,6 @@ import { oneHourTask, twoHourTask } from "../test/data";
 import { customMatchers } from "../test/matchers";
 import { Chronotype, defaultChronotype } from "./Chronotype";
 import { TaskEvent } from "./TaskEvent";
-import { Task } from "./Task";
 
 describe("The schedule method", () => {
   beforeEach(() => {
@@ -39,7 +41,10 @@ describe("The schedule method", () => {
       let scheduledTasks: TaskEvent[];
 
       beforeEach(() => {
-        scheduledTasks = schedule(defaultChronotype, ...twoNotDoneTasks) as TaskEvent[];
+        scheduledTasks = schedule(
+          defaultChronotype,
+          ...twoNotDoneTasks
+        ) as TaskEvent[];
       });
 
       it("Schedules the higher priority Todo for the current date and time", () => {
@@ -71,13 +76,13 @@ describe("The schedule method", () => {
           expect(scheduledTasks[0].start.getTime()).toEqual(Time.now());
         });
       });
-    }); 
+    });
 
     describe("AND a 1-hour Todo", () => {
       describe("When schedule is called, it..", () => {
         let scheduledTasks: TaskEvent[];
         beforeEach(() => {
-          scheduledTasks = schedule(oneHourWindow, oneHourTask) as TaskEvent[];          
+          scheduledTasks = schedule(oneHourWindow, oneHourTask) as TaskEvent[];
         });
 
         it("Schedules the Todo for tomorrow", () => {
@@ -100,11 +105,11 @@ describe("The schedule method", () => {
 
         it("Schedules the higher priority Todo for tomorrow", () => {
           expect(scheduledTasks[0].start).toEqual(Time.tomorrow());
-        }); 
+        });
 
         it("Schedules the lower priority Todo for the day after tomorrow", () => {
           expect(scheduledTasks[1].start).toEqual(Time.dayAfterTomorrow());
-        }); 
+        });
       });
     });
   });

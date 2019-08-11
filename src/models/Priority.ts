@@ -1,3 +1,6 @@
+// Licensed under GPL v3: https://www.gnu.org/licenses/gpl-3.0.txt
+// Copyright (C) 2019  James Tharpe
+
 /**
  * Something with a numeric priority.
  */
@@ -8,15 +11,15 @@ export interface Priority {
 /**
  * A function that takes an object and returns a numeric priority
  */
-export interface Prioritizer<T = {}> { 
-    (item: T): number;
+export interface Prioritizer<T = {}> {
+  (item: T): number;
 }
 
 /**
  * Returns a numeric priority for the given Priority object
  * @param item The item to have its priority determined
  */
-export const prioritizer: Prioritizer<Priority> = (item) => item.priority;
+export const prioritizer: Prioritizer<Priority> = item => item.priority;
 
 /**
  * The given set of objects, ordered by their numeric priority

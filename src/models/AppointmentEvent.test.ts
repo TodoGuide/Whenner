@@ -1,3 +1,6 @@
+// Licensed under GPL v3: https://www.gnu.org/licenses/gpl-3.0.txt
+// Copyright (C) 2019  James Tharpe
+
 import { customMatchers } from "../test/matchers";
 import { Time } from "./time";
 import { Todo } from "./Todo";
@@ -16,7 +19,7 @@ describe("An Appointment", () => {
       todo = {
         id: 1,
         title: "Todo Instance",
-        description: "This is a valid instance of the Todo interface",
+        description: "This is a valid instance of the Todo interface"
       };
     });
 
@@ -29,7 +32,7 @@ describe("An Appointment", () => {
       it("Assigns the Todo properties to the Appointment", () => {
         expect({ ...appointment, completed: todo.completed }).toEqual({
           ...todo,
-          _completed: appointment.completed, 
+          _completed: appointment.completed,
           start: Time.current(),
           end: addHour(Time.current()),
           completed: undefined

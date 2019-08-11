@@ -1,8 +1,11 @@
+// Licensed under GPL v3: https://www.gnu.org/licenses/gpl-3.0.txt
+// Copyright (C) 2019  James Tharpe
+
 import { Dispatch, Middleware, MiddlewareAPI } from "redux";
 import { WhennerState } from ".";
 import { TASK_ACTION_PREFIX } from "./common/actions";
 import { beginLoad } from "./common/actions/beginLoad";
-import { loadTasks } from "./todos/actions/loadTasks";
+import { loadTasks } from "./tasks/actions/loadTasks";
 
 export const logger: Middleware = () => (next: Dispatch) => action => {
   console.log("Action Dispatched", action);
