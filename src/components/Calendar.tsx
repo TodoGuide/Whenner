@@ -10,13 +10,7 @@ import BigCalendar, { stringOrDate } from "react-big-calendar";
 import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop";
 import { connect } from "react-redux";
 import { Dispatch, bindActionCreators } from "redux";
-import {
-  TasksResultActionThunk,
-  TaskActionThunk
-} from "../redux/todos/actions";
 import { Time } from "../models/time";
-import { loadTasks } from "../redux/todos/actions/loadTasks";
-import { upsertTask } from "../redux/todos/actions/upsertTask";
 import { WhennerState } from "../redux";
 import { WhennerAction } from "../redux/common/actions";
 import { startOf, endOf } from "../models/Chronotype";
@@ -26,6 +20,9 @@ import { TaskEvent, defaultTasks } from "../models/TaskEvent";
 import { ISchedule, Schedule } from "../models/Schedule";
 import { earliestOf, latestOf } from "../models/time/utils";
 import { Event } from "../models/Event";
+import { TaskActionThunk, TasksResultActionThunk } from "../redux/tasks/actions";
+import { upsertTask } from "../redux/tasks/actions/upsertTask";
+import { loadTasks } from "../redux/tasks/actions/loadTasks";
 
 moment.locale(navigator.language, {
   week: {
