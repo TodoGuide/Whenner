@@ -1,3 +1,6 @@
+// Licensed under GPL v3: https://www.gnu.org/licenses/gpl-3.0.txt
+// Copyright (C) 2019  James Tharpe
+
 import { Start } from "./Start";
 import { End } from "./End";
 import { MILLISECONDS_PER_MINUTE } from "./consts";
@@ -19,6 +22,8 @@ export function periodsOverlap(period1: Period, period2: Period) {
   );
 }
 
-export function lengthInMinutes(period: Period){
-  return (period.end.getTime() - period.start.getTime())/MILLISECONDS_PER_MINUTE;
+export function lengthInMinutes(period: Period) {
+  return (
+    (period.end.getTime() - period.start.getTime()) / MILLISECONDS_PER_MINUTE
+  );
 }

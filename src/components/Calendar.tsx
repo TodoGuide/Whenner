@@ -1,3 +1,6 @@
+// Licensed under GPL v3: https://www.gnu.org/licenses/gpl-3.0.txt
+// Copyright (C) 2019  James Tharpe
+
 import "react-big-calendar/lib/addons/dragAndDrop/styles.css";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 
@@ -7,13 +10,7 @@ import BigCalendar, { stringOrDate } from "react-big-calendar";
 import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop";
 import { connect } from "react-redux";
 import { Dispatch, bindActionCreators } from "redux";
-import {
-  TasksResultActionThunk,
-  TaskActionThunk
-} from "../redux/todos/actions";
 import { Time } from "../models/time";
-import { loadTasks } from "../redux/todos/actions/loadTasks";
-import { upsertTask } from "../redux/todos/actions/upsertTask";
 import { WhennerState } from "../redux";
 import { WhennerAction } from "../redux/common/actions";
 import { startOf, endOf } from "../models/Chronotype";
@@ -23,6 +20,9 @@ import { TaskEvent, defaultTasks } from "../models/TaskEvent";
 import { ISchedule, Schedule } from "../models/Schedule";
 import { earliestOf, latestOf } from "../models/time/utils";
 import { Event } from "../models/Event";
+import { TaskActionThunk, TasksResultActionThunk } from "../redux/tasks/actions";
+import { upsertTask } from "../redux/tasks/actions/upsertTask";
+import { loadTasks } from "../redux/tasks/actions/loadTasks";
 
 moment.locale(navigator.language, {
   week: {
@@ -122,7 +122,7 @@ class Calendar extends React.Component<CalendarProps, CalendarState> {
     // const { todos } = this.state;
     const { schedule, minTime, maxTime, loading } = this.props;
     const events = new Schedule(schedule).todos.map(t => new TaskEvent(t));
-    console.log("Calendar.render", events);
+    // console.log("Calendar.render", events);
     return (
       <div>
         {loading ? (
@@ -210,7 +210,7 @@ const mapStateToProps = ({
   schedule,
   loadsInProgress
 }: WhennerState): CalendarStateProps => {
-  console.log("Calendar mapStateToProps schedule", schedule);
+  // console.log("Calendar mapStateToProps schedule", schedule);
   return {
     schedule,
     minTime: earliestOf(

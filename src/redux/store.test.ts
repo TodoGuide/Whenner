@@ -1,3 +1,6 @@
+// Licensed under GPL v3: https://www.gnu.org/licenses/gpl-3.0.txt
+// Copyright (C) 2019  James Tharpe
+
 import { Store } from "./store";
 import { Store as ReduxStore } from "redux";
 import { customMatchers } from "../test/matchers";
@@ -24,7 +27,9 @@ describe("The Whenner Store", () => {
       expect(schedule.tasks).toEqual(defaultTasks);
 
       // Check that the default Todo was scheduled
-      expect(schedule.tasks[0]).toBeScheduledCopyOf(initialState.schedule.tasks[0]);
+      expect(schedule.tasks[0]).toBeScheduledCopyOf(
+        initialState.schedule.tasks[0]
+      );
 
       // TODO: Verify appointments
     });

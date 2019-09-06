@@ -1,3 +1,6 @@
+// Licensed under GPL v3: https://www.gnu.org/licenses/gpl-3.0.txt
+// Copyright (C) 2019  James Tharpe
+
 import { Todo } from "./Todo";
 import { Priority, Prioritizer } from "./Priority";
 import { Time } from "./time";
@@ -15,7 +18,7 @@ export class AppointmentEvent implements Appointment, Event {
   start: Date = Time.current();
   title: string = "";
 
-  constructor(todo?: Appointment | Todo | Priority){
+  constructor(todo?: Appointment | Todo | Priority) {
     Object.assign(this, todo);
 
     // JavaScript stores dates as strings when serializing,
@@ -25,13 +28,13 @@ export class AppointmentEvent implements Appointment, Event {
   }
 
   get completed() {
-    if(!this._completed && this.end <= Time.current()){
+    if (!this._completed && this.end <= Time.current()) {
       this._completed = this.end;
     }
     return this._completed;
   }
 
-  set completed(completed: Date | undefined){
+  set completed(completed: Date | undefined) {
     this._completed = completed;
   }
 
@@ -40,7 +43,9 @@ export class AppointmentEvent implements Appointment, Event {
   }
 
   set estimate(estimate: number) {
-    this.end = moment(this.start).add(estimate, "minutes").toDate();
+    this.end = moment(this.start)
+      .add(estimate, "minutes")
+      .toDate();
   }
 
   get priority() {
@@ -52,7 +57,8 @@ export class AppointmentEvent implements Appointment, Event {
   }
 }
 
-export const appointmentPrioritizer: Prioritizer<Appointment> = (item) => item.start.getTime();
+export const appointmentPrioritizer: Prioritizer<Appointment> = item =>
+  item.start.getTime();
 
 export const defaultAppointments: Appointment[] = [
   {
@@ -63,4 +69,4 @@ export const defaultAppointments: Appointment[] = [
     end: addHour(addHour(Time.current())),
     completed: undefined
   }
-]
+];

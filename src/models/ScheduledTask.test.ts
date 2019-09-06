@@ -1,3 +1,6 @@
+// Licensed under GPL v3: https://www.gnu.org/licenses/gpl-3.0.txt
+// Copyright (C) 2019  James Tharpe
+
 import { ScheduledTask } from "./ScheduledTask";
 import { oneHourTask, twoHourTask } from "../test/data";
 import { defaultChronotype } from "./Chronotype";
@@ -33,7 +36,7 @@ describe("A ScheduledTask", () => {
     let previous: TaskEvent, current: TaskEvent, scheduledTodo: ScheduledTask;
     beforeEach(() => {
       previous = new TaskEvent({ ...oneHourTask, priority: Time.now() - 1 });
-      current = new TaskEvent({...twoHourTask, priority: Time.now()});
+      current = new TaskEvent({ ...twoHourTask, priority: Time.now() });
       scheduledTodo = new ScheduledTask(defaultChronotype, current, previous);
     });
 

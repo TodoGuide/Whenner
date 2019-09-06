@@ -1,9 +1,8 @@
-import { Estimated } from "./time/Estimated";
-import { Priority, Prioritizer } from "./Priority";
+// Licensed under GPL v3: https://www.gnu.org/licenses/gpl-3.0.txt
+// Copyright (C) 2019  James Tharpe
 
-export interface Id {
-  readonly id: number;
-}
+import { Estimated } from "./time/Estimated";
+import Id from "../services/Id";
 
 export interface Title {
   readonly title: string;

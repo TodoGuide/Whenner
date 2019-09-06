@@ -1,3 +1,6 @@
+// Licensed under GPL v3: https://www.gnu.org/licenses/gpl-3.0.txt
+// Copyright (C) 2019  James Tharpe
+
 import { Chronotype } from "./Chronotype";
 import moment from "moment";
 import { Duration } from "moment";
@@ -42,6 +45,6 @@ export function preferredStart(candidateStart: Date, chronotype: Chronotype) {
   return latestOf(startOf(candidateStart, chronotype), candidateStart);
 }
 
-export function lengthInMinutes({ start, end }: Chronotype){
+export function lengthInMinutes({ start, end }: Chronotype) {
   return end.asMinutes() - start.asMinutes();
 }

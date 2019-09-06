@@ -1,11 +1,14 @@
+// Licensed under GPL v3: https://www.gnu.org/licenses/gpl-3.0.txt
+// Copyright (C) 2019  James Tharpe
+
 import { WhennerActionType, WhennerAction } from "../common/actions";
 import { defaultTasks } from "../../models/TaskEvent";
 import { Task } from "../../models/Task";
 import { defaultAppointments } from "../../models/AppointmentEvent";
 import { Appointment } from "../../models/Appointment";
 import { combineReducers } from "redux";
-import { TasksResultAction, TaskAction } from "../todos/actions";
 import { Chronotype, defaultChronotype } from "../../models/Chronotype";
+import { TaskAction, TasksResultAction } from "../tasks/actions";
 
 function appointments(
   appointments: Appointment[] = defaultAppointments,
