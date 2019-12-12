@@ -11,7 +11,7 @@ import composeCrud, {
   UpdaterComposer,
   Updater,
   InserterComposer,
-  readListfinder,
+  readListFinder,
   FinderComposer
 } from ".";
 import Id, { IdGenerator } from "../Id";
@@ -20,7 +20,7 @@ import { Time } from "../../models/time";
 export const localStorageInserter: InserterComposer = <T extends Id>(
   read: Reader<T[]>,
   write: Writer<T[]>,
-  find: Finder<T> = readListfinder(read),
+  find: Finder<T> = readListFinder(read),
   nextId: IdGenerator = Time.now
 ): Inserter<T> =>
   async function(item: T): Promise<T> {
@@ -45,7 +45,7 @@ export const localStorageReader: ReaderComposer = <T>(
 export const localStorageUpdater: UpdaterComposer = <T extends Id>(
   read: Reader<T[]>,
   write: Writer<T[]>,
-  find: Finder<T> = readListfinder(read)
+  find: Finder<T> = readListFinder(read)
 ): Updater<T> =>
   async function(item: T): Promise<T | undefined> {
     const items = await read();
@@ -63,7 +63,7 @@ export const localStorageWriter: WriterComposer = <T>(key: string) =>
     return Promise.resolve(item);
   };
 
-type LocalSorageCrudArgs<T extends Id> = {
+type LocalStorageCrudArgs<T extends Id> = {
   key: string;
   initialData?: T[];
   generateId?: IdGenerator;
@@ -80,10 +80,10 @@ export const localStorageCrud = <T extends Id>({
   generateId,
   composeRead: composeReader = localStorageReader,
   composeWrite: composeWriter = localStorageWriter,
-  composeFind = readListfinder,
+  composeFind = readListfinder: readListFinder,
   composeUpdate = localStorageUpdater,
   composeInsert: composeInserter = localStorageInserter
-}: LocalSorageCrudArgs<T>) =>
+}: LocalStorageCrudArgs<T>) =>
   composeCrud({
     key,
     composeRead: composeReader,

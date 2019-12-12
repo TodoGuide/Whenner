@@ -18,7 +18,7 @@ export interface FinderComposer {
   <T extends Id>(read: Reader<T[]>): Finder<T>;
 }
 
-export const readListfinder: FinderComposer = <T extends Id>(
+export const readListFinder: FinderComposer = <T extends Id>(
   read: Reader<T[]>
 ): Finder<T> => {
   return async function(id: number, list?: T[]) {

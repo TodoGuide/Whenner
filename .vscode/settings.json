@@ -7,6 +7,7 @@
     "node_modules": true,
   },
   "cSpell.words": [
+    "Prioritizer",
     "action",
     "chronotype",
     "default",
@@ -16,5 +17,6 @@
     "type",
     "upsert",
     "whenner"
-  ]
+  ],
+  "editor.minimap.enabled": false
 }
