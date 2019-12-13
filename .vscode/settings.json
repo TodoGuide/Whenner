@@ -7,8 +7,10 @@
     "node_modules": true,
   },
   "cSpell.words": [
+    "DEVTOOLS",
     "Prioritizer",
     "action",
+    "browserslist",
     "chronotype",
     "default",
     "service",
@@ -16,6 +18,7 @@
     "todos",
     "type",
     "upsert",
+    "upserted",
     "whenner"
   ],
   "editor.minimap.enabled": false
