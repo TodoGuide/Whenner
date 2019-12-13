@@ -80,7 +80,7 @@ export const localStorageCrud = <T extends Id>({
   generateId,
   composeRead: composeReader = localStorageReader,
   composeWrite: composeWriter = localStorageWriter,
-  composeFind = readListfinder: readListFinder,
+  composeFind: composeFinder = readListFinder,
   composeUpdate = localStorageUpdater,
   composeInsert: composeInserter = localStorageInserter
 }: LocalStorageCrudArgs<T>) =>
@@ -88,7 +88,7 @@ export const localStorageCrud = <T extends Id>({
     key,
     composeRead: composeReader,
     composeWrite: composeWriter,
-    composeFind,
+    composeFind: composeFinder,
     composeUpdate,
     composeInsert: composeInserter,
     defaultData: initialData,
