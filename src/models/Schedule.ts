@@ -175,6 +175,14 @@ export class Schedule implements ISchedule {
   };
 }
 
+export function todayOnward(schedule: Schedule): Schedule{
+  return new Schedule({
+    chronotype: schedule.chronotype,
+    appointments: schedule.appointments.filter(appointment => appointment.start >= Time.today()),
+    tasks: schedule.tasks.filter(task => task.start >= Time.today())
+  })
+}
+
 export const defaultSchedule: ISchedule = {
   chronotype: defaultChronotype,
   appointments: defaultAppointments,

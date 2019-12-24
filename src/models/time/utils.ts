@@ -11,6 +11,10 @@ export function add30Minutes(toDate: Date) {
   return new Date(toDate.getTime() + MILLISECONDS_PER_MINUTE * 30);
 }
 
+export function subtractHour(fromDate: Date) {
+  return new Date(fromDate.getTime() - MILLISECONDS_PER_HOUR);
+}
+
 export function latestOf(...dates: Date[]) {
   return dates.reduce((date1, date2) => (date1 > date2 ? date1 : date2));
 }

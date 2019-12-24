@@ -8,18 +8,32 @@
   },
   "cSpell.words": [
     "DEVTOOLS",
+    "Interop",
     "Prioritizer",
+    "Upserter",
     "action",
+    "at",
     "browserslist",
     "chronotype",
+    "component",
     "default",
+    "esnext",
+    "node",
     "service",
     "todo",
     "todos",
     "type",
+    "unmount",
     "upsert",
     "upserted",
+    "when're",
     "whenner"
   ],
-  "editor.minimap.enabled": false
+  "editor.minimap.enabled": false,
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact"
+  ]
 }

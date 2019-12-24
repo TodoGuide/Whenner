@@ -1,7 +1,6 @@
 // Licensed under GPL v3: https://www.gnu.org/licenses/gpl-3.0.txt
 // Copyright (C) 2019  James Tharpe
 
-import { Chronotype } from "./Chronotype";
 import moment from "moment";
 import { Duration } from "moment";
 import { Period } from "./time/Period";

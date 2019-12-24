@@ -1,15 +1,8 @@
 // Licensed under GPL v3: https://www.gnu.org/licenses/gpl-3.0.txt
 // Copyright (C) 2019  James Tharpe
 
-import React, { FormEvent, ChangeEvent } from "react";
-import {
-  Form,
-  FormControlProps,
-  InputGroup,
-  ModalProps,
-  Modal,
-  Button
-} from "react-bootstrap";
+import React from "react";
+import { Form, InputGroup, ModalProps, Modal, Button } from "react-bootstrap";
 import { Time } from "../../models/time";
 import { TaskEvent } from "../../models/TaskEvent";
 import { Event } from "../../models/Event";
@@ -57,9 +50,7 @@ export default class EventModal extends React.Component<
     return { propName, propType };
   }
 
-  handleInputChange = (
-    event: ChangeEvent<HTMLInputElement> | FormEvent<FormControlProps>
-  ) => {
+  handleInputChange = (event: React.FormEvent<HTMLInputElement>) => {
     const { propName } = this.propInfoFromTarget(event.currentTarget);
     if (propName === "done") {
       const todo = new TaskEvent(this.state.event);
@@ -83,7 +74,7 @@ export default class EventModal extends React.Component<
 
   handleSubmit = () => {
     this.props.onSaveTodo(this.state.event);
-  }
+  };
 
   render() {
     const { event: todo } = this.state;

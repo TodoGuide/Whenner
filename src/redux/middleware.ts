@@ -16,9 +16,9 @@ export function autoDispatcher(
   condition: (action: any) => boolean,
   actionCreator: () => any
 ): Middleware {
-  const result: Middleware = ({
-    dispatch
-  }: MiddlewareAPI<Dispatch, WhennerState>) => (next: Dispatch) => action => {
+  return ({ dispatch }: MiddlewareAPI<Dispatch, WhennerState>) => (
+    next: Dispatch
+  ) => action => {
     if (condition(action)) {
       const autoAction = actionCreator();
       console.debug("autoDispatcher dispatch", { action, autoAction });
@@ -28,8 +28,6 @@ export function autoDispatcher(
     }
     return next(action);
   };
-
-  return result;
 }
 
 export const thunkCounter = autoDispatcher(
