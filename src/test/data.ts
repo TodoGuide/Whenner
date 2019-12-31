@@ -27,57 +27,56 @@ export const threeHourTask: Task = {
   estimate: 180
 };
 
-export const parentTask: Task = {
+export const supertask: Task = {
   id: 200,
-  description: "This task has no parents because it IS the parent",
+  description: "This task has no supertask because it IS the supertask",
   priority: 1,
   estimate: 60,
-  title: "Parent Task"
+  title: "Supertask"
 };
 
-export const childTaskA: Task = {
+export const subtaskA: Task = {
   id: 201,
-  description: "Child A belongs to Parent Task",
+  description: "Subtask A belongs to Supertask",
   priority: 2,
   estimate: 120,
-  title: "Child A Task",
-  parentId: parentTask.id
+  title: "Subtask A",
+  supertaskId: supertask.id
 };
-export const childTaskB: Task = {
+export const subtaskB: Task = {
   id: 203,
-  description: "Child B belongs to Parent Task",
+  description: "Subtask B belongs to Supertask",
   priority: 3,
   estimate: 180,
-  title: "Child B Task",
-  parentId: parentTask.id
+  title: "Subtask B",
+  supertaskId: supertask.id
 };
-export const grandChildTask: Task = {
+export const subSubTask: Task = {
   id: 204,
-  title: "Grand child task",
-  description:
-    "Grandchild task belongs to Child B which belongs to Parent Task",
+  title: "Sub-subtask",
+  description: "Sub-subtask belongs to Subtask B which belongs to Supertask",
   priority: 1,
   estimate: 60,
-  parentId: childTaskB.id
+  supertaskId: subtaskB.id
 };
 
-export const greatGrandChildTask: Task = {
+export const subSubSubtask: Task = {
   id: 205,
-  title: "Great Grand child task",
+  title: "Sub-sub-subtask task",
   description:
-    "Great Grandchild Task belongs to Grandchild Task which belongs to Child B which belongs to Parent Task",
+    "Sub-sub-subtask belongs to sub-subtask which belongs to subtask B which belongs to Supertask",
   priority: 1,
   estimate: 60,
-  parentId: grandChildTask.id
+  supertaskId: subSubTask.id
 };
 
 export const allTestDataTasks = [
   oneHourTask,
   twoHourTask,
   threeHourTask,
-  parentTask,
-  childTaskA,
-  childTaskB,
-  grandChildTask,
-  greatGrandChildTask
+  supertask,
+  subtaskA,
+  subtaskB,
+  subSubTask,
+  subSubSubtask
 ];

@@ -3,7 +3,7 @@
 
 import React from "react";
 import { Breadcrumb } from "react-bootstrap";
-import { Task as TaskModel, parentsOf } from "../../models/Task";
+import { Task as TaskModel, supertasksOf } from "../../models/Task";
 import { allTestDataTasks } from "../../test/data";
 import { itemKey } from "../utils";
 
@@ -16,17 +16,17 @@ const TaskBreadcrumb: React.FC<TaskBreadcrumbProps> = ({
 }: TaskBreadcrumbProps) => {
   return (
     <Breadcrumb>
-      <Breadcrumb.Item title="Set Parent">
-        <span role="img" aria-label="Set Parent">
+      <Breadcrumb.Item title="Set Supertask">
+        <span role="img" aria-label="Set Supertask">
           ✨
         </span>
       </Breadcrumb.Item>
-      {parentsOf(task, allTestDataTasks)?.map((parent, index) => (
+      {supertasksOf(task, allTestDataTasks)?.map((supertask, index) => (
         <Breadcrumb.Item
-          title={parent.description}
-          key={itemKey("task-breadcrumb", parent, index)}
+          title={supertask.description}
+          key={itemKey("task-breadcrumb", supertask, index)}
         >
-          {parent.title}
+          {supertask.title}
         </Breadcrumb.Item>
       ))}
       <Breadcrumb.Item active>{task.title}</Breadcrumb.Item>

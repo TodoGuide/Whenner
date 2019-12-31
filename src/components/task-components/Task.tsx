@@ -4,7 +4,7 @@
 import React from "react";
 import { Form, Button, Breadcrumb } from "react-bootstrap";
 import EstimateInput from "../EstimateInput";
-import { Task as TaskModel, parentsOf, childrenOf } from "../../models/Task";
+import { Task as TaskModel, subtasksOf } from "../../models/Task";
 import { allTestDataTasks } from "../../test/data";
 import TaskStatusFormGroup from "./TaskStatusFormGroup";
 import TaskList from "./TaskList";
@@ -16,7 +16,7 @@ interface TaskProps {
 }
 
 const Task: React.FC<TaskProps> = ({ task, hN = 3 }: TaskProps) => {
-  const childTasks = childrenOf(task, allTestDataTasks);
+  const subtasks = subtasksOf(task, allTestDataTasks);
   return (
     <div>
       <Form>
@@ -50,10 +50,14 @@ const Task: React.FC<TaskProps> = ({ task, hN = 3 }: TaskProps) => {
           </Button>
         </Form.Group>
       </Form>
-      {childTasks && (
+      {subtasks && (
         <div>
-          {React.createElement("h" + hN, null, "Child Tasks")}
-          <TaskList tasks={childTasks} hN={hN + 1} />{" "}
+          {React.createElement("h" + hN, null, "Subtasks")}
+          <small className="text-muted">
+            These tasks must be completed before the supertask can be marked
+            complete
+          </small>
+          <TaskList tasks={subtasks} hN={hN + 1} />
         </div>
       )}
     </div>

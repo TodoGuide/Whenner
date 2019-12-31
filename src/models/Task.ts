@@ -20,7 +20,7 @@ import {
  */
 export interface Task extends Todo, Priority, Estimated {
   predecessorIds?: number[];
-  parentId?: number;
+  supertaskId?: number;
 }
 
 export const taskPrioritizer = prioritizer;
@@ -29,13 +29,16 @@ export function prioritize(tasks: Task[]) {
   return defaultPrioritize(taskPrioritizer, ...tasks);
 }
 
-export function parentOf(task: Task, candidates: Task[]): Task | undefined {
-  return task && task.parentId && candidates
-    ? candidates.find(candidate => task.parentId === candidate.id)
+export function supertaskOf(task: Task, candidates: Task[]): Task | undefined {
+  return task && task.supertaskId && candidates
+    ? candidates.find(candidate => task.supertaskId === candidate.id)
     : undefined;
 }
 
-export function parentsOf(task: Task, candidates: Task[]): Task[] | undefined {
+export function supertasksOf(
+  task: Task,
+  candidates: Task[]
+): Task[] | undefined {
   if (!task || !candidates || candidates.length === 0) {
     return undefined;
   }
@@ -44,7 +47,7 @@ export function parentsOf(task: Task, candidates: Task[]): Task[] | undefined {
   candidates = [...candidates]; // Do not mutate original!
   const result = [];
   while (current) {
-    current = parentOf(current, candidates);
+    current = supertaskOf(current, candidates);
     if (current) {
       result.push(current);
       candidates.splice(candidates.indexOf(current), 1);
@@ -54,11 +57,11 @@ export function parentsOf(task: Task, candidates: Task[]): Task[] | undefined {
   return result;
 }
 
-export function childrenOf(task: Task, candidates: Task[]): Task[] | undefined {
+export function subtasksOf(task: Task, candidates: Task[]): Task[] | undefined {
   const result =
     task && candidates
       ? prioritize(
-          candidates.filter(candidate => candidate.parentId === task.id)
+          candidates.filter(candidate => candidate.supertaskId === task.id)
         )
       : undefined;
   return result && result.length > 0 ? result : undefined;

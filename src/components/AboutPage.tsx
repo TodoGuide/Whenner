@@ -69,11 +69,13 @@ const AboutPage: React.FC = () => {
           status changes
         </li>
         <li>
-          Nested tasks: Tasks that can't me marked completed until all child
-          tasks are done (also show percentage complete)
+          Nested tasks: Tasks that can't me marked completed until all subtasks
+          are done (also show percentage complete)
         </li>
       </ul>
-      <h3>Way far-out Features ("enterprise" feaures - need serious funding)</h3>
+      <h3>
+        Way far-out Features ("enterprise" feaures - need serious funding)
+      </h3>
       <ul>
         <li>Teams, groups, and related stats</li>
         <li>Capacity planning</li>
