@@ -9,9 +9,9 @@ const AboutPage: React.FC = () => {
       <h2>About Whenner</h2>
       <p>
         Whenner is for folks that like to be helpful, take on new challenges,
-        and try new hobbies SO MUCH that they sometimes overcommit, don't finish
-        what they started, and procrastinate on boring-but-important tasks.
-        Whenner is a task management app that gives users{" "}
+        and try new hobbies SO MUCH that they sometimes over-commit, don't
+        finish what they started, and procrastinate on boring-but-important
+        tasks. Whenner is a task management app that gives users{" "}
         <em>time perspective</em> by intelligently <em>scheduling</em> tasks.
         Unlike other task-tracking apps that display a tasks as lists, Whenner
         maps your tasks to your day so you know exactly what you can and can't
@@ -47,8 +47,8 @@ const AboutPage: React.FC = () => {
         <li>Store data on Google Drive and/or OneDrive</li>
         <li>Stats: Actual vs. estimates (lead &amp; cycle time)</li>
         <li>
-          Predictions: Given an estiate and priority, when will a task REALLY be
-          finished?
+          Predictions: Given an estimate and priority, when will a task REALLY
+          be finished?
         </li>
         <li>Predecessors and successors to keep dependent tasks in order</li>
         <li>
@@ -74,7 +74,7 @@ const AboutPage: React.FC = () => {
         </li>
       </ul>
       <h3>
-        Way far-out Features ("enterprise" feaures - need serious funding)
+        Way far-out Features ("enterprise" features - need serious funding)
       </h3>
       <ul>
         <li>Teams, groups, and related stats</li>
