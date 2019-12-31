@@ -3,8 +3,9 @@
 
 import React from "react";
 import { Breadcrumb } from "react-bootstrap";
-import { Task as TaskModel, parentsOf } from "../models/Task";
-import { allTestDataTasks } from "../test/data";
+import { Task as TaskModel, parentsOf } from "../../models/Task";
+import { allTestDataTasks } from "../../test/data";
+import { itemKey } from "../utils";
 
 interface TaskBreadcrumbProps {
   task: TaskModel;
@@ -20,8 +21,11 @@ const TaskBreadcrumb: React.FC<TaskBreadcrumbProps> = ({
           ✨
         </span>
       </Breadcrumb.Item>
-      {parentsOf(task, allTestDataTasks)?.map(parent => (
-        <Breadcrumb.Item title={parent.description}>
+      {parentsOf(task, allTestDataTasks)?.map((parent, index) => (
+        <Breadcrumb.Item
+          title={parent.description}
+          key={itemKey("task-breadcrumb", parent, index)}
+        >
           {parent.title}
         </Breadcrumb.Item>
       ))}

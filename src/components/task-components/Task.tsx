@@ -3,9 +3,9 @@
 
 import React from "react";
 import { Form, Button, Breadcrumb } from "react-bootstrap";
-import EstimateInput from "./EstimateInput";
-import { Task as TaskModel, parentsOf, childrenOf } from "../models/Task";
-import { allTestDataTasks } from "../test/data";
+import EstimateInput from "../EstimateInput";
+import { Task as TaskModel, parentsOf, childrenOf } from "../../models/Task";
+import { allTestDataTasks } from "../../test/data";
 import TaskStatusFormGroup from "./TaskStatusFormGroup";
 import TaskList from "./TaskList";
 import TaskBreadcrumb from "./TaskBreadcrumb";

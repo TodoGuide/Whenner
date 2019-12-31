@@ -3,7 +3,7 @@
 
 import React from "react";
 import { Form } from "react-bootstrap";
-import { Task as TaskModel } from "../models/Task";
+import { Task as TaskModel } from "../../models/Task";
 
 interface TaskStatusFormGroupProps {
   controlId: string;

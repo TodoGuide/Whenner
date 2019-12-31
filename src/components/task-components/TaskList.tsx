@@ -3,9 +3,9 @@
 
 import React from "react";
 import { Accordion, Card } from "react-bootstrap";
-import { Task as TaskModel } from "../models/Task";
+import { Task as TaskModel } from "../../models/Task";
 import Task from "./Task";
-import { eventKey } from "./utils";
+import { itemKey } from "../utils";
 
 type TaskListProps = {
   tasks: TaskModel[];
@@ -19,7 +19,7 @@ const TaskList: React.FC<TaskListProps> = ({
   return (
     <Accordion>
       {tasks.map((task, index) => {
-        const key = eventKey("task-list", task, index);
+        const key = itemKey(`task-list-${hN}`, task, index);
         return (
           <Card key={key}>
             <Card.Header>

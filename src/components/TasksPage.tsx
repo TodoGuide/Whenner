@@ -2,7 +2,7 @@
 // Copyright (C) 2019  James Tharpe
 
 import React from "react";
-import TaskList from "./TaskList";
+import TaskList from "./task-components/TaskList";
 import { allTestDataTasks } from "../test/data";
 
 const TasksPage: React.FC = () => (
