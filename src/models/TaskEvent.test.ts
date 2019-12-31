@@ -14,10 +14,11 @@ describe("A TaskEvent", () => {
     Time.set(new Date(2019, 6, 20, 13, 1, 0, 0)); // 2019-07-20 at 1:01PM
   });
 
-  describe("Given an ITask", () => {
-    let itask: Task;
+  describe("Given a Task", () => {
+    let task: Task;
+
     beforeEach(() => {
-      itask = {
+      task = {
         id: 1,
         title: "ITask Instance",
         description: "This is a valid instance of the ITask interface",
@@ -27,69 +28,69 @@ describe("A TaskEvent", () => {
     });
 
     describe("When the instance is passed to the TaskEvent constructor, it...", () => {
-      let task: TaskEvent;
+      let taskEvent: TaskEvent;
       beforeEach(() => {
-        task = new TaskEvent(itask);
+        taskEvent = new TaskEvent(task);
       });
 
-      it("Assigns the ITask instance properties to the Task instance", () => {
-        const { description, estimate, id, title, priority } = task;
+      it("Assigns the Task instance properties to the Task instance", () => {
+        const { description, estimate, id, title, priority } = taskEvent;
         expect({
           description,
           estimate,
           id,
           title,
           priority
-        }).toEqual({ ...itask, priority: Time.now() });
+        }).toEqual({ ...task, priority: Time.now() });
       });
 
       it("Sets the End date based on the Start and Estimate", () => {
-        expect(task.end).toEqual(new Date(2019, 6, 20, 13, 2, 0, 0));
+        expect(taskEvent.end).toEqual(new Date(2019, 6, 20, 13, 2, 0, 0));
       });
 
       it("Sets the Priority based on the Start", () => {
-        expect(task.priority).toEqual(Time.now());
+        expect(taskEvent.priority).toEqual(Time.now());
       });
     });
   });
 
-  describe("Given no ITask instance", () => {
+  describe("Given no Task instance", () => {
     describe("When nothing is passed to the Todo constructor, it...", () => {
-      let task: TaskEvent;
+      let taskEvent: TaskEvent;
       beforeEach(() => {
-        task = new TaskEvent();
+        taskEvent = new TaskEvent();
       });
 
       it("Defaults to an ID of the current date and time", () => {
-        expect(task.id).toEqual(Time.now());
+        expect(taskEvent.id).toEqual(Time.now());
       });
 
       it("Defaults to an empty Title", () => {
-        expect(task.title).toBe("");
+        expect(taskEvent.title).toBe("");
       });
 
       it("Defaults to an empty Description", () => {
-        expect(task.description).toBe("");
+        expect(taskEvent.description).toBe("");
       });
 
-      it("Defaults to incompleted", () => {
-        expect(task.completed).toBeUndefined();
+      it("Defaults to incomplete", () => {
+        expect(taskEvent.completed).toBeUndefined();
       });
 
       it("Defaults to a 60 minute Estimate", () => {
-        expect(task.estimate).toBe(60);
+        expect(taskEvent.estimate).toBe(60);
       });
 
-      it("Defaults to a Start of the current datetime", () => {
-        expect(task.start.getTime()).toEqual(Time.now());
+      it("Defaults to a Start of the current date-time", () => {
+        expect(taskEvent.start.getTime()).toEqual(Time.now());
       });
     });
   });
 
-  describe("Given an IAppointment", () => {
-    let iappointment: Appointment;
+  describe("Given an Appointment", () => {
+    let appointment: Appointment;
     beforeEach(() => {
-      iappointment = {
+      appointment = {
         id: 1,
         title: "IAppointment Instance",
         description: "This is a valid instance of an IAppointment",
@@ -99,13 +100,13 @@ describe("A TaskEvent", () => {
     });
 
     describe("When the instance is passed to the Task constructor, it...", () => {
-      let task: TaskEvent;
+      let taskEvent: TaskEvent;
       beforeEach(() => {
-        task = new TaskEvent(iappointment);
+        taskEvent = new TaskEvent(appointment);
       });
 
       it("Assigns the ITask instance properties to the Task instance", () => {
-        const { description, estimate, id, start, title, end } = task;
+        const { description, estimate, id, start, title, end } = taskEvent;
         expect({
           description,
           estimate: estimate || "none",
@@ -114,17 +115,17 @@ describe("A TaskEvent", () => {
           title,
           end
         }).toEqual({
-          ...iappointment,
-          estimate: TaskEvent.periodToEstimate(iappointment)
+          ...appointment,
+          estimate: TaskEvent.periodToEstimate(appointment)
         });
       });
 
       it("Sets the End date based on the Start and Estimate", () => {
-        expect(task.end).toEqual(iappointment.end);
+        expect(taskEvent.end).toEqual(appointment.end);
       });
 
       it("Sets the Priority based on the Start", () => {
-        expect(task.priority).toEqual(Time.now());
+        expect(taskEvent.priority).toEqual(Time.now());
       });
     });
   });

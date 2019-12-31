@@ -3,11 +3,11 @@
 
 import { Start } from "./Start";
 import { End } from "./End";
-import { MILLISECONDS_PER_MINUTE } from "./consts";
+import { MILLISECONDS_PER_MINUTE } from "./constants";
 
 export type Period = Start & End;
 
-export function period(item: any): Period | undefined {
+export function periodOf(item: any): Period | undefined {
   const { start = undefined, end = undefined } = item || {};
   if (start instanceof Date && end instanceof Date) {
     return item;

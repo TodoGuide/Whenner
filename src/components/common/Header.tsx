@@ -13,7 +13,10 @@ const Header: React.FC = () => (
     </Jumbotron>
     <Nav fill variant="tabs" activeKey={window.location.pathname}>
       <Nav.Item>
-        <Nav.Link href="/">Calendar</Nav.Link>
+        <Nav.Link href="/">Tasks</Nav.Link>
+      </Nav.Item>
+      <Nav.Item>
+        <Nav.Link href="/calendar">Calendar</Nav.Link>
       </Nav.Item>
       <Nav.Item>
         <Nav.Link href="/settings">Settings</Nav.Link>

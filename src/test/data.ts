@@ -26,3 +26,58 @@ export const threeHourTask: Task = {
   priority: 3,
   estimate: 180
 };
+
+export const parentTask: Task = {
+  id: 200,
+  description: "This task has no parents because it IS the parent",
+  priority: 1,
+  estimate: 60,
+  title: "Parent Task"
+};
+
+export const childTaskA: Task = {
+  id: 201,
+  description: "Child A belongs to Parent Task",
+  priority: 2,
+  estimate: 120,
+  title: "Child A Task",
+  parentId: parentTask.id
+};
+export const childTaskB: Task = {
+  id: 203,
+  description: "Child B belongs to Parent Task",
+  priority: 3,
+  estimate: 180,
+  title: "Child B Task",
+  parentId: parentTask.id
+};
+export const grandChildTask: Task = {
+  id: 204,
+  title: "Grand child task",
+  description:
+    "Grandchild task belongs to Child B which belongs to Parent Task",
+  priority: 1,
+  estimate: 60,
+  parentId: childTaskB.id
+};
+
+export const greatGrandChildTask: Task = {
+  id: 205,
+  title: "Great Grand child task",
+  description:
+    "Great Grandchild Task belongs to Grandchild Task which belongs to Child B which belongs to Parent Task",
+  priority: 1,
+  estimate: 60,
+  parentId: grandChildTask.id
+};
+
+export const allTestDataTasks = [
+  oneHourTask,
+  twoHourTask,
+  threeHourTask,
+  parentTask,
+  childTaskA,
+  childTaskB,
+  grandChildTask,
+  greatGrandChildTask
+];

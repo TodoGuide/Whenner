@@ -4,8 +4,8 @@
 import React from "react";
 import Calendar from "./Calendar";
 
-const HomePage: React.FC = () => {
+const CalendarPage: React.FC = () => {
   return <Calendar />;
 };
 
-export default HomePage;
+export default CalendarPage;

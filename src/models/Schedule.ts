@@ -3,8 +3,8 @@
 
 import { defaultAppointments, AppointmentEvent } from "./AppointmentEvent";
 import { Appointment } from "./Appointment";
-import { defaultTasks, TaskEvent, taskPrioritizer } from "./TaskEvent";
-import { Task } from "./Task";
+import { defaultTasks, TaskEvent } from "./TaskEvent";
+import { Task, taskPrioritizer } from "./Task";
 import {
   Chronotype,
   defaultChronotype,
@@ -175,12 +175,14 @@ export class Schedule implements ISchedule {
   };
 }
 
-export function todayOnward(schedule: Schedule): Schedule{
+export function todayOnward(schedule: Schedule): Schedule {
   return new Schedule({
     chronotype: schedule.chronotype,
-    appointments: schedule.appointments.filter(appointment => appointment.start >= Time.today()),
+    appointments: schedule.appointments.filter(
+      appointment => appointment.start >= Time.today()
+    ),
     tasks: schedule.tasks.filter(task => task.start >= Time.today())
-  })
+  });
 }
 
 export const defaultSchedule: ISchedule = {

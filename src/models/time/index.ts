@@ -1,7 +1,7 @@
 // Licensed under GPL v3: https://www.gnu.org/licenses/gpl-3.0.txt
 // Copyright (C) 2019  James Tharpe
 
-import { MILLISECONDS_PER_DAY } from "./consts";
+import { MILLISECONDS_PER_DAY } from "./constants";
 
 /**
  * Use instead of Date for easy mocking in tests
@@ -25,7 +25,7 @@ export const Time = {
 /**
  * A function that takes an object and returns a start date
  */
-export interface Dater<T = {}> { 
+export interface Dater<T = {}> {
   (item: T): Date;
 }
 

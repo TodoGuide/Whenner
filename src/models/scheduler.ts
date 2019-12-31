@@ -3,8 +3,8 @@
 
 import { Chronotype } from "./Chronotype";
 import { ScheduledTask } from "./ScheduledTask";
-import { TaskEvent, taskPrioritizer } from "./TaskEvent";
-import { Task } from "./Task";
+import { TaskEvent } from "./TaskEvent";
+import { Task, taskPrioritizer } from "./Task";
 import { prioritize } from "./Priority";
 
 export function schedule(chronotype: Chronotype, ...tasks: Task[]): Task[] {
