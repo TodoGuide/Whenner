@@ -49,7 +49,8 @@ export const subtaskB: Task = {
   priority: 3,
   estimate: 180,
   title: "Subtask B",
-  supertaskId: supertask.id
+  supertaskId: supertask.id,
+  predecessorIds: [subtaskA.id]
 };
 export const subSubTask: Task = {
   id: 204,

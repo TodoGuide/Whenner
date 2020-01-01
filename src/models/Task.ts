@@ -82,7 +82,7 @@ export function predecessorsOf(
 
 export function successorsOf(task: Task, candidates: Task[]) {
   const result =
-    task && task.predecessorIds && candidates
+    task && candidates
       ? candidates.filter(
           candidate =>
             candidate.predecessorIds &&

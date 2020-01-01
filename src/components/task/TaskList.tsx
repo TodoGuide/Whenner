@@ -8,18 +8,22 @@ import Task from "./Task";
 import { itemKey } from "../utils";
 
 type TaskListProps = {
+  id: string;
   tasks: TaskModel[];
-  hN?: number;
+  currentDepth?: number;
+  maxDepth?: number;
 };
 
 const TaskList: React.FC<TaskListProps> = ({
+  id,
   tasks,
-  hN = 2
+  currentDepth = 1,
+  maxDepth = 3
 }: TaskListProps) => {
   return (
-    <Accordion>
+    <Accordion id={id}>
       {tasks.map((task, index) => {
-        const key = itemKey(`task-list-${hN}`, task, index);
+        const key = itemKey(`${id}-list-${currentDepth}`, task, index);
         return (
           <Card key={key}>
             <Card.Header>
@@ -29,7 +33,12 @@ const TaskList: React.FC<TaskListProps> = ({
             </Card.Header>
             <Accordion.Collapse eventKey={key}>
               <Card.Body>
-                <Task task={task} hN={hN} />
+                <Task
+                  id={`${key}-task`}
+                  task={task}
+                  currentDepth={currentDepth}
+                  maxDepth={maxDepth}
+                />
               </Card.Body>
             </Accordion.Collapse>
           </Card>

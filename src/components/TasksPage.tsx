@@ -6,7 +6,7 @@ import TaskList from "./task/TaskList";
 import { allTestDataTasks } from "../test/data";
 
 const TasksPage: React.FC = () => (
-  <TaskList tasks={allTestDataTasks}></TaskList>
+  <TaskList tasks={allTestDataTasks} id="tasks" maxDepth={15}></TaskList>
 );
 
 export default TasksPage;

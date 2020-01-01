@@ -4,43 +4,54 @@
 import React from "react";
 import { Form, Button } from "react-bootstrap";
 import EstimateInput from "../EstimateInput";
-import { Task as TaskModel, subtasksOf } from "../../models/Task";
-import { allTestDataTasks } from "../../test/data";
+import { Task as TaskModel } from "../../models/Task";
 import TaskStatusFormGroup from "./TaskStatusFormGroup";
-import TaskList from "./TaskList";
 import TaskBreadcrumb from "./TaskBreadcrumb";
+import { itemKey } from "../utils";
+import TaskRelationshipTabs from "./TaskRelationshipTabs";
 
 interface TaskProps {
+  id: string;
   task: TaskModel;
-  hN?: number;
+  currentDepth?: number;
+  maxDepth?: number;
 }
 
-const Task: React.FC<TaskProps> = ({ task, hN = 3 }: TaskProps) => {
-  const subtasks = subtasksOf(task, allTestDataTasks);
+const Task: React.FC<TaskProps> = ({
+  id,
+  task,
+  currentDepth = 1,
+  maxDepth = 3
+}: TaskProps) => {
   return (
-    <div>
+    <div id={id}>
       <Form>
         <TaskBreadcrumb task={task} />
-        <Form.Group controlId="title">
+        <Form.Group id={itemKey(`${id}-title-group`, task, currentDepth)}>
           <Form.Control
+            id={itemKey(`${id}-title`, task, currentDepth)}
             type="text"
             placeholder="What do you want to get done?"
             value={task.title}
             readOnly
           />
         </Form.Group>
-        <Form.Group controlId="description">
+        <Form.Group id={itemKey(`${id}-description-group`, task, currentDepth)}>
           <Form.Control
+            id={itemKey(`${id}-description`, task, currentDepth)}
             as="textarea"
             rows="3"
             value={task.description}
             readOnly
           />
         </Form.Group>
-        <Form.Group controlId="estimate">
+        <Form.Group id={itemKey(`${id}-estimate-group`, task, currentDepth)}>
           <EstimateInput estimatedItem={task} />
         </Form.Group>
-        <TaskStatusFormGroup task={task} controlId="state" />
+        <TaskStatusFormGroup
+          task={task}
+          id={itemKey(`${id}-state`, task, currentDepth)}
+        />
         <Form.Group controlId="actions" className="text-right">
           <Button variant="secondary" className="m-2">
             Close
@@ -50,16 +61,13 @@ const Task: React.FC<TaskProps> = ({ task, hN = 3 }: TaskProps) => {
           </Button>
         </Form.Group>
       </Form>
-      {subtasks && (
-        <div>
-          {React.createElement("h" + hN, null, "Subtasks")}
-          <small className="text-muted">
-            These tasks must be completed before the supertask can be marked
-            complete
-          </small>
-          <TaskList tasks={subtasks} hN={hN + 1} />
-        </div>
-      )}
+      <TaskRelationshipTabs
+        id={itemKey(`${id}-relationships`, task, currentDepth)}
+        task={task}
+        currentDepth={currentDepth}
+        maxDepth={maxDepth}
+      />
+      <hr />
     </div>
   );
 };

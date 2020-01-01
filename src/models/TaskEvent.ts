@@ -10,7 +10,6 @@ import {
   estimated
 } from "./time/Estimated";
 import { Todo, EstimatedTodo } from "./Todo";
-import { prioritizer } from "./Priority";
 import moment, { Duration } from "moment";
 import { Event } from "./Event";
 import { Task } from "./Task";
