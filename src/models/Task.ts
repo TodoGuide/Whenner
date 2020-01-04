@@ -45,13 +45,14 @@ export function supertasksOf(
 
   let current: Task | undefined = task;
   candidates = [...candidates]; // Do not mutate original!
-  const result = [];
+  const result: Task[] = [];
   while (current) {
-    current = supertaskOf(current, candidates);
-    if (current) {
-      result.push(current);
-      candidates.splice(candidates.indexOf(current), 1);
+    const next = supertaskOf(current, candidates);
+    if (next && next.id !== task.id && !result.find(task => task.id === next.id)) {
+      result.push(next);
+      candidates.splice(candidates.indexOf(next), 1);
     }
+    current = next;
   }
 
   return result;

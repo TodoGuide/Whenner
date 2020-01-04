@@ -26,7 +26,6 @@ const TaskRelationshipTabs: React.FC<TaskRelationshipTabsProps> = ({
   currentDepth = 1,
   maxDepth = 3
 }: TaskRelationshipTabsProps) => {
-  console.log("Tabs maxDepth", maxDepth);
   const subtasks =
     currentDepth <= maxDepth && subtasksOf(task, allTestDataTasks);
   const predecessors =

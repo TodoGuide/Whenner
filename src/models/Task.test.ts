@@ -53,7 +53,7 @@ describe("The Tasks module", () => {
     const supertask = { ...oneHourTask };
     const subtaskA = { ...twoHourTask, supertaskId: supertask.id };
     const subtaskB = { ...threeHourTask, supertaskId: supertask.id };
-    const subSubtask = { ...oneHourTask, supertaskId: subtaskB.id };
+    const subSubtask = { ...oneHourTask, id: 1000, supertaskId: subtaskB.id };
     const allTasks = [supertask, subtaskA, subtaskB, subSubtask];
 
     describe("When supertaskOf() is called with the supertask", () => {
@@ -101,6 +101,23 @@ describe("The Tasks module", () => {
 
       it("Returns and empty list", () => {
         expect(actual).toBeFalsy();
+      });
+    });
+  });
+
+  describe("Given a task with a recursive supertask", () => {
+    const taskA = {...oneHourTask };
+    const taskB = {...twoHourTask, supertaskId: taskA.id}
+    taskA.supertaskId = taskB.id;
+    const allTasks = [taskA, taskB];
+
+    describe("When supertaskOf() is called", () => {
+      const supertasksOfA = supertasksOf(taskA, allTasks);
+      const supertasksOfB = supertasksOf(taskB, allTasks);
+
+      it("Ignores the recursion so that there is no infinite loop", () => {
+        expect(supertasksOfA).toEqual([taskB]);
+        expect(supertasksOfB).toEqual([taskA]);
       });
     });
   });
