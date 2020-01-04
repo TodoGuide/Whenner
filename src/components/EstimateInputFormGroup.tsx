@@ -9,7 +9,7 @@ interface EstimateInputProps {
   estimatedItem: Estimated;
 }
 
-const EstimateInput: React.FC<EstimateInputProps> = ({
+const EstimateInputFormGroup: React.FC<EstimateInputProps> = ({
   estimatedItem
 }: EstimateInputProps) => {
   return (
@@ -30,4 +30,4 @@ const EstimateInput: React.FC<EstimateInputProps> = ({
   );
 };
 
-export default EstimateInput;
+export default EstimateInputFormGroup;

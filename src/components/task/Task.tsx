@@ -3,7 +3,7 @@
 
 import React from "react";
 import { Form, Button } from "react-bootstrap";
-import EstimateInput from "../EstimateInput";
+import EstimateInputFormGroup from "../EstimateInputFormGroup";
 import { Task as TaskModel } from "../../models/Task";
 import TaskStatusFormGroup from "./TaskStatusFormGroup";
 import TaskBreadcrumb from "./TaskBreadcrumb";
@@ -45,9 +45,7 @@ const Task: React.FC<TaskProps> = ({
             readOnly
           />
         </Form.Group>
-        <Form.Group id={itemKey(`${id}-estimate-group`, task, currentDepth)}>
-          <EstimateInput estimatedItem={task} />
-        </Form.Group>
+        <EstimateInputFormGroup estimatedItem={task} />
         <TaskStatusFormGroup
           task={task}
           id={itemKey(`${id}-state`, task, currentDepth)}
