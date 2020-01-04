@@ -61,12 +61,12 @@ export const appointmentPrioritizer: Prioritizer<Appointment> = item =>
   item.start.getTime();
 
 export const defaultAppointments: Appointment[] = [
-  {
-    id: Time.now(),
-    title: "Call someone you love",
-    description: "Let them know how much you appreciate them",
-    start: addHour(Time.current()),
-    end: addHour(addHour(Time.current())),
-    completed: undefined
-  }
+  // {
+  //   id: Time.now(),
+  //   title: "Call someone you love",
+  //   description: "Let them know how much you appreciate them",
+  //   start: addHour(Time.current()),
+  //   end: addHour(addHour(Time.current())),
+  //   completed: undefined
+  // }
 ];

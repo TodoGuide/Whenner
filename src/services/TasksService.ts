@@ -15,9 +15,9 @@ export class TasksService {
         initialData: defaultTasks
       })
     };
-    const read = result.read;
+    const { read, find } = result;
     result.read = async () => schedule(chronotype, ...(await read()));
-    result.find = async (id: number) => result.find(id, await read());
+    result.find = async (id: number) => find(id, await result.read());
     return result;
   }
 }

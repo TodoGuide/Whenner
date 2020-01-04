@@ -12,11 +12,26 @@ export interface Description {
   readonly description: string;
 }
 
+/**
+ * Anything with a title and description
+ *
+ * @export
+ * @interface Article
+ * @extends {Id}
+ * @extends {Title}
+ * @extends {Description}
+ */
 export interface Article extends Id, Title, Description {}
 
+/**
+ * Something that needs to be done
+ *
+ * @export
+ * @interface Todo
+ * @extends {Article}
+ */
 export interface Todo extends Article {
   readonly completed?: Date;
-  // Predecessors: number[];
 }
 
 export interface EstimatedTodo extends Todo, Estimated {}

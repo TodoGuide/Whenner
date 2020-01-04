@@ -4,7 +4,7 @@
 import { AppointmentEvent } from "./AppointmentEvent";
 import { customMatchers } from "./../test/matchers";
 import { Schedule } from "./Schedule";
-import { oneHourTask, twoHourTask, threeHourTask } from "./../test/data";
+import { oneHourTask, twoHourTask, threeHourTask } from "../test/data";
 import { defaultChronotype } from "./Chronotype";
 import { TaskEvent } from "./TaskEvent";
 import { Time } from "./time";
@@ -23,6 +23,7 @@ describe("Schedule Mutations", () => {
     let incompleteTask1: TaskEvent,
       incompleteTask2: TaskEvent,
       completedTask: TaskEvent;
+
     beforeEach(() => {
       incompleteTask1 = new TaskEvent({ ...oneHourTask, priority: Time.now() });
       incompleteTask2 = new TaskEvent({
@@ -50,7 +51,7 @@ describe("Schedule Mutations", () => {
         expect(incompleteTask1.priority).toEqual(Time.now());
       });
 
-      it("Sets the lower priority task start to immedietly follow the higher priority task end", () => {
+      it("Sets the lower priority task start to immediately follow the higher priority task end", () => {
         expect(incompleteTask2.start).toEqual(incompleteTask1.end);
       });
 
@@ -78,11 +79,11 @@ describe("Schedule Mutations", () => {
           );
         });
 
-        it("Deprioritizes first task to start immedietly after the appointment", () => {
+        it("Deprioritizes first task to start immediately after the appointment", () => {
           expect(incompleteTask1.start).toEqual(overlappingAppointment.end);
         });
 
-        it("Deprioritizes second task to start immedietly after the first task", () => {
+        it("Deprioritizes second task to start immediately after the first task", () => {
           expect(incompleteTask2.start).toEqual(incompleteTask1.end);
         });
 

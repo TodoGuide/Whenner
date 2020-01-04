@@ -60,7 +60,7 @@ describe("An Appointment", () => {
         expect(appointment.description).toBe("");
       });
 
-      it("Defaults to incompleted", () => {
+      it("Defaults to incomplete", () => {
         expect(appointment.completed).toBeUndefined();
       });
 

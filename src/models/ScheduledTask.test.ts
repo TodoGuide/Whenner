@@ -33,11 +33,10 @@ describe("A ScheduledTask", () => {
   });
 
   describe("Given a current and previous todo", () => {
-    let previous: TaskEvent, current: TaskEvent, scheduledTodo: ScheduledTask;
+    let previous: TaskEvent, current: TaskEvent;
     beforeEach(() => {
       previous = new TaskEvent({ ...oneHourTask, priority: Time.now() - 1 });
       current = new TaskEvent({ ...twoHourTask, priority: Time.now() });
-      scheduledTodo = new ScheduledTask(defaultChronotype, current, previous);
     });
 
     describe("When a ScheduledTodo is created, it...", () => {

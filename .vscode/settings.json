@@ -4,19 +4,40 @@
     "**/.project": true,
     "**/.settings": true,
     "**/.factorypath": true,
-    "node_modules": true,
+    "node_modules": true
   },
   "cSpell.words": [
+    "DEVTOOLS",
+    "Interop",
+    "Prioritizer",
+    "Upserter",
     "action",
+    "at",
+    "browserslist",
     "chronotype",
+    "chronotypes",
+    "component",
     "default",
+    "esnext",
+    "node",
     "service",
+    "supertask",
+    "supertasks",
     "todo",
     "todos",
     "type",
+    "unmount",
     "upsert",
+    "upserted",
+    "when're",
     "whenner"
   ],
-  "editor.tabSize": 2,
-  "editor.tabCompletion": "on"
+  "editor.minimap.enabled": false,
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact"
+  ],
+  "editor.formatOnSave": true
 }

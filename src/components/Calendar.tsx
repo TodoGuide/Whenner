@@ -6,7 +6,7 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 
 import React from "react";
 import moment from "moment";
-import BigCalendar, { stringOrDate } from "react-big-calendar";
+import { Calendar as BigCalendar, momentLocalizer } from "react-big-calendar";
 import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop";
 import { connect } from "react-redux";
 import { Dispatch, bindActionCreators } from "redux";
@@ -20,19 +20,22 @@ import { TaskEvent, defaultTasks } from "../models/TaskEvent";
 import { ISchedule, Schedule } from "../models/Schedule";
 import { earliestOf, latestOf } from "../models/time/utils";
 import { Event } from "../models/Event";
-import { TaskActionThunk, TasksResultActionThunk } from "../redux/tasks/actions";
+import {
+  TaskActionThunk,
+  TasksResultActionThunk
+} from "../redux/tasks/actions";
 import { upsertTask } from "../redux/tasks/actions/upsertTask";
 import { loadTasks } from "../redux/tasks/actions/loadTasks";
 
 moment.locale(navigator.language, {
   week: {
-    // Always start the week "today"
+    // Always start the week "yesterday"
     dow: Time.yesterday().getDay(),
     doy: 1
   }
 });
 
-const localizer = BigCalendar.momentLocalizer(moment); // or globalizeLocalizer
+const localizer = momentLocalizer(moment); // or globalizeLocalizer
 const DnDCalendar = withDragAndDrop(BigCalendar);
 
 /**
@@ -85,29 +88,14 @@ class Calendar extends React.Component<CalendarProps, CalendarState> {
     }
   }
 
-  getEventStyle(
-    event: Event,
-    start: stringOrDate,
-    end: stringOrDate,
-    isSelected: boolean
-  ) {
-    // const backgroundColor = 'blue';
-    const style: { backgroundColor?: string } = {};
-    if (event.completed) {
-      style.backgroundColor = "grey";
-    }
-    return {
-      style
-    };
-  }
+  eventStyle = (event: Event) =>
+    event.completed ? { style: { backgroundColor: "grey" } } : { style: {} };
 
-  handleEventShowSelected = (event: Event) => {
+  handleEventShowSelected = (event: Event) => 
     this.setState({ ...this.state, selectedEvent: event });
-  };
 
-  handleEventHideSelected = () => {
+  handleEventHideSelected = () => 
     this.setState({ ...this.state, selectedEvent: undefined });
-  };
 
   handleEventSave = (event: Event | undefined = this.state.selectedEvent) => {
     if (!event) {
@@ -155,8 +143,8 @@ class Calendar extends React.Component<CalendarProps, CalendarState> {
           min={minTime}
           max={maxTime}
           showMultiDayTimes={true}
-          getNow={() => Time.current()}
-          eventPropGetter={this.getEventStyle}
+          getNow={Time.current}
+          eventPropGetter={this.eventStyle}
           onEventResize={({ event, start, end }) => {
             this.handleEventSave({
               ...event,

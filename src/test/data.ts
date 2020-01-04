@@ -26,3 +26,58 @@ export const threeHourTask: Task = {
   priority: 3,
   estimate: 180
 };
+
+export const supertask: Task = {
+  id: 200,
+  description: "This task has no supertask because it IS the supertask",
+  priority: 1,
+  estimate: 60,
+  title: "Supertask"
+};
+
+export const subtaskA: Task = {
+  id: 201,
+  description: "Subtask A belongs to Supertask",
+  priority: 2,
+  estimate: 120,
+  title: "Subtask A",
+  supertaskId: supertask.id
+};
+export const subtaskB: Task = {
+  id: 203,
+  description: "Subtask B belongs to Supertask",
+  priority: 3,
+  estimate: 180,
+  title: "Subtask B",
+  supertaskId: supertask.id,
+  predecessorIds: [subtaskA.id]
+};
+export const subSubTask: Task = {
+  id: 204,
+  title: "Sub-subtask",
+  description: "Sub-subtask belongs to Subtask B which belongs to Supertask",
+  priority: 1,
+  estimate: 60,
+  supertaskId: subtaskB.id
+};
+
+export const subSubSubtask: Task = {
+  id: 205,
+  title: "Sub-sub-subtask task",
+  description:
+    "Sub-sub-subtask belongs to sub-subtask which belongs to subtask B which belongs to Supertask",
+  priority: 1,
+  estimate: 60,
+  supertaskId: subSubTask.id
+};
+
+export const allTestDataTasks = [
+  oneHourTask,
+  twoHourTask,
+  threeHourTask,
+  supertask,
+  subtaskA,
+  subtaskB,
+  subSubTask,
+  subSubSubtask
+];

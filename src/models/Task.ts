@@ -3,6 +3,91 @@
 
 import { Estimated } from "./time/Estimated";
 import { Todo } from "./Todo";
-import { Priority } from "./Priority";
+import {
+  Priority,
+  prioritize as defaultPrioritize,
+  prioritizer
+} from "./Priority";
 
-export interface Task extends Todo, Priority, Estimated {}
+/**
+ * A prioritized, estimated to-do with flexible start and end times.
+ *
+ * @export
+ * @interface Task
+ * @extends {Todo}
+ * @extends {Priority}
+ * @extends {Estimated}
+ */
+export interface Task extends Todo, Priority, Estimated {
+  predecessorIds?: number[];
+  supertaskId?: number;
+}
+
+export const taskPrioritizer = prioritizer;
+
+export function prioritize(tasks: Task[]) {
+  return defaultPrioritize(taskPrioritizer, ...tasks);
+}
+
+export function supertaskOf(task: Task, candidates: Task[]): Task | undefined {
+  return task && task.supertaskId && candidates
+    ? candidates.find(candidate => task.supertaskId === candidate.id)
+    : undefined;
+}
+
+export function supertasksOf(
+  task: Task,
+  candidates: Task[]
+): Task[] | undefined {
+  if (!task || !candidates || candidates.length === 0) {
+    return undefined;
+  }
+
+  let current: Task | undefined = task;
+  candidates = [...candidates]; // Do not mutate original!
+  const result = [];
+  while (current) {
+    current = supertaskOf(current, candidates);
+    if (current) {
+      result.push(current);
+      candidates.splice(candidates.indexOf(current), 1);
+    }
+  }
+
+  return result;
+}
+
+export function subtasksOf(task: Task, candidates: Task[]): Task[] | undefined {
+  const result =
+    task && candidates
+      ? prioritize(
+          candidates.filter(candidate => candidate.supertaskId === task.id)
+        )
+      : undefined;
+  return result && result.length > 0 ? result : undefined;
+}
+
+export function predecessorsOf(
+  task: Task,
+  candidates: Task[]
+): Task[] | undefined {
+  const result =
+    task && task.predecessorIds && candidates
+      ? candidates.filter(candidate =>
+          (task.predecessorIds || []).includes(candidate.id)
+        )
+      : undefined;
+  return result && result.length > 0 ? result : undefined;
+}
+
+export function successorsOf(task: Task, candidates: Task[]) {
+  const result =
+    task && candidates
+      ? candidates.filter(
+          candidate =>
+            candidate.predecessorIds &&
+            candidate.predecessorIds.includes(task.id)
+        )
+      : undefined;
+  return result && result.length > 0 ? result : undefined;
+}

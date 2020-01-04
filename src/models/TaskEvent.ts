@@ -2,7 +2,7 @@
 // Copyright (C) 2019  James Tharpe
 
 import { Time } from "./time";
-import { Period, period } from "./time/Period";
+import { Period, periodOf } from "./time/Period";
 import {
   StartEstimated,
   EndEstimated,
@@ -10,7 +10,6 @@ import {
   estimated
 } from "./time/Estimated";
 import { Todo, EstimatedTodo } from "./Todo";
-import { prioritizer } from "./Priority";
 import moment, { Duration } from "moment";
 import { Event } from "./Event";
 import { Task } from "./Task";
@@ -22,6 +21,7 @@ export class TaskEvent implements Task, Event {
   description: string = "";
   estimate: number = 60;
   start: Date = Time.current();
+  predecessorIds?: number[];
 
   constructor(todo?: Task | EstimatedTodo | Todo) {
     Object.assign(this, todo);
@@ -35,7 +35,7 @@ export class TaskEvent implements Task, Event {
       this._completed = new Date(this._completed);
     }
 
-    const todoPeriod = period(todo);
+    const todoPeriod = periodOf(todo);
     if (todoPeriod && !estimated(todo)) {
       this.estimate = TaskEvent.periodToEstimate(todoPeriod);
     }
@@ -113,8 +113,6 @@ export function isTask(thing: any) {
     return false;
   }
 }
-
-export const taskPrioritizer = prioritizer;
 
 export const defaultTasks: Task[] = [
   new TaskEvent({
