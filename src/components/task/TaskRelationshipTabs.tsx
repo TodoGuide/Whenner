@@ -33,7 +33,6 @@ const TaskRelationshipTabs: React.FC<TaskRelationshipTabsProps> = ({
   const successors =
     currentDepth <= maxDepth && successorsOf(task, allTestDataTasks);
   const nextDepth = currentDepth + 1;
-  // TODO: Find a better way to limit depth of pred->success->pred->♾ relationship than heading level
 
   return (
     <div id={id}>
