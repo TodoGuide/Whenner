@@ -93,6 +93,7 @@ export const upserter: UpserterComposer = <T extends Id>(
   insert: Inserter<T>
 ): Upserter<T> =>
   async function(item: T): Promise<T> {
+    console.log("Upsert", item);
     return (await update(item)) || (await insert(item));
   };
 

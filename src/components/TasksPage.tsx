@@ -2,18 +2,18 @@
 // Copyright (C) 2019  James Tharpe
 
 import React from "react";
-import TaskList from "./task/TaskList";
+import TaskAccordion from "./task/TaskAccordion";
 import useTasks from "./hooks/useTasks";
 import { tasksService } from "../services/services";
 
 const TasksPage: React.FC = () => {
   return (
-    <TaskList
+    <TaskAccordion
       tasks={useTasks()}
       onSave={tasksService.upsert}
       id="tasks"
       maxDepth={15}
-    ></TaskList>
+    />
   );
 };
 

@@ -3,30 +3,38 @@
 
 import React from "react";
 import { Breadcrumb } from "react-bootstrap";
-import { Task as TaskModel, supertasksOf } from "../../models/Task";
-import { allTestDataTasks } from "../../test/data/tasks";
+import { Task as TaskModel } from "../../models/Task";
+import useTaskSupertasks from "../hooks/useTaskSupertasks";
 
 interface TaskBreadcrumbProps {
   id: string;
   task: TaskModel;
+  onSetSupertaskClick?: { (task: TaskModel): void };
 }
 
 const TaskBreadcrumb: React.FC<TaskBreadcrumbProps> = ({
   id,
-  task
+  task,
+  onSetSupertaskClick
 }: TaskBreadcrumbProps) => {
+  const supertasks = useTaskSupertasks(task.id);
   return (
     <Breadcrumb id={id}>
-      <Breadcrumb.Item title="Set Supertask">
-        <span role="img" aria-label="Set Supertask">
-          ✨
-        </span>
-      </Breadcrumb.Item>
-      {supertasksOf(task, allTestDataTasks)?.map((supertask, index) => (
+      {supertasks?.map((supertask, index) => (
         <Breadcrumb.Item title={supertask.description} key={`${id}-${index}`}>
           {supertask.title}
         </Breadcrumb.Item>
       ))}
+      {onSetSupertaskClick && (
+        <Breadcrumb.Item
+          title="Set Supertask"
+          onClick={() => onSetSupertaskClick(task)}
+        >
+          <span role="img" aria-label="Set Supertask">
+            ✨
+          </span>
+        </Breadcrumb.Item>
+      )}
       <Breadcrumb.Item active>{task.title}</Breadcrumb.Item>
     </Breadcrumb>
   );

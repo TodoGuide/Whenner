@@ -10,7 +10,7 @@ import {
   predecessorsOf
 } from "../../models/Task";
 import { allTestDataTasks } from "../../test/data/tasks";
-import TaskList from "./TaskList";
+import TaskAccordion from "./TaskAccordion";
 import { itemKey } from "../utils";
 
 interface TaskRelationshipTabsProps {
@@ -48,7 +48,7 @@ const TaskRelationshipTabs: React.FC<TaskRelationshipTabsProps> = ({
             <small className="text-muted">
               These tasks must be completed before this task can start
             </small>
-            <TaskList
+            <TaskAccordion
               tasks={predecessors || []}
               currentDepth={nextDepth}
               maxDepth={maxDepth}
@@ -62,7 +62,7 @@ const TaskRelationshipTabs: React.FC<TaskRelationshipTabsProps> = ({
               These tasks must be completed before the supertask can be marked
               complete
             </small>
-            <TaskList
+            <TaskAccordion
               tasks={subtasks || []}
               currentDepth={nextDepth}
               maxDepth={maxDepth}
@@ -75,7 +75,7 @@ const TaskRelationshipTabs: React.FC<TaskRelationshipTabsProps> = ({
             <small className="text-muted">
               These tasks can't be started until this task is complete
             </small>
-            <TaskList
+            <TaskAccordion
               tasks={successors || []}
               currentDepth={nextDepth}
               maxDepth={maxDepth}

@@ -8,6 +8,7 @@ import { Task as TaskModel } from "../../models/Task";
 import TaskStatusFormGroup from "./TaskStatusFormGroup";
 import TaskBreadcrumb from "./TaskBreadcrumb";
 import TaskRelationshipTabs from "./TaskRelationshipTabs";
+import TaskSearchModal from "./TaskSearchModal";
 
 export interface TaskProps {
   id: string;
@@ -34,10 +35,16 @@ const Task: React.FC<TaskProps> = ({
     console.log("Save task", task);
   };
 
+  const [showSelectSupertask, setShowSelectSupertask] = useState(false);
+
   return (
     <div id={id}>
       <Form onSubmit={handleFormSubmit}>
-        <TaskBreadcrumb task={task} id={`${id}-breadcrumb`} />
+        <TaskBreadcrumb
+          task={task}
+          id={`${id}-breadcrumb`}
+          onSetSupertaskClick={() => setShowSelectSupertask(true)}
+        />
         <Form.Group id={`${id}-title-group`}>
           <Form.Control
             id={`${id}-title`}
@@ -90,6 +97,20 @@ const Task: React.FC<TaskProps> = ({
         currentDepth={currentDepth}
         maxDepth={maxDepth}
       />
+      {showSelectSupertask && (
+        <TaskSearchModal
+          id={`${id}-supertask-modal`}
+          title="Select Supertask"
+          excludeIds={[task.id]}
+          show={showSelectSupertask}
+          onHide={() => setShowSelectSupertask(false)}
+          onSave={newSuper => {
+            setShowSelectSupertask(false);
+            setTask({ ...task, supertaskId: newSuper.id });
+            console.log("New super", newSuper);
+          }}
+        />
+      )}
       <hr />
     </div>
   );

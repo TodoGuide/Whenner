@@ -15,7 +15,7 @@ type TaskListProps = {
   onSave?: { (task: TaskModel): void };
 };
 
-const TaskList: React.FC<TaskListProps> = ({
+const TaskAccordion: React.FC<TaskListProps> = ({
   id,
   tasks,
   currentDepth = 1,
@@ -31,9 +31,9 @@ const TaskList: React.FC<TaskListProps> = ({
       {tasks.map((task, index) => {
         const key = itemKey(`${id}-list-${currentDepth}`, task, index);
         const description = (
-          <>
+          <span>
             <strong>{task.title}</strong> {task.description}{" "}
-          </>
+          </span>
         );
         return (
           <Card key={key}>
@@ -54,9 +54,7 @@ const TaskList: React.FC<TaskListProps> = ({
                   currentDepth={currentDepth}
                   maxDepth={maxDepth}
                   onSave={onSave}
-                  onClose={() => {
-                    toggleExpanded();
-                  }}
+                  onClose={toggleExpanded}
                 />
               </Card.Body>
             </Accordion.Collapse>
@@ -67,4 +65,4 @@ const TaskList: React.FC<TaskListProps> = ({
   );
 };
 
-export default TaskList;
+export default TaskAccordion;
