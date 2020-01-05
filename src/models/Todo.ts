@@ -32,6 +32,7 @@ export interface Article extends Id, Title, Description {}
  */
 export interface Todo extends Article {
   readonly completed?: Date;
+  readonly canceled?: Date;
 }
 
 export interface EstimatedTodo extends Todo, Estimated {}

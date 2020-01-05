@@ -22,6 +22,7 @@ export class TaskEvent implements Task, Event {
   estimate: number = 60;
   start: Date = Time.current();
   predecessorIds?: number[];
+  canceled?: Date;
 
   constructor(todo?: Task | EstimatedTodo | Todo) {
     Object.assign(this, todo);

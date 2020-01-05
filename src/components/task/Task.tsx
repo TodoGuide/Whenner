@@ -16,6 +16,7 @@ interface TaskProps {
   currentDepth?: number;
   maxDepth?: number;
   onSave?: { (task: TaskModel): void };
+  onClose?: { (): void };
 }
 
 const Task: React.FC<TaskProps> = ({
@@ -23,22 +24,24 @@ const Task: React.FC<TaskProps> = ({
   task: taskProp,
   currentDepth = 1,
   maxDepth = 3,
-  onSave
+  onSave,
+  onClose
 }: TaskProps) => {
   const [task, setTask] = useState(taskProp);
 
   const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     onSave && onSave(task);
+    console.log("Save task", task);
   };
 
   return (
     <div id={id}>
       <Form onSubmit={handleFormSubmit}>
         <TaskBreadcrumb task={task} />
-        <Form.Group id={itemKey(`${id}-title-group`, task, currentDepth)}>
+        <Form.Group id={`${id}-title-group`}>
           <Form.Control
-            id={itemKey(`${id}-title`, task, currentDepth)}
+            id={`${id}-title`}
             type="text"
             placeholder="What do you want to get done?"
             value={task.title}
@@ -47,22 +50,35 @@ const Task: React.FC<TaskProps> = ({
             }
           />
         </Form.Group>
-        <Form.Group id={itemKey(`${id}-description-group`, task, currentDepth)}>
+        <Form.Group id={`${id}-description-group`}>
           <Form.Control
-            id={itemKey(`${id}-description`, task, currentDepth)}
+            id={`${id}-description`}
             as="textarea"
             rows="3"
             value={task.description}
-            readOnly
+            onChange={(event: React.FormEvent<HTMLInputElement>) =>
+              setTask({ ...task, description: event.currentTarget.value })
+            }
           />
         </Form.Group>
         <EstimateInputFormGroup estimatedItem={task} />
         <TaskStatusFormGroup
           task={task}
-          id={itemKey(`${id}-state`, task, currentDepth)}
+          id={`${id}-state`}
+          onChange={changedTask => {
+            setTask(changedTask);
+          }}
         />
         <Form.Group controlId="actions" className="text-right">
-          <Button variant="secondary" className="m-2">
+          <Button
+            variant="secondary"
+            className="m-2"
+            onClick={() => {
+              console.log("taskProp", taskProp);
+              setTask(taskProp);
+              onClose && onClose();
+            }}
+          >
             Close
           </Button>
           <Button type="submit" variant="primary" className="m-2">
@@ -71,7 +87,7 @@ const Task: React.FC<TaskProps> = ({
         </Form.Group>
       </Form>
       <TaskRelationshipTabs
-        id={itemKey(`${id}-relationships`, task, currentDepth)}
+        id={`${id}-relationships`}
         task={task}
         currentDepth={currentDepth}
         maxDepth={maxDepth}

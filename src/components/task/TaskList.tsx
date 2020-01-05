@@ -1,12 +1,11 @@
 // Licensed under GPL v3: https://www.gnu.org/licenses/gpl-3.0.txt
 // Copyright (C) 2019  James Tharpe
 
-import React, { useEffect } from "react";
+import React, { useState } from "react";
 import { Accordion, Card } from "react-bootstrap";
 import { Task as TaskModel } from "../../models/Task";
 import Task from "./Task";
 import { itemKey } from "../utils";
-import { tasksService } from "../../services/services";
 
 type TaskListProps = {
   id: string;
@@ -23,8 +22,10 @@ const TaskList: React.FC<TaskListProps> = ({
   maxDepth = 3,
   onSave
 }: TaskListProps) => {
+  const [selected, setSelected] = useState<string | undefined>(undefined);
+
   return (
-    <Accordion id={id}>
+    <Accordion id={id} activeKey={selected}>
       {tasks.map((task, index) => {
         const key = itemKey(`${id}-list-${currentDepth}`, task, index);
         const description = (
@@ -34,9 +35,13 @@ const TaskList: React.FC<TaskListProps> = ({
         );
         return (
           <Card key={key}>
-            <Card.Header>
+            <Card.Header onClick={() => setSelected(key)}>
               <Accordion.Toggle as={Card.Header} eventKey={key}>
-                {task.completed ? <del>{description}</del> : description}
+                {task.completed || task.canceled ? (
+                  <del>{description}</del>
+                ) : (
+                  description
+                )}
               </Accordion.Toggle>
             </Card.Header>
             <Accordion.Collapse eventKey={key}>
@@ -47,6 +52,9 @@ const TaskList: React.FC<TaskListProps> = ({
                   currentDepth={currentDepth}
                   maxDepth={maxDepth}
                   onSave={onSave}
+                  onClose={() => {
+                    setSelected(undefined);
+                  }}
                 />
               </Card.Body>
             </Accordion.Collapse>
