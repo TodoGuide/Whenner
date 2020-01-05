@@ -8,7 +8,7 @@ import { Time } from "../../models/time";
  * A function that finds an item of the specified type, optionally from a provided arrary
  */
 export interface Finder<T extends Id> {
-  (id: number, list?: T[]): Promise<T | undefined>;
+  (id: number | number[], list?: T[]): Promise<T | undefined>;
 }
 
 /**
@@ -21,8 +21,9 @@ export interface FinderComposer {
 export const readListFinder: FinderComposer = <T extends Id>(
   read: Reader<T[]>
 ): Finder<T> => {
-  return async function(id: number, list?: T[]) {
-    return (list || (await read())).find(t => t.id === id);
+  return async function(id: number | number[], list?: T[]) {
+    const ids: number[] = ([] as number[]).concat(id);
+    return (list || (await read())).find(t => ids.includes(t.id));
   };
 };
 
@@ -146,7 +147,7 @@ export default function composeCrud<T extends Id>({
 
   return {
     read,
-    find: composeFind(read),
+    find,
     insert,
     update,
     upsert: upserter(update, insert)

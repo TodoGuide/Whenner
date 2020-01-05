@@ -78,19 +78,19 @@ export const localStorageCrud = <T extends Id>({
   key,
   initialData,
   generateId,
-  composeRead: composeReader = localStorageReader,
-  composeWrite: composeWriter = localStorageWriter,
-  composeFind: composeFinder = readListFinder,
+  composeRead = localStorageReader,
+  composeWrite = localStorageWriter,
+  composeFind = readListFinder,
   composeUpdate = localStorageUpdater,
-  composeInsert: composeInserter = localStorageInserter
+  composeInsert = localStorageInserter
 }: LocalStorageCrudArgs<T>) =>
   composeCrud({
     key,
-    composeRead: composeReader,
-    composeWrite: composeWriter,
-    composeFind: composeFinder,
+    composeRead,
+    composeWrite,
+    composeFind,
     composeUpdate,
-    composeInsert: composeInserter,
+    composeInsert,
     defaultData: initialData,
     generateId
   });

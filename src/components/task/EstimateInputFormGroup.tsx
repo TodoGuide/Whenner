@@ -3,7 +3,7 @@
 
 import React, { useState } from "react";
 import { Form, InputGroup } from "react-bootstrap";
-import { Estimated } from "../models/time/Estimated";
+import { Estimated } from "../../models/time/Estimated";
 
 interface EstimateInputProps {
   estimatedItem: Estimated;

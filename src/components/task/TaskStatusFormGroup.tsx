@@ -19,10 +19,10 @@ const TaskStatusFormGroup: React.FC<TaskStatusFormGroupProps> = ({
 }: TaskStatusFormGroupProps) => {
   const [task, setTask] = useState(taskProp);
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const status = event.currentTarget.id.substring(
-      event.currentTarget.id.lastIndexOf("-") + 1
-    );
+  const handleChange = ({
+    currentTarget: { id }
+  }: React.ChangeEvent<HTMLInputElement>) => {
+    const status = id.substring(id.lastIndexOf("-") + 1);
     let changedTask = new TaskEvent(task);
     switch (status) {
       case "incomplete":

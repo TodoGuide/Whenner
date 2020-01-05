@@ -23,6 +23,10 @@ const TaskList: React.FC<TaskListProps> = ({
   onSave
 }: TaskListProps) => {
   const [selected, setSelected] = useState<string | undefined>(undefined);
+  const toggleSelected = (key?: string) =>
+    key === selected ? setSelected(key) : setSelected(undefined);
+
+  console.log("selected", selected);
 
   return (
     <Accordion id={id} activeKey={selected}>
@@ -35,7 +39,7 @@ const TaskList: React.FC<TaskListProps> = ({
         );
         return (
           <Card key={key}>
-            <Card.Header onClick={() => setSelected(key)}>
+            <Card.Header onClick={() => toggleSelected(key)}>
               <Accordion.Toggle as={Card.Header} eventKey={key}>
                 {task.completed || task.canceled ? (
                   <del>{description}</del>
@@ -53,7 +57,7 @@ const TaskList: React.FC<TaskListProps> = ({
                   maxDepth={maxDepth}
                   onSave={onSave}
                   onClose={() => {
-                    setSelected(undefined);
+                    toggleSelected();
                   }}
                 />
               </Card.Body>

@@ -3,7 +3,7 @@
 
 import React, { useState } from "react";
 import { Form, Button } from "react-bootstrap";
-import EstimateInputFormGroup from "../EstimateInputFormGroup";
+import EstimateInputFormGroup from "./EstimateInputFormGroup";
 import { Task as TaskModel } from "../../models/Task";
 import TaskStatusFormGroup from "./TaskStatusFormGroup";
 import TaskBreadcrumb from "./TaskBreadcrumb";
@@ -37,7 +37,7 @@ const Task: React.FC<TaskProps> = ({
   return (
     <div id={id}>
       <Form onSubmit={handleFormSubmit}>
-        <TaskBreadcrumb task={task} />
+        <TaskBreadcrumb task={task} id={`${id}-breadcrumb`} />
         <Form.Group id={`${id}-title-group`}>
           <Form.Control
             id={`${id}-title`}
@@ -73,7 +73,6 @@ const Task: React.FC<TaskProps> = ({
             variant="secondary"
             className="m-2"
             onClick={() => {
-              console.log("taskProp", taskProp);
               setTask(taskProp);
               onClose && onClose();
             }}

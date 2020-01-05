@@ -15,9 +15,17 @@ export class TasksService {
         initialData: defaultTasks
       })
     };
-    const { read, find } = result;
+    const { read } = result;
     result.read = async () => schedule(chronotype, ...(await read()));
-    result.find = async (id: number) => find(id, await result.read());
+    // result.find = async (id: number) => find(id, await result.read());
     return result;
   }
 }
+
+// export class TasksService2 {
+//   private crud: Crud<Task> =
+
+//   constructor(chronotype: Chronotype){
+
+//   }
+// }

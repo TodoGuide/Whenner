@@ -5,27 +5,25 @@ import React from "react";
 import { Breadcrumb } from "react-bootstrap";
 import { Task as TaskModel, supertasksOf } from "../../models/Task";
 import { allTestDataTasks } from "../../test/data/tasks";
-import { itemKey } from "../utils";
 
 interface TaskBreadcrumbProps {
+  id: string;
   task: TaskModel;
 }
 
 const TaskBreadcrumb: React.FC<TaskBreadcrumbProps> = ({
+  id,
   task
 }: TaskBreadcrumbProps) => {
   return (
-    <Breadcrumb>
+    <Breadcrumb id={id}>
       <Breadcrumb.Item title="Set Supertask">
         <span role="img" aria-label="Set Supertask">
           ✨{/* TODO: Implement set for supertask */}
         </span>
       </Breadcrumb.Item>
       {supertasksOf(task, allTestDataTasks)?.map((supertask, index) => (
-        <Breadcrumb.Item
-          title={supertask.description}
-          key={itemKey("task-breadcrumb", supertask, index)}
-        >
+        <Breadcrumb.Item title={supertask.description} key={`${id}-${index}`}>
           {supertask.title}
         </Breadcrumb.Item>
       ))}
