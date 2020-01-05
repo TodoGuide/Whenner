@@ -3,14 +3,27 @@
 
 import React from "react";
 import Task from "./task/Task";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import useTask from "./hooks/useTask";
+import { tasksService } from "../services/services";
 
 const TaskPage: React.FC = () => {
   const { id } = useParams();
-  const task = useTask(parseInt(id || "-1", 10));
+  const task = useTask(id);
   return (
-    (task && <Task id={`$task-${id}`} task={task} />) || <h1>Task not found</h1>
+    (task && (
+      <Task
+        id={`$task-${id}`}
+        task={task}
+        onSave={tasksService.upsert}
+        onClose={() => (window.location.href = "/tasks")}
+      />
+    )) || (
+      <div>
+        <h1>Task not found</h1>
+        <Link to="/tasks">View all tasks</Link>
+      </div>
+    )
   );
 };
 

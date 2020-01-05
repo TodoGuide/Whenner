@@ -26,8 +26,6 @@ const TaskList: React.FC<TaskListProps> = ({
   const toggleExpanded = (key?: string) =>
     key === expanded ? setExpanded(key) : setExpanded(undefined);
 
-  const [open, setOpen] = useState<TaskModel | undefined>(undefined);
-
   return (
     <Accordion id={id} activeKey={expanded}>
       {tasks.map((task, index) => {

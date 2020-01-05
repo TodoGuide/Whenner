@@ -20,6 +20,7 @@ const App: React.FC = () => {
         <Header />
         <Provider store={Store.instance}>
           <Route path="/" exact>
+            {/* TODO: Make redirect to tasks or calendar page a setting */}
             <Redirect to="/tasks" />
           </Route>
           <Route path="/tasks" exact component={TasksPage} />
