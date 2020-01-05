@@ -41,8 +41,7 @@ const TaskRelationshipTabs: React.FC<TaskRelationshipTabsProps> = ({
           (predecessors && "Predecessors") ||
           (successors && "Successors") ||
           "Subtasks"}`}
-        id="uncontrolled-tab-example"
-        // variant="pills"
+        id={`${id}-tabs`}
       >
         {(predecessors || currentDepth < 6) && (
           <Tab eventKey="Predecessors" title="Predecessors" className="border">
