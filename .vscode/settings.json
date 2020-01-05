@@ -21,6 +21,7 @@
     "esnext",
     "node",
     "service",
+    "stylelint",
     "supertask",
     "supertasks",
     "todo",
