@@ -19,7 +19,7 @@ const TaskBreadcrumb: React.FC<TaskBreadcrumbProps> = ({
     <Breadcrumb id={id}>
       <Breadcrumb.Item title="Set Supertask">
         <span role="img" aria-label="Set Supertask">
-          ✨{/* TODO: Implement set for supertask */}
+          ✨
         </span>
       </Breadcrumb.Item>
       {supertasksOf(task, allTestDataTasks)?.map((supertask, index) => (

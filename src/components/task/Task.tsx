@@ -2,14 +2,14 @@
 // Copyright (C) 2019  James Tharpe
 
 import React, { useState } from "react";
-import { Form, Button } from "react-bootstrap";
+import { Form, Button, Breadcrumb, BreadcrumbItem } from "react-bootstrap";
 import EstimateInputFormGroup from "./EstimateInputFormGroup";
 import { Task as TaskModel } from "../../models/Task";
 import TaskStatusFormGroup from "./TaskStatusFormGroup";
 import TaskBreadcrumb from "./TaskBreadcrumb";
 import TaskRelationshipTabs from "./TaskRelationshipTabs";
 
-interface TaskProps {
+export interface TaskProps {
   id: string;
   task: TaskModel;
   currentDepth?: number;

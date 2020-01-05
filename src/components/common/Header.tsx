@@ -13,7 +13,7 @@ const Header: React.FC = () => (
       <p>Answer "when're you gonna be done" like a Winner!</p>
     </Jumbotron>
     <Nav fill variant="tabs" activeKey={window.location.pathname}>
-      <Nav.Item as={LinkContainer} exact to="/">
+      <Nav.Item as={LinkContainer} to="/tasks">
         <Nav.Link active={false}>Tasks</Nav.Link>
       </Nav.Item>
       <Nav.Item as={LinkContainer} exact to="/calendar">

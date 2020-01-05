@@ -4,8 +4,8 @@ import { defaultTasks } from "../../models/TaskEvent";
 
 export default function useTasks() {
   const [tasks, setTasks] = useState(defaultTasks);
-
   const cancel = useRef(false);
+
   useEffect(() => {
     !cancel.current &&
       tasksService.read().then(tasks => {

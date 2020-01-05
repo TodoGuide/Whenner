@@ -22,14 +22,14 @@ const TaskList: React.FC<TaskListProps> = ({
   maxDepth = 3,
   onSave
 }: TaskListProps) => {
-  const [selected, setSelected] = useState<string | undefined>(undefined);
-  const toggleSelected = (key?: string) =>
-    key === selected ? setSelected(key) : setSelected(undefined);
+  const [expanded, setExpanded] = useState<string | undefined>(undefined);
+  const toggleExpanded = (key?: string) =>
+    key === expanded ? setExpanded(key) : setExpanded(undefined);
 
-  console.log("selected", selected);
+  const [open, setOpen] = useState<TaskModel | undefined>(undefined);
 
   return (
-    <Accordion id={id} activeKey={selected}>
+    <Accordion id={id} activeKey={expanded}>
       {tasks.map((task, index) => {
         const key = itemKey(`${id}-list-${currentDepth}`, task, index);
         const description = (
@@ -39,7 +39,7 @@ const TaskList: React.FC<TaskListProps> = ({
         );
         return (
           <Card key={key}>
-            <Card.Header onClick={() => toggleSelected(key)}>
+            <Card.Header onClick={() => toggleExpanded(key)}>
               <Accordion.Toggle as={Card.Header} eventKey={key}>
                 {task.completed || task.canceled ? (
                   <del>{description}</del>
@@ -57,7 +57,7 @@ const TaskList: React.FC<TaskListProps> = ({
                   maxDepth={maxDepth}
                   onSave={onSave}
                   onClose={() => {
-                    toggleSelected();
+                    toggleExpanded();
                   }}
                 />
               </Card.Body>

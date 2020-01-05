@@ -5,12 +5,13 @@ import React from "react";
 import { Provider } from "react-redux";
 import { Store } from "./redux/store";
 import CalendarPage from "./components/CalendarPage";
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
 import AboutPage from "./components/AboutPage";
 import Container from "react-bootstrap/Container";
 import SettingsPage from "./components/SettingsPage";
 import Header from "./components/common/Header";
 import TasksPage from "./components/TasksPage";
+import TaskPage from "./components/TaskPage";
 
 const App: React.FC = () => {
   return (
@@ -18,7 +19,11 @@ const App: React.FC = () => {
       <Container>
         <Header />
         <Provider store={Store.instance}>
-          <Route path="/" exact component={TasksPage} />
+          <Route path="/" exact>
+            <Redirect to="/tasks" />
+          </Route>
+          <Route path="/tasks" exact component={TasksPage} />
+          <Route path="/tasks/:id" component={TaskPage} />
           <Route path="/calendar/" component={CalendarPage} />
           <Route path="/settings/" component={SettingsPage} />
           <Route path="/about/" component={AboutPage} />
