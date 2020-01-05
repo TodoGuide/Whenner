@@ -5,7 +5,6 @@ import React from "react";
 import Jumbotron from "react-bootstrap/Jumbotron";
 import { LinkContainer } from "react-router-bootstrap";
 import Nav from "react-bootstrap/Nav";
-import { Link } from "react-router-dom";
 
 const Header: React.FC = () => (
   <div>

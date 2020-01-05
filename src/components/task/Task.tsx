@@ -7,7 +7,6 @@ import EstimateInputFormGroup from "../EstimateInputFormGroup";
 import { Task as TaskModel } from "../../models/Task";
 import TaskStatusFormGroup from "./TaskStatusFormGroup";
 import TaskBreadcrumb from "./TaskBreadcrumb";
-import { itemKey } from "../utils";
 import TaskRelationshipTabs from "./TaskRelationshipTabs";
 
 interface TaskProps {
