@@ -3,7 +3,9 @@
 
 import React from "react";
 import Jumbotron from "react-bootstrap/Jumbotron";
+import { LinkContainer } from "react-router-bootstrap";
 import Nav from "react-bootstrap/Nav";
+import { Link } from "react-router-dom";
 
 const Header: React.FC = () => (
   <div>
@@ -12,17 +14,17 @@ const Header: React.FC = () => (
       <p>Answer "when're you gonna be done" like a Winner!</p>
     </Jumbotron>
     <Nav fill variant="tabs" activeKey={window.location.pathname}>
-      <Nav.Item>
-        <Nav.Link href="/">Tasks</Nav.Link>
+      <Nav.Item as={LinkContainer} exact to="/">
+        <Nav.Link active={false}>Tasks</Nav.Link>
       </Nav.Item>
-      <Nav.Item>
-        <Nav.Link href="/calendar">Calendar</Nav.Link>
+      <Nav.Item as={LinkContainer} exact to="/calendar">
+        <Nav.Link active={false}>Calendar</Nav.Link>
       </Nav.Item>
-      <Nav.Item>
-        <Nav.Link href="/settings">Settings</Nav.Link>
+      <Nav.Item as={LinkContainer} exact to="/settings">
+        <Nav.Link active={false}>Settings</Nav.Link>
       </Nav.Item>
-      <Nav.Item>
-        <Nav.Link href="/about">About</Nav.Link>
+      <Nav.Item as={LinkContainer} exact to="/about">
+        <Nav.Link active={false}>About</Nav.Link>
       </Nav.Item>
     </Nav>
   </div>
