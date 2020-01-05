@@ -4,7 +4,7 @@
 import { AppointmentEvent } from "./AppointmentEvent";
 import { customMatchers } from "./../test/matchers";
 import { Schedule } from "./Schedule";
-import { oneHourTask, twoHourTask, threeHourTask } from "../test/data";
+import { oneHourTask, twoHourTask, threeHourTask } from "../test/data/tasks";
 import { defaultChronotype } from "./Chronotype";
 import { TaskEvent } from "./TaskEvent";
 import { Time } from "./time";

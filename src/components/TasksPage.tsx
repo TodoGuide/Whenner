@@ -3,10 +3,18 @@
 
 import React from "react";
 import TaskList from "./task/TaskList";
-import { allTestDataTasks } from "../test/data";
+import useTasks from "./hooks/useTasks";
+import { tasksService } from "../services/services";
 
-const TasksPage: React.FC = () => (
-  <TaskList tasks={allTestDataTasks} id="tasks" maxDepth={15}></TaskList>
-);
+const TasksPage: React.FC = () => {
+  return (
+    <TaskList
+      tasks={useTasks()}
+      onSave={tasksService.upsert}
+      id="tasks"
+      maxDepth={15}
+    ></TaskList>
+  );
+};
 
 export default TasksPage;

@@ -2,7 +2,7 @@
 // Copyright (C) 2019  James Tharpe
 
 import { ScheduledTask } from "./ScheduledTask";
-import { oneHourTask, twoHourTask } from "../test/data";
+import { oneHourTask, twoHourTask } from "../test/data/tasks";
 import { defaultChronotype } from "./Chronotype";
 import { customMatchers } from "../test/matchers";
 import { Time } from "./time";

@@ -3,7 +3,7 @@
 
 import { TasksService } from "./TasksService";
 import { Todo } from "../models/Todo";
-import { oneHourTask } from "../test/data";
+import { oneHourTask } from "../test/data/tasks";
 import { customMatchers } from "../test/matchers";
 import { defaultChronotype } from "../models/Chronotype";
 import { Time } from "../models/time";

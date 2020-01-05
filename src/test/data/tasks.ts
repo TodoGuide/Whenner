@@ -1,13 +1,14 @@
 // Licensed under GPL v3: https://www.gnu.org/licenses/gpl-3.0.txt
 // Copyright (C) 2019  James Tharpe
 
-import { Task } from "../models/Task";
+import { Task } from "../../models/Task";
+import { Time } from "../../models/time";
 
 export const oneHourTask: Task = {
   id: 100,
   title: "One hour task",
   description: "This is a one hour task",
-  priority: 1,
+  priority: Time.now(),
   estimate: 60
 };
 
@@ -15,7 +16,7 @@ export const twoHourTask: Task = {
   id: 101,
   title: "Two hour task",
   description: "This is a two hour task",
-  priority: 2,
+  priority: Time.now() + 2,
   estimate: 120
 };
 
@@ -23,14 +24,14 @@ export const threeHourTask: Task = {
   id: 103,
   title: "Three hour task",
   description: "This is a three hour task",
-  priority: 3,
+  priority: Time.now() + 3,
   estimate: 180
 };
 
 export const supertask: Task = {
   id: 200,
   description: "This task has no supertask because it IS the supertask",
-  priority: 1,
+  priority: Time.now() + 4,
   estimate: 60,
   title: "Supertask"
 };
@@ -38,25 +39,27 @@ export const supertask: Task = {
 export const subtaskA: Task = {
   id: 201,
   description: "Subtask A belongs to Supertask",
-  priority: 2,
+  priority: Time.now() + 5,
   estimate: 120,
   title: "Subtask A",
   supertaskId: supertask.id
 };
+
 export const subtaskB: Task = {
   id: 203,
   description: "Subtask B belongs to Supertask",
-  priority: 3,
+  priority: Time.now() + 6,
   estimate: 180,
   title: "Subtask B",
   supertaskId: supertask.id,
   predecessorIds: [subtaskA.id]
 };
+
 export const subSubTask: Task = {
   id: 204,
   title: "Sub-subtask",
   description: "Sub-subtask belongs to Subtask B which belongs to Supertask",
-  priority: 1,
+  priority: Time.now() + 7,
   estimate: 60,
   supertaskId: subtaskB.id
 };
@@ -66,7 +69,7 @@ export const subSubSubtask: Task = {
   title: "Sub-sub-subtask task",
   description:
     "Sub-sub-subtask belongs to sub-subtask which belongs to subtask B which belongs to Supertask",
-  priority: 1,
+  priority: Time.now() + 8,
   estimate: 60,
   supertaskId: subSubTask.id
 };

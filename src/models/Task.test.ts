@@ -1,4 +1,4 @@
-import { oneHourTask, twoHourTask, threeHourTask } from "../test/data";
+import { oneHourTask, twoHourTask, threeHourTask } from "../test/data/tasks";
 import {
   predecessorsOf,
   successorsOf,
@@ -106,8 +106,8 @@ describe("The Tasks module", () => {
   });
 
   describe("Given a task with a recursive supertask", () => {
-    const taskA = {...oneHourTask };
-    const taskB = {...twoHourTask, supertaskId: taskA.id}
+    const taskA = { ...oneHourTask };
+    const taskB = { ...twoHourTask, supertaskId: taskA.id };
     taskA.supertaskId = taskB.id;
     const allTasks = [taskA, taskB];
 

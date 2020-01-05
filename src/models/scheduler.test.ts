@@ -4,7 +4,7 @@
 import { Time } from "./time";
 import { schedule } from "./scheduler";
 import moment from "moment";
-import { oneHourTask, twoHourTask } from "../test/data";
+import { oneHourTask, twoHourTask } from "../test/data/tasks";
 import { customMatchers } from "../test/matchers";
 import { Chronotype, defaultChronotype } from "./Chronotype";
 import { TaskEvent } from "./TaskEvent";

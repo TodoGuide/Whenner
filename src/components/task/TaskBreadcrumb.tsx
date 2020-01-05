@@ -4,7 +4,7 @@
 import React from "react";
 import { Breadcrumb } from "react-bootstrap";
 import { Task as TaskModel, supertasksOf } from "../../models/Task";
-import { allTestDataTasks } from "../../test/data";
+import { allTestDataTasks } from "../../test/data/tasks";
 import { itemKey } from "../utils";
 
 interface TaskBreadcrumbProps {
@@ -12,7 +12,7 @@ interface TaskBreadcrumbProps {
 }
 
 const TaskBreadcrumb: React.FC<TaskBreadcrumbProps> = ({
-  task,
+  task
 }: TaskBreadcrumbProps) => {
   return (
     <Breadcrumb>

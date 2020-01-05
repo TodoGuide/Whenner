@@ -9,7 +9,7 @@ import {
   successorsOf,
   predecessorsOf
 } from "../../models/Task";
-import { allTestDataTasks } from "../../test/data";
+import { allTestDataTasks } from "../../test/data/tasks";
 import TaskList from "./TaskList";
 import { itemKey } from "../utils";
 

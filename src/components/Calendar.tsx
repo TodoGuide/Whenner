@@ -91,10 +91,10 @@ class Calendar extends React.Component<CalendarProps, CalendarState> {
   eventStyle = (event: Event) =>
     event.completed ? { style: { backgroundColor: "grey" } } : { style: {} };
 
-  handleEventShowSelected = (event: Event) => 
+  handleEventShowSelected = (event: Event) =>
     this.setState({ ...this.state, selectedEvent: event });
 
-  handleEventHideSelected = () => 
+  handleEventHideSelected = () =>
     this.setState({ ...this.state, selectedEvent: undefined });
 
   handleEventSave = (event: Event | undefined = this.state.selectedEvent) => {

@@ -1,7 +1,7 @@
 // Licensed under GPL v3: https://www.gnu.org/licenses/gpl-3.0.txt
 // Copyright (C) 2019  James Tharpe
 
-import React from "react";
+import React, { useState } from "react";
 import { Form, Button } from "react-bootstrap";
 import EstimateInputFormGroup from "../EstimateInputFormGroup";
 import { Task as TaskModel } from "../../models/Task";
@@ -15,17 +15,26 @@ interface TaskProps {
   task: TaskModel;
   currentDepth?: number;
   maxDepth?: number;
+  onSave?: { (task: TaskModel): void };
 }
 
 const Task: React.FC<TaskProps> = ({
   id,
-  task,
+  task: taskProp,
   currentDepth = 1,
-  maxDepth = 3
+  maxDepth = 3,
+  onSave
 }: TaskProps) => {
+  const [task, setTask] = useState(taskProp);
+
+  const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    onSave && onSave(task);
+  };
+
   return (
     <div id={id}>
-      <Form>
+      <Form onSubmit={handleFormSubmit}>
         <TaskBreadcrumb task={task} />
         <Form.Group id={itemKey(`${id}-title-group`, task, currentDepth)}>
           <Form.Control
@@ -33,7 +42,9 @@ const Task: React.FC<TaskProps> = ({
             type="text"
             placeholder="What do you want to get done?"
             value={task.title}
-            readOnly
+            onChange={(event: React.FormEvent<HTMLInputElement>) =>
+              setTask({ ...task, title: event.currentTarget.value })
+            }
           />
         </Form.Group>
         <Form.Group id={itemKey(`${id}-description-group`, task, currentDepth)}>
@@ -54,7 +65,7 @@ const Task: React.FC<TaskProps> = ({
           <Button variant="secondary" className="m-2">
             Close
           </Button>
-          <Button variant="primary" className="m-2">
+          <Button type="submit" variant="primary" className="m-2">
             Save Changes
           </Button>
         </Form.Group>

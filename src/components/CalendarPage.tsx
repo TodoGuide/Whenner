@@ -2,10 +2,11 @@
 // Copyright (C) 2019  James Tharpe
 
 import React from "react";
-import Calendar from "./Calendar";
+import Calendar from "./calendar/Calendar";
+import useTasks from "./hooks/useTasks";
 
 const CalendarPage: React.FC = () => {
-  return <Calendar />;
+  return <Calendar tasks={useTasks()} />;
 };
 
 export default CalendarPage;

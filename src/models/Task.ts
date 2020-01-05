@@ -10,7 +10,7 @@ import {
 } from "./Priority";
 
 /**
- * A prioritized, estimated to-do with flexible start and end times.
+ * A {@link Todo} that needs to be completed based on priority and estimated duration. Unlike an {@link Appointment}, which is to be completed based on fixed Start and End times.
  *
  * @export
  * @interface Task
@@ -48,7 +48,11 @@ export function supertasksOf(
   const result: Task[] = [];
   while (current) {
     const next = supertaskOf(current, candidates);
-    if (next && next.id !== task.id && !result.find(task => task.id === next.id)) {
+    if (
+      next &&
+      next.id !== task.id &&
+      !result.find(task => task.id === next.id)
+    ) {
       result.push(next);
       candidates.splice(candidates.indexOf(next), 1);
     }
