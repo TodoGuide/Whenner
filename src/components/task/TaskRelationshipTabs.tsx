@@ -42,10 +42,10 @@ const TaskRelationshipTabs: React.FC<TaskRelationshipTabsProps> = ({
           (successors && "Successors") ||
           "Subtasks"}`}
         id="uncontrolled-tab-example"
-        variant="pills"
+        // variant="pills"
       >
         {(predecessors || currentDepth < 6) && (
-          <Tab eventKey="Predecessors" title="Predecessors">
+          <Tab eventKey="Predecessors" title="Predecessors" className="border">
             <small className="text-muted">
               These tasks must be completed before this task can start
             </small>
@@ -58,7 +58,7 @@ const TaskRelationshipTabs: React.FC<TaskRelationshipTabsProps> = ({
           </Tab>
         )}
         {(subtasks || currentDepth < 6) && (
-          <Tab eventKey="Subtasks" title="Subtasks">
+          <Tab eventKey="Subtasks" title="Subtasks" className="border">
             <small className="text-muted">
               These tasks must be completed before the supertask can be marked
               complete
@@ -72,7 +72,7 @@ const TaskRelationshipTabs: React.FC<TaskRelationshipTabsProps> = ({
           </Tab>
         )}
         {(successors || currentDepth < 6) && (
-          <Tab eventKey="Successors" title="Successors">
+          <Tab eventKey="Successors" title="Successors" className="border">
             <small className="text-muted">
               These tasks can't be started until this task is complete
             </small>
