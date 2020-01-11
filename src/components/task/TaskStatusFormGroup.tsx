@@ -9,14 +9,15 @@ import { TaskEvent } from "../../models/TaskEvent";
 interface TaskStatusFormGroupProps {
   id: string;
   task: TaskModel;
-  onChange?: { (task: TaskModel): void };
+  onModify?: { (task: TaskModel): void };
 }
 
 const TaskStatusFormGroup: React.FC<TaskStatusFormGroupProps> = ({
   id,
   task: taskProp,
-  onChange
+  onModify
 }: TaskStatusFormGroupProps) => {
+  console.log("TaskStatusFormGroup taskProp", taskProp);
   const [task, setTask] = useState(taskProp);
 
   const handleChange = ({
@@ -41,7 +42,7 @@ const TaskStatusFormGroup: React.FC<TaskStatusFormGroupProps> = ({
         throw Error("Unknown status: " + status);
     }
     setTask(changedTask);
-    onChange && onChange(changedTask);
+    onModify && onModify(changedTask);
   };
 
   return (

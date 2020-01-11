@@ -21,7 +21,11 @@ const TaskBreadcrumb: React.FC<TaskBreadcrumbProps> = ({
   return (
     <Breadcrumb id={id}>
       {supertasks?.map((supertask, index) => (
-        <Breadcrumb.Item title={supertask.description} key={`${id}-${index}`}>
+        <Breadcrumb.Item
+          title={supertask.description}
+          key={`${id}-${index}`}
+          href={`/tasks/${supertask.id}`}
+        >
           {supertask.title}
         </Breadcrumb.Item>
       ))}

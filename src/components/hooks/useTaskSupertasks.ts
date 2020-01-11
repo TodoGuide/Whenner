@@ -5,7 +5,7 @@ import useTask from "./useTask";
 
 export default function useTaskSupertasks(taskId: number) {
   const task = useTask(taskId);
-  const tasks = useTasks() || [];
+  const [tasks] = useTasks() || [];
   const [supertasks, setSupertasks] = useState<Task[]>();
 
   useEffect(() => {

@@ -12,7 +12,7 @@ const TaskModal: React.FC<TaskProps> = ({
   ...modalProps
 }: TaskProps) => {
   return (
-    <Modal id={id} {...modalProps}>
+    <Modal id={id} onChange={() => {}} {...modalProps}>
       <Modal.Header closeButton>
         <Modal.Title>
           {task.title || "What do you want to get done?"}

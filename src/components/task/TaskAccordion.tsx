@@ -2,10 +2,10 @@
 // Copyright (C) 2019  James Tharpe
 
 import React, { useState } from "react";
-import { Accordion, Card } from "react-bootstrap";
+import { Accordion } from "react-bootstrap";
 import { Task as TaskModel } from "../../models/Task";
-import Task from "./Task";
 import { itemKey } from "../utils";
+import TaskAccordionItem from "./TaskAccordionItem";
 
 type TaskListProps = {
   id: string;
@@ -30,35 +30,14 @@ const TaskAccordion: React.FC<TaskListProps> = ({
     <Accordion id={id} activeKey={expanded}>
       {tasks.map((task, index) => {
         const key = itemKey(`${id}-list-${currentDepth}`, task, index);
-        const description = (
-          <span>
-            <strong>{task.title}</strong> {task.description}{" "}
-          </span>
-        );
         return (
-          <Card key={key}>
-            <Card.Header onClick={() => toggleExpanded(key)}>
-              <Accordion.Toggle as={Card.Header} eventKey={key}>
-                {task.completed || task.canceled ? (
-                  <del>{description}</del>
-                ) : (
-                  description
-                )}
-              </Accordion.Toggle>
-            </Card.Header>
-            <Accordion.Collapse eventKey={key}>
-              <Card.Body>
-                <Task
-                  id={`${key}-task`}
-                  task={task}
-                  currentDepth={currentDepth}
-                  maxDepth={maxDepth}
-                  onSave={onSave}
-                  onClose={toggleExpanded}
-                />
-              </Card.Body>
-            </Accordion.Collapse>
-          </Card>
+          <TaskAccordionItem
+            id={key}
+            key={key}
+            task={task}
+            onToggle={toggleExpanded}
+            onSave={onSave}
+          />
         );
       })}
     </Accordion>

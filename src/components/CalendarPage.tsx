@@ -6,7 +6,8 @@ import Calendar from "./calendar/Calendar";
 import useTasks from "./hooks/useTasks";
 
 const CalendarPage: React.FC = () => {
-  return <Calendar tasks={useTasks()} />;
+  const [tasks] = useTasks();
+  return <Calendar tasks={tasks} />;
 };
 
 export default CalendarPage;

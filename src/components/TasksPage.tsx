@@ -7,9 +7,11 @@ import useTasks from "./hooks/useTasks";
 import { tasksService } from "../services/services";
 
 const TasksPage: React.FC = () => {
+  const [tasks] = useTasks();
+  console.log("Tasks Page", { tasks });
   return (
     <TaskAccordion
-      tasks={useTasks()}
+      tasks={tasks}
       onSave={tasksService.upsert}
       id="tasks"
       maxDepth={15}

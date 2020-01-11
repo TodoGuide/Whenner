@@ -13,7 +13,6 @@ import { Time } from "../../models/time";
 import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop";
 import { TaskEvent } from "../../models/TaskEvent";
 import { AppointmentEvent } from "../../models/AppointmentEvent";
-import { allTestDataTasks } from "../../test/data/tasks";
 
 import "react-big-calendar/lib/addons/dragAndDrop/styles.css";
 import "react-big-calendar/lib/css/react-big-calendar.css";
@@ -30,13 +29,13 @@ const localizer = momentLocalizer(moment); // or globalizeLocalizer
 const DnDCalendar = withDragAndDrop(BigCalendar);
 
 interface CalendarStateProps {
-  tasks?: Task[];
+  tasks: Task[];
   appointments?: Appointment[];
   chronotype?: Chronotype;
 }
 
 const Calendar: React.FC<CalendarStateProps> = ({
-  tasks = allTestDataTasks,
+  tasks,
   appointments = [],
   chronotype = defaultChronotype
 }: CalendarStateProps) => {
