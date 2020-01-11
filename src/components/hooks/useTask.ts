@@ -1,16 +1,15 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { tasksService } from "../../services/services";
 import { Task } from "../../models/Task";
 import { Time } from "../../models/time";
 
-export default function useTask(id?: number | string): Task | undefined {
+export default function useTask(taskId?: number | string): Task | undefined {
   let [task, setTask] = useState<Task | undefined>(undefined);
-  const cancel = useRef(false);
 
-  if (id === "new") {
-    id = Time.now();
+  if (taskId === "new") {
+    taskId = Time.now();
     task = {
-      id,
+      id: taskId,
       title: "",
       description: "",
       priority: Time.now(),
@@ -18,18 +17,18 @@ export default function useTask(id?: number | string): Task | undefined {
     };
   }
 
-  const effectiveId = parseInt((id || "-1").toString());
+  const effectiveId = parseInt((taskId || "-1").toString());
 
   useEffect(() => {
-    !cancel.current &&
-      tasksService.find(effectiveId).then(foundTask => {
-        !cancel.current && setTask(foundTask);
-      });
+    let cancel = false;
+    tasksService.find(effectiveId).then(foundTask => {
+      !cancel && setTask(foundTask);
+    });
 
     return () => {
-      cancel.current = true;
+      cancel = true;
     };
-  }, [id, effectiveId]);
+  }, [taskId, effectiveId]);
 
   return task;
 }
