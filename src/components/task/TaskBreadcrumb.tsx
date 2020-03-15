@@ -5,6 +5,8 @@ import React from "react";
 import { Breadcrumb } from "react-bootstrap";
 import { Task as TaskModel } from "../../models/Task";
 import useTaskSupertasks from "../hooks/useTaskSupertasks";
+import { LinkContainer } from "react-router-bootstrap";
+import { useLocation } from "react-router-dom";
 
 interface TaskBreadcrumbProps {
   id: string;
@@ -18,16 +20,22 @@ const TaskBreadcrumb: React.FC<TaskBreadcrumbProps> = ({
   onSetSupertaskClick
 }: TaskBreadcrumbProps) => {
   const supertasks = useTaskSupertasks(task.id);
+  const location = useLocation();
+
   return (
     <Breadcrumb id={id}>
       {supertasks?.map((supertask, index) => (
-        <Breadcrumb.Item
-          title={supertask.description}
+        <LinkContainer
+          to={{
+            pathname: `/tasks/${supertask.id}`,
+            state: { background: location }
+          }}
           key={`${id}-${index}`}
-          href={`/tasks/${supertask.id}`}
         >
-          {supertask.title}
-        </Breadcrumb.Item>
+          <Breadcrumb.Item title={supertask.description}>
+            {supertask.title}
+          </Breadcrumb.Item>
+        </LinkContainer>
       ))}
       {onSetSupertaskClick && (
         <Breadcrumb.Item

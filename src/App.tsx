@@ -7,11 +7,11 @@ import { Store } from "./redux/store";
 import CalendarPage from "./components/CalendarPage";
 import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
 import AboutPage from "./components/AboutPage";
-import Container from "react-bootstrap/Container";
 import SettingsPage from "./components/SettingsPage";
 import Header from "./components/common/Header";
 import TasksPage from "./components/TasksPage";
-import TaskPage from "./components/TaskPage";
+import TaskPage from "./components/task/TaskPage";
+import { Container } from "react-bootstrap";
 
 const App: React.FC = () => {
   return (
