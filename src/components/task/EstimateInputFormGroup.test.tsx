@@ -9,6 +9,6 @@ describe("The EstimateInputFormGroup component", () => {
     const { getByRole } = render(
       <EstimateInputFormGroup estimatedItem={oneHourTask} />
     );
-    expect(getByRole("textbox")).toHaveValue(oneHourTask.estimate);
+    expect(getByRole("spinbutton")).toHaveValue(oneHourTask.estimate);
   });
 });

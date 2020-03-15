@@ -5,6 +5,7 @@ import React from "react";
 import { LinkContainer } from "react-router-bootstrap";
 import Nav from "react-bootstrap/Nav";
 import { Navbar, Button, Form, FormControl } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
 const Header: React.FC = () => (
   <div>
@@ -34,13 +35,20 @@ const Header: React.FC = () => (
       <Navbar.Collapse id="responsive-navbar-nav">
         <Nav className="mr-auto justify-content-center">
           <Nav.Item>
-            <Button variant="primary">New Task</Button>
+            <Link to="/tasks/new">
+              <Button variant="primary">New Task</Button>
+            </Link>
           </Nav.Item>
         </Nav>
         <Nav className="mr-auto justify-content-center">
           <Nav.Item>
             <span className="mr-3 font-weight-bold">Filter: </span>
-            <Form.Check type="checkbox" inline label="Incomplete" checked />
+            <Form.Check
+              type="checkbox"
+              inline
+              label="Incomplete"
+              defaultChecked
+            />
             <Form.Check type="checkbox" inline label="Complete" />
             <Form.Check type="checkbox" inline label="Canceled" />
           </Nav.Item>
