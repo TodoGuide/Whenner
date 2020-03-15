@@ -3,19 +3,24 @@
 
 import React from "react";
 import Task from "./Task";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useHistory } from "react-router-dom";
 import useTask from "../hooks/useTask";
 import { tasksService } from "../../services/services";
 
 const TaskPage: React.FC = () => {
   const { id } = useParams();
   const task = useTask(id);
+  const history = useHistory();
+
   return (
     (task && (
       <Task
         id={`$task-${id}`}
         task={task}
-        onSave={tasksService.upsert}
+        onSave={task => {
+          tasksService.upsert(task);
+          history.goBack();
+        }}
         onClose={() => (window.location.href = "/tasks")}
       />
     )) || (

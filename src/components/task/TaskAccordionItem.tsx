@@ -32,6 +32,7 @@ const TaskAccordionItem: React.FC<TaskAccordionItemProps> = ({
       <strong>{task.title}</strong> {task.description}
     </span>
   );
+
   return (
     <Card key={id}>
       <Card.Header onClick={() => onToggle && onToggle(id)}>

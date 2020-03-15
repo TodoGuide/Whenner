@@ -3,15 +3,12 @@
 
 import React from "react";
 import { Tabs, Tab } from "react-bootstrap";
-import {
-  Task as TaskModel,
-  subtasksOf,
-  successorsOf,
-  predecessorsOf
-} from "../../models/Task";
-import { allTestDataTasks } from "../../test/data/tasks";
+import { Task as TaskModel } from "../../models/Task";
 import TaskAccordion from "./TaskAccordion";
 import { itemKey } from "../utils";
+import useTaskSubtasks from "../hooks/useTaskSubtasks";
+import useTaskPredecessors from "../hooks/useTaskPredecessors";
+import useTaskSuccessors from "../hooks/useTaskSuccessors";
 
 interface TaskRelationshipTabsProps {
   id: string;
@@ -26,12 +23,10 @@ const TaskRelationshipTabs: React.FC<TaskRelationshipTabsProps> = ({
   currentDepth = 1,
   maxDepth = 3
 }: TaskRelationshipTabsProps) => {
-  const subtasks =
-    currentDepth <= maxDepth && subtasksOf(task, allTestDataTasks);
-  const predecessors =
-    currentDepth <= maxDepth && predecessorsOf(task, allTestDataTasks);
-  const successors =
-    currentDepth <= maxDepth && successorsOf(task, allTestDataTasks);
+  const fetchTaskId = currentDepth <= maxDepth ? task.id : undefined;
+  const subtasks = useTaskSubtasks(fetchTaskId);
+  const predecessors = useTaskPredecessors(fetchTaskId);
+  const successors = useTaskSuccessors(fetchTaskId);
   const nextDepth = currentDepth + 1;
 
   return (
@@ -43,7 +38,7 @@ const TaskRelationshipTabs: React.FC<TaskRelationshipTabsProps> = ({
           "Subtasks"}`}
         id={`${id}-tabs`}
       >
-        {(predecessors || currentDepth < 6) && (
+        {(predecessors || currentDepth < maxDepth) && (
           <Tab eventKey="Predecessors" title="Predecessors" className="border">
             <small className="text-muted">
               These tasks must be completed before this task can start
@@ -56,7 +51,7 @@ const TaskRelationshipTabs: React.FC<TaskRelationshipTabsProps> = ({
             />
           </Tab>
         )}
-        {(subtasks || currentDepth < 6) && (
+        {(subtasks || currentDepth < maxDepth) && (
           <Tab eventKey="Subtasks" title="Subtasks" className="border">
             <small className="text-muted">
               These tasks must be completed before the supertask can be marked
@@ -70,7 +65,7 @@ const TaskRelationshipTabs: React.FC<TaskRelationshipTabsProps> = ({
             />
           </Tab>
         )}
-        {(successors || currentDepth < 6) && (
+        {(successors || currentDepth < maxDepth) && (
           <Tab eventKey="Successors" title="Successors" className="border">
             <small className="text-muted">
               These tasks can't be started until this task is complete

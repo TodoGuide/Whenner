@@ -14,7 +14,7 @@ const TasksPage: React.FC = () => {
       tasks={tasks}
       onSave={tasksService.upsert}
       id="tasks"
-      maxDepth={15}
+      maxDepth={5}
     />
   );
 };

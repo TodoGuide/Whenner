@@ -63,6 +63,8 @@ export function supertasksOf(
 }
 
 export function subtasksOf(task: Task, candidates: Task[]): Task[] | undefined {
+  console.log("subtasksOf", { task, candidates });
+
   const result =
     task && candidates
       ? prioritize(

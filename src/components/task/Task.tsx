@@ -31,16 +31,22 @@ const Task: React.FC<TaskProps> = ({
 }: TaskProps) => {
   console.log("Task taskProp", taskProp);
   const [task, setTask] = useState(taskProp);
+  const [modified, setModified] = useState(false);
+  const [saved, setSaved] = useState(false);
   const [showSelectSupertask, setShowSelectSupertask] = useState(false);
 
   const handleModify = (modifiedTask: TaskModel) => {
     setTask(modifiedTask);
+    setModified(true);
+    setSaved(false);
     onModify && onModify(modifiedTask);
   };
 
   const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     onSave && onSave(task);
+    setModified(false);
+    setSaved(true);
     console.log("Save task", task);
   };
 
@@ -74,7 +80,10 @@ const Task: React.FC<TaskProps> = ({
             }
           />
         </Form.Group>
-        <EstimateInputFormGroup estimatedItem={task} />
+        <EstimateInputFormGroup
+          estimatedItem={task}
+          onModify={task => handleModify(task as TaskModel)}
+        />
         <TaskStatusFormGroup
           task={task}
           id={`${id}-state`}
@@ -91,8 +100,13 @@ const Task: React.FC<TaskProps> = ({
           >
             Close
           </Button>
-          <Button type="submit" variant="primary" className="m-2">
-            Save Changes
+          <Button
+            type="submit"
+            variant="primary"
+            className="m-2"
+            disabled={!modified}
+          >
+            {saved ? "Saved" : "Save Changes"}
           </Button>
         </Form.Group>
       </Form>

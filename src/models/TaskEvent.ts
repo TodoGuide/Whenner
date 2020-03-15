@@ -16,6 +16,7 @@ import { Task } from "./Task";
 
 export class TaskEvent implements Task, Event {
   private _completed?: Date;
+
   id: number = Time.now();
   title: string = "";
   description: string = "";
