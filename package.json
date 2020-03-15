@@ -14,41 +14,48 @@
   },
   "dependencies": {
     "bootstrap": "^4.4.1",
+    "jquery": "^3.4.1",
     "moment": "^2.24.0",
-    "react": "^16.12.0",
-    "react-big-calendar": "^0.23.0",
-    "react-bootstrap": "^1.0.0-beta.16",
-    "react-dom": "^16.12.0",
-    "react-redux": "^7.1.3",
+    "react": "^16.13.0",
+    "react-big-calendar": "^0.24.1",
+    "react-bootstrap": "^1.0.0-beta.17",
+    "react-dom": "^16.13.0",
+    "react-redux": "^7.2.0",
     "react-router-bootstrap": "^0.25.0",
     "react-router-dom": "^5.1.2",
-    "react-scripts": "^3.3.0",
-    "redux": "^4.0.4",
+    "react-scripts": "^3.4.0",
+    "redux": "^4.0.5",
     "redux-immutable-state-invariant": "^2.1.0",
     "redux-thunk": "^2.3.0"
   },
   "devDependencies": {
-    "@testing-library/jest-dom": "^4.2.4",
-    "@testing-library/react": "^9.4.0",
-    "@types/jest": "24.0.23",
-    "@types/moment": "^2.13.0",
-    "@types/node": "12.12.17",
-    "@types/react": "^16.9.16",
-    "@types/react-big-calendar": "^0.22.3",
-    "@types/react-dom": "16.9.4",
-    "@types/react-redux": "^7.1.5",
+    "@testing-library/jest-dom": "^5.1.1",
+    "@testing-library/react": "^10.0.1",
+    "@types/jest": "25.1.4",
+    "@types/node": "13.9.1",
+    "@types/react": "^16.9.23",
+    "@types/react-big-calendar": "^0.24.0",
+    "@types/react-dom": "16.9.5",
+    "@types/react-redux": "^7.1.7",
     "@types/react-router-bootstrap": "^0.24.5",
     "@types/react-router-dom": "^5.1.3",
     "@types/redux-immutable-state-invariant": "^2.1.1",
-    "husky": "^3.1.0",
-    "npm-check-updates": "^4.0.1",
-    "stylelint": "^12.0.1",
+    "eslint-plugin-react-hooks": "^2.5.0",
+    "husky": "^4.2.3",
+    "npm-check-updates": "^4.0.4",
+    "stylelint": "^13.2.1",
     "stylelint-config-recommended": "^3.0.0",
-    "tslint": "^5.20.1",
-    "typescript": "3.7.3"
+    "typescript": "3.8.3"
   },
   "eslintConfig": {
-    "extends": "react-app"
+    "extends": "react-app",
+    "plugins": [
+      "react-hooks"
+    ],
+    "rules": {
+      "react-hooks/rules-of-hooks": "error",
+      "react-hooks/exhaustive-deps": "error"
+    }
   },
   "browserslist": {
     "production": [
