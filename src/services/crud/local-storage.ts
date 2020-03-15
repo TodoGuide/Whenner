@@ -57,7 +57,7 @@ export const localStorageUpdater: UpdaterComposer = <T extends Id>(
     }
   };
 
-export const localStorageWriter: WriterComposer = <T>(key: string) =>
+export const localStorageWriter: WriterComposer = <T>(key: string): Writer<T> =>
   function(item: T): Promise<T> {
     localStorage.setItem(key, JSON.stringify(item));
     return Promise.resolve(item);
