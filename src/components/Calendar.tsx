@@ -16,7 +16,7 @@ import { WhennerAction } from "../redux/common/actions";
 import { startOf, endOf } from "../models/Chronotype";
 import Toast from "react-bootstrap/Toast";
 import EventModal from "./todo/EventModal";
-import { TaskEvent, defaultTasks } from "../models/TaskEvent";
+import { TaskEvent } from "../models/TaskEvent";
 import { ISchedule, Schedule } from "../models/Schedule";
 import { earliestOf, latestOf } from "../models/time/utils";
 import { Event } from "../models/Event";
@@ -79,10 +79,7 @@ class Calendar extends React.Component<CalendarProps, CalendarState> {
 
   componentDidMount() {
     const { tasks } = this.props.schedule;
-    if (
-      tasks.length === defaultTasks.length &&
-      tasks.every((value, index) => value.id === defaultTasks[index].id)
-    ) {
+    if (tasks.length === 0) {
       // Only load if tasks contains defaults
       this.props.loadTasks();
     }
