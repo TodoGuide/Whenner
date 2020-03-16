@@ -22,13 +22,13 @@ const EstimateInputFormGroup: React.FC<EstimateInputProps> = ({
           type="number"
           placeholder="How long will it take?"
           value={estimatedItem.estimate.toString()}
-          onChange={(event: React.FormEvent<HTMLInputElement>) => {
-            onModify &&
-              onModify({
-                ...estimatedItem,
-                estimate: event.currentTarget.valueAsNumber
-              });
-          }}
+          // onChange={(event: React.FormEvent<HTMLInputElement>) => {
+          //   onModify &&
+          //     onModify({
+          //       ...estimatedItem,
+          //       estimate: event.currentTarget.valueAsNumber
+          //     });
+          // }}
         />
         <InputGroup.Append>
           <InputGroup.Text>Minutes</InputGroup.Text>

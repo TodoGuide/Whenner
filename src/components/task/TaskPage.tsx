@@ -9,15 +9,21 @@ import { tasksService } from "../../services/services";
 
 const TaskPage: React.FC = () => {
   const { id } = useParams();
-  const task = useTask(id);
+  const [task, setTask] = useTask(id);
   const history = useHistory();
+
+  console.log("TaskPage", task);
 
   return (
     (task && (
       <Task
         id={`$task-${id}`}
         task={task}
-        onSave={task => {
+        onTaskModify={modifiedTask => {
+          console.log("onTaskModify", modifiedTask);
+          setTask(modifiedTask);
+        }}
+        onTaskSave={task => {
           tasksService.upsert(task);
           history.goBack();
         }}

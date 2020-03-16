@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
-import useTasks from "./useTasks";
+import useTasksState from "./useTasksState";
 import { Task, successorsOf } from "../../models/Task";
 import useTask from "./useTask";
 
-export default function useTaskSuccessors(taskId?: number) {
-  const task = useTask(taskId);
-  const [tasks] = useTasks() || [];
+export default function useTaskSuccessors(taskId: number = -1) {
+  const [task] = useTask(taskId);
+  const [tasks] = useTasksState() || [];
   const [successors, setSuccessors] = useState<Task[]>();
 
   useEffect(() => {

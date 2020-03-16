@@ -15,36 +15,34 @@ export interface TaskProps {
   task: TaskModel;
   currentDepth?: number;
   maxDepth?: number;
-  onModify?: { (task: TaskModel): void };
-  onSave?: { (task: TaskModel): void };
+  onTaskModify?: { (task: TaskModel): void };
+  onTaskSave?: { (task: TaskModel): void };
   onClose?: { (): void };
 }
 
 const Task: React.FC<TaskProps> = ({
   id,
-  task: taskProp,
+  task,
   currentDepth = 1,
   maxDepth = 3,
-  onModify,
-  onSave,
+  onTaskModify,
+  onTaskSave,
   onClose
 }: TaskProps) => {
-  console.log("Task taskProp", taskProp);
-  const [task, setTask] = useState(taskProp);
   const [modified, setModified] = useState(false);
   const [saved, setSaved] = useState(false);
   const [showSelectSupertask, setShowSelectSupertask] = useState(false);
 
-  const handleModify = (modifiedTask: TaskModel) => {
-    setTask(modifiedTask);
+  const handleTaskModify = (modifiedTask: TaskModel) => {
     setModified(true);
     setSaved(false);
-    onModify && onModify(modifiedTask);
+    console.log("handleTaskModify", modifiedTask);
+    onTaskModify && onTaskModify(modifiedTask);
   };
 
   const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    onSave && onSave(task);
+    onTaskSave && onTaskSave(task);
     setModified(false);
     setSaved(true);
     console.log("Save task", task);
@@ -65,7 +63,7 @@ const Task: React.FC<TaskProps> = ({
             placeholder="What do you want to get done?"
             value={task.title}
             onChange={(event: React.FormEvent<HTMLInputElement>) =>
-              handleModify({ ...task, title: event.currentTarget.value })
+              handleTaskModify({ ...task, title: event.currentTarget.value })
             }
           />
         </Form.Group>
@@ -76,25 +74,28 @@ const Task: React.FC<TaskProps> = ({
             rows="3"
             value={task.description}
             onChange={(event: React.FormEvent<HTMLInputElement>) =>
-              handleModify({ ...task, description: event.currentTarget.value })
+              handleTaskModify({
+                ...task,
+                description: event.currentTarget.value
+              })
             }
           />
         </Form.Group>
         <EstimateInputFormGroup
           estimatedItem={task}
-          onModify={task => handleModify(task as TaskModel)}
+          onModify={task => handleTaskModify(task as TaskModel)}
         />
         <TaskStatusFormGroup
           task={task}
           id={`${id}-state`}
-          onModify={handleModify}
+          onModify={handleTaskModify}
         />
         <Form.Group controlId="actions" className="text-right">
           <Button
             variant="secondary"
             className="m-2"
             onClick={() => {
-              handleModify(taskProp);
+              handleTaskModify(task);
               onClose && onClose();
             }}
           >
@@ -124,7 +125,7 @@ const Task: React.FC<TaskProps> = ({
           show={showSelectSupertask}
           onHide={() => setShowSelectSupertask(false)}
           onSave={newSuper => {
-            handleModify({ ...task, supertaskId: newSuper.id });
+            handleTaskModify({ ...task, supertaskId: newSuper.id });
             setShowSelectSupertask(false);
             console.log("New super", newSuper);
           }}

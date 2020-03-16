@@ -3,10 +3,10 @@
 
 import React from "react";
 import Calendar from "./calendar/Calendar";
-import useTasks from "./hooks/useTasks";
+import useTasksState from "./hooks/useTasksState";
 
 const CalendarPage: React.FC = () => {
-  const [tasks] = useTasks();
+  const [tasks] = useTasksState();
   return <Calendar tasks={tasks} />;
 };
 

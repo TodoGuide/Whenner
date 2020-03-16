@@ -1,12 +1,12 @@
 import { useEffect } from "react";
 import { tasksService } from "../../services/services";
-import useTasks from "./useTasks";
+import useTasksState from "./useTasksState";
 
 export default function useTasksSearch(
   search: string,
   excludeIds: number[] = []
 ) {
-  const [tasks, setTasks] = useTasks();
+  const [tasks, setTasks] = useTasksState();
   search = search.toLowerCase();
 
   useEffect(() => {

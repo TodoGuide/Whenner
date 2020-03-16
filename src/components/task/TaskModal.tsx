@@ -6,7 +6,7 @@ import useTask from "../hooks/useTask";
 
 const TaskModal: React.FC = (modalProps: any) => {
   const { id } = useParams();
-  const task = useTask(id);
+  const [task] = useTask(id);
 
   return (
     (task && (

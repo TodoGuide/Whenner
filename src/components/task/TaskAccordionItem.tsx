@@ -1,10 +1,9 @@
 // Licensed under GPL v3: https://www.gnu.org/licenses/gpl-3.0.txt
 // Copyright (C) 2019  James Tharpe
 
-import React, { useState } from "react";
+import React from "react";
 import { Accordion, Card } from "react-bootstrap";
 import Task, { TaskProps } from "./Task";
-import { Task as TaskModel } from "../../models/Task";
 
 interface TaskAccordionItemProps extends TaskProps {
   onToggle?: { (id: string): void };
@@ -12,20 +11,13 @@ interface TaskAccordionItemProps extends TaskProps {
 
 const TaskAccordionItem: React.FC<TaskAccordionItemProps> = ({
   id,
-  task: taskProp,
+  task,
   currentDepth = 1,
   maxDepth = 3,
-  onSave,
+  onTaskSave,
   onToggle,
-  onModify
+  onTaskModify
 }: TaskAccordionItemProps) => {
-  const [task, setTask] = useState(taskProp);
-
-  const handleModify = (modifiedTask: TaskModel) => {
-    setTask(modifiedTask);
-    onModify && onModify(modifiedTask);
-  };
-
   const description = (
     <span>
       {(task.completed && "✔") || "⬜"}
@@ -46,10 +38,8 @@ const TaskAccordionItem: React.FC<TaskAccordionItemProps> = ({
             id={`${id}-task`}
             task={task}
             currentDepth={currentDepth}
-            maxDepth={maxDepth}
-            onSave={onSave}
+            {...{ maxDepth, onTaskSave, onTaskModify }}
             onClose={() => onToggle && onToggle(id)}
-            onModify={handleModify}
           />
         </Card.Body>
       </Accordion.Collapse>

@@ -6,21 +6,21 @@ import { Accordion } from "react-bootstrap";
 import { Task as TaskModel } from "../../models/Task";
 import { itemKey } from "../utils";
 import TaskAccordionItem from "./TaskAccordionItem";
+import withTasks, { TasksElementProps } from "./wtihTasks";
 
-type TaskListProps = {
+interface TaskListProps extends TasksElementProps {
   id: string;
-  tasks: TaskModel[];
   currentDepth?: number;
   maxDepth?: number;
-  onSave?: { (task: TaskModel): void };
-};
+}
 
 const TaskAccordion: React.FC<TaskListProps> = ({
   id,
-  tasks,
   currentDepth = 1,
   maxDepth = 3,
-  onSave
+  tasks,
+  onTaskSave,
+  onTaskModify
 }: TaskListProps) => {
   const [expanded, setExpanded] = useState<string | undefined>(undefined);
   const toggleExpanded = (key?: string) =>
@@ -28,15 +28,19 @@ const TaskAccordion: React.FC<TaskListProps> = ({
 
   return (
     <Accordion id={id} activeKey={expanded}>
-      {tasks.map((task, index) => {
+      {tasks?.map((task, index) => {
         const key = itemKey(`${id}-list-${currentDepth}`, task, index);
         return (
           <TaskAccordionItem
             id={key}
-            key={key}
-            task={task}
-            onToggle={toggleExpanded}
-            onSave={onSave}
+            {...{
+              key,
+              task,
+              toggleExpanded,
+              onTaskSave,
+              onTaskModify,
+              maxDepth
+            }}
           />
         );
       })}
@@ -44,4 +48,4 @@ const TaskAccordion: React.FC<TaskListProps> = ({
   );
 };
 
-export default TaskAccordion;
+export default withTasks(TaskAccordion);
