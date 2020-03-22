@@ -32,19 +32,20 @@ describe("The Tasks Service", () => {
 
       it("Returns the default tasks", () => {
         expect(allResult).toEqual([]);
-    });
-
-    describe("When upsert is called with a new Todo, it...", () => {
-      let upsertResult: Todo;
-
-      beforeEach(async function() {
-        upsertResult = await tasksService.upsert(oneHourTask);
-        expect(upsertResult).toBeDefined();
       });
 
-      it("Inserts the provided Todo", async function() {
-        const found = await tasksService.find(upsertResult.id);
-        expect(found).toBeScheduledCopyOf(oneHourTask);
+      describe("When upsert is called with a new Todo, it...", () => {
+        let upsertResult: Todo;
+
+        beforeEach(async function() {
+          upsertResult = await tasksService.upsert(oneHourTask);
+          expect(upsertResult).toBeDefined();
+        });
+
+        it("Inserts the provided Todo", async function() {
+          const found = await tasksService.find(upsertResult.id);
+          expect(found).toBeScheduledCopyOf(oneHourTask);
+        });
       });
     });
   });
