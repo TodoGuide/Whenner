@@ -21,7 +21,7 @@ const EstimateInputFormGroup: React.FC<EstimateInputProps> = ({
         <Form.Control
           type="number"
           placeholder="How long will it take?"
-          value={estimatedItem.estimate.toString()}
+          defaultValue={estimatedItem.estimate.toString()}
           // onChange={(event: React.FormEvent<HTMLInputElement>) => {
           //   onModify &&
           //     onModify({
