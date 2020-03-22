@@ -115,13 +115,3 @@ export function isTask(thing: any) {
     return false;
   }
 }
-
-export const defaultTasks: Task[] = [
-  new TaskEvent({
-    id: 1,
-    title: "Get started with Whenner default",
-    description: "Click stuff, learn how the app works",
-    estimate: 5,
-    priority: Time.now()
-  })
-];

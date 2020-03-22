@@ -3,7 +3,7 @@
 
 import { defaultAppointments, AppointmentEvent } from "./AppointmentEvent";
 import { Appointment } from "./Appointment";
-import { defaultTasks, TaskEvent } from "./TaskEvent";
+import { TaskEvent } from "./TaskEvent";
 import { Task, taskPrioritizer } from "./Task";
 import {
   Chronotype,
@@ -188,5 +188,5 @@ export function todayOnward(schedule: Schedule): Schedule {
 export const defaultSchedule: ISchedule = {
   chronotype: defaultChronotype,
   appointments: defaultAppointments,
-  tasks: defaultTasks
+  tasks: []
 };

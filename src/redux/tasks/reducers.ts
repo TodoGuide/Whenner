@@ -3,11 +3,10 @@
 
 import { TasksResultAction, TaskAction } from "./actions";
 import { WhennerActionType } from "../common/actions";
-import { defaultTasks } from "../../models/TaskEvent";
 import { Task } from "../../models/Task";
 
 export function tasks(
-  tasks: Task[] = defaultTasks,
+  tasks: Task[] = [],
   action: /* WhennerAction | */ TaskAction | TasksResultAction
 ): Task[] {
   switch (action.type) {

@@ -1,6 +1,5 @@
 import { Chronotype } from "../models/Chronotype";
 import { schedule } from "../models/scheduler";
-import { defaultTasks } from "../models/TaskEvent";
 import { Task } from "../models/Task";
 import { localStorageCrud } from "./crud/local-storage";
 import { Crud } from "./crud";
@@ -12,7 +11,7 @@ export class TasksService {
     const result = {
       ...localStorageCrud({
         key: TASKS_KEY,
-        initialData: defaultTasks
+        initialData: [] as Task[]
       })
     };
     const { read } = result;

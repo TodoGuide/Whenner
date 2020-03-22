@@ -7,7 +7,6 @@ import { oneHourTask } from "../test/data/tasks";
 import { customMatchers } from "../test/matchers";
 import { defaultChronotype } from "../models/Chronotype";
 import { Time } from "../models/time";
-import { defaultTasks } from "../models/TaskEvent";
 import { Task } from "../models/Task";
 import { Crud } from "./crud";
 
@@ -32,10 +31,7 @@ describe("The Tasks Service", () => {
       });
 
       it("Returns the default tasks", () => {
-        allResult.forEach((item, index) =>
-          expect(item).toBeScheduledCopyOf(defaultTasks[index])
-        );
-      });
+        expect(allResult).toEqual([]);
     });
 
     describe("When upsert is called with a new Todo, it...", () => {

@@ -3,7 +3,6 @@
 
 import React, { useState } from "react";
 import { Accordion } from "react-bootstrap";
-import { Task as TaskModel } from "../../models/Task";
 import { itemKey } from "../utils";
 import TaskAccordionItem from "./TaskAccordionItem";
 import withTasks, { TasksElementProps } from "./wtihTasks";

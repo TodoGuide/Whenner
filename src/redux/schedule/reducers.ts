@@ -2,7 +2,6 @@
 // Copyright (C) 2019  James Tharpe
 
 import { WhennerActionType, WhennerAction } from "../common/actions";
-import { defaultTasks } from "../../models/TaskEvent";
 import { Task } from "../../models/Task";
 import { defaultAppointments } from "../../models/AppointmentEvent";
 import { Appointment } from "../../models/Appointment";
@@ -27,7 +26,7 @@ function chronotype(
 }
 
 function tasks(
-  tasks: Task[] = defaultTasks,
+  tasks: Task[] = [],
   action: /* WhennerAction | */ TaskAction | TasksResultAction
 ): Task[] {
   switch (action.type) {

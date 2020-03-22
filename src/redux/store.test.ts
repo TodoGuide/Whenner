@@ -7,7 +7,6 @@ import { customMatchers } from "../test/matchers";
 import { Time } from "../models/time";
 import { WhennerState, initialState } from ".";
 import { WhennerAction } from "./common/actions";
-import { defaultTasks } from "../models/TaskEvent";
 
 describe("The Whenner Store", () => {
   beforeEach(() => {
@@ -24,7 +23,7 @@ describe("The Whenner Store", () => {
 
     it("Contains the default Schedule", () => {
       const schedule = store.getState().schedule;
-      expect(schedule.tasks).toEqual(defaultTasks);
+      expect(schedule.tasks).toEqual([]);
 
       // Check that the default Todo was scheduled
       expect(schedule.tasks[0]).toBeScheduledCopyOf(
