@@ -12,7 +12,7 @@ const TaskPage: React.FC = () => {
   const [task, setTask] = useTask(id);
   const history = useHistory();
 
-  console.log("TaskPage", task);
+  console.log("TaskPage task", { id, task });
 
   return (
     (task && (
