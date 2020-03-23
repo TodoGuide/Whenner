@@ -89,7 +89,7 @@ describe("The Tasks module", () => {
     });
 
     describe("When subtasksOf() is called with the supertask", () => {
-      const actual = subtasksOf(supertask, allTasks);
+      const actual = subtasksOf(supertask.id, allTasks);
 
       it("Returns the subtasks in priority order", () => {
         expect(actual).toEqual([subtaskA, subtaskB]);
@@ -97,7 +97,7 @@ describe("The Tasks module", () => {
     });
 
     describe("When subtasksOf() is called with a subtask", () => {
-      const actual = subtasksOf(subtaskA, allTasks);
+      const actual = subtasksOf(subtaskA.id, allTasks);
 
       it("Returns and empty list", () => {
         expect(actual).toBeFalsy();

@@ -9,10 +9,10 @@ export default function useTasksState(
 
   useEffect(() => {
     let cancel = false;
-    if (!tasksState) {
-      tasksService.read().then(tasks => {
-        console.log("Read tasks", { cancel, tasks });
-        !cancel && setTasks(tasks);
+    if (!tasksState || tasksState.length === 0) {
+      tasksService.read().then(readTasks => {
+        console.log("useTasksState effect", { cancel, tasks: readTasks });
+        !cancel && setTasks(readTasks);
       });
     }
 
@@ -21,5 +21,7 @@ export default function useTasksState(
     };
   }, [tasksState]);
 
-  return [tasks, setTasks];
+  // console.log("useTasksState exit", { tasksState, tasks });
+
+  return [tasks || [], setTasks];
 }
