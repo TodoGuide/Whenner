@@ -33,6 +33,8 @@ const Task: React.FC<TaskProps> = ({
   const [saved, setSaved] = useState(false);
   const [showSelectSupertask, setShowSelectSupertask] = useState(false);
 
+  console.log("Task", { id, task, currentDepth, maxDepth });
+
   const handleTaskModify = (modifiedTask: TaskModel) => {
     setModified(true);
     setSaved(false);
@@ -114,7 +116,7 @@ const Task: React.FC<TaskProps> = ({
       <TaskRelationshipTabs
         id={`${id}-relationships`}
         task={task}
-        currentDepth={currentDepth}
+        currentDepth={currentDepth + 1}
         maxDepth={maxDepth}
       />
       {showSelectSupertask && (
