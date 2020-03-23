@@ -24,7 +24,7 @@ const TaskBreadcrumb: React.FC<TaskBreadcrumbProps> = ({
 
   return (
     <Breadcrumb id={id}>
-      {supertasks?.map((supertask, index) => (
+      {supertasks?.reverse().map((supertask, index) => (
         <LinkContainer
           to={{
             pathname: `/tasks/${supertask.id}`,

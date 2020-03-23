@@ -116,7 +116,7 @@ const Task: React.FC<TaskProps> = ({
       <TaskRelationshipTabs
         id={`${id}-relationships`}
         task={task}
-        currentDepth={currentDepth + 1}
+        currentDepth={currentDepth}
         maxDepth={maxDepth}
       />
       {showSelectSupertask && (

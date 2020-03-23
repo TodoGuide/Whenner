@@ -29,7 +29,7 @@ export class ScheduledTask extends TaskEvent implements Task {
   }
 
   /**
-   * Calculates the earliest date and time the todo can be started and completed within the same day
+   * Calculates the earliest date and time the todo can start and completed within the same day
    * based on the provided Chronotype.
    */
   private static firstAvailableStartDate(

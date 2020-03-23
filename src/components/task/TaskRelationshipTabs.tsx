@@ -9,6 +9,7 @@ import { itemKey } from "../utils";
 import useTaskSubtasks from "../hooks/useTaskSubtasks";
 import useTaskPredecessors from "../hooks/useTaskPredecessors";
 import useTaskSuccessors from "../hooks/useTaskSuccessors";
+import { Link } from "react-router-dom";
 
 interface TaskRelationshipTabsProps {
   id: string;
@@ -29,18 +30,18 @@ const TaskRelationshipTabs: React.FC<TaskRelationshipTabsProps> = ({
   const successors = useTaskSuccessors(fetchTaskId);
   const nextDepth = currentDepth + 1;
 
-  console.log("TaskRelationshipTabs subtasks", subtasks);
+  console.log("TaskRelationshipTabs", { subtasks, currentDepth, maxDepth });
 
   return (
     <div id={id}>
-      <Tabs
-        defaultActiveKey={`${(subtasks && "Subtasks") ||
-          (predecessors && "Predecessors") ||
-          (successors && "Successors") ||
-          "Subtasks"}`}
-        id={`${id}-tabs`}
-      >
-        {predecessors && currentDepth < maxDepth && (
+      {(currentDepth < maxDepth && (
+        <Tabs
+          defaultActiveKey={`${(subtasks && "Subtasks") ||
+            (predecessors && "Predecessors") ||
+            (successors && "Successors") ||
+            "Subtasks"}`}
+          id={`${id}-tabs`}
+        >
           <Tab eventKey="Predecessors" title="Predecessors" className="border">
             <small className="text-muted">
               These tasks must be completed before this task can start
@@ -52,8 +53,6 @@ const TaskRelationshipTabs: React.FC<TaskRelationshipTabsProps> = ({
               id={itemKey(`${id}-predecessors`, task, nextDepth)}
             />
           </Tab>
-        )}
-        {subtasks && currentDepth < maxDepth && (
           <Tab eventKey="Subtasks" title="Subtasks" className="border">
             <small className="text-muted">
               These tasks must be completed before the supertask can be marked
@@ -66,11 +65,9 @@ const TaskRelationshipTabs: React.FC<TaskRelationshipTabsProps> = ({
               id={itemKey(`${id}-subtasks`, task, nextDepth)}
             />
           </Tab>
-        )}
-        {successors && currentDepth < maxDepth && (
           <Tab eventKey="Successors" title="Successors" className="border">
             <small className="text-muted">
-              These tasks can't be started until this task is complete
+              These tasks can't start until this task is complete
             </small>
             <TaskAccordion
               tasks={successors || []}
@@ -79,9 +76,13 @@ const TaskRelationshipTabs: React.FC<TaskRelationshipTabsProps> = ({
               id={itemKey(`${id}-successors`, task, nextDepth)}
             />
           </Tab>
-        )}
-      </Tabs>
-      <hr />
+        </Tabs>
+      )) || (
+        <small className="text-muted">
+          (<Link to={`/tasks/${task.id}`}>Open this task</Link> to view
+          relationships)
+        </small>
+      )}
     </div>
   );
 };

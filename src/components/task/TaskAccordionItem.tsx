@@ -37,7 +37,7 @@ const TaskAccordionItem: React.FC<TaskAccordionItemProps> = ({
           <Task
             id={`${id}-task`}
             task={task}
-            currentDepth={currentDepth + 1}
+            currentDepth={currentDepth}
             {...{ maxDepth, onTaskSave, onTaskModify }}
             onClose={() => onToggle && onToggle(id)}
           />

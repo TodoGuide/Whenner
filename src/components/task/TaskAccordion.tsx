@@ -40,7 +40,7 @@ const TaskAccordion: React.FC<TaskListProps> = ({
               toggleExpanded,
               onTaskSave,
               onTaskModify,
-              currentDepth: currentDepth + 1,
+              currentDepth: currentDepth,
               maxDepth
             }}
           />
