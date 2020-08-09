@@ -6,6 +6,7 @@ import { Form, InputGroup, ModalProps, Modal, Button } from "react-bootstrap";
 import { Time } from "../../models/time";
 import { TaskEvent } from "../../models/TaskEvent";
 import { Event } from "../../models/Event";
+import { FormControl } from "react-bootstrap/lib";
 
 interface EventModalProps extends ModalProps {
   event?: Event;
@@ -28,17 +29,17 @@ export default class EventModal extends React.Component<
   readInput({
     id,
     value,
-    checked
+    checked,
   }: {
     id?: string;
-    value?: string;
+    value?: string | number | string[];
     checked?: boolean;
   }) {
     const { propType } = this.propInfoFromTarget({ id });
     return propType === "bool"
       ? checked || false
       : propType === "int"
-      ? parseInt(value || "")
+      ? parseInt(value?.toString() || "")
       : value;
   }
 
@@ -50,7 +51,7 @@ export default class EventModal extends React.Component<
     return { propName, propType };
   }
 
-  handleInputChange = (event: React.FormEvent<HTMLInputElement>) => {
+  handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { propName } = this.propInfoFromTarget(event.currentTarget);
     if (propName === "done") {
       const todo = new TaskEvent(this.state.event);
@@ -59,15 +60,15 @@ export default class EventModal extends React.Component<
         : undefined;
       this.setState({
         ...this.state,
-        event: todo
+        event: todo,
       });
     } else {
       this.setState({
         ...this.state,
         event: {
           ...this.state.event,
-          [propName]: this.readInput(event.currentTarget)
-        }
+          [propName]: this.readInput(event.currentTarget),
+        },
       });
     }
   };

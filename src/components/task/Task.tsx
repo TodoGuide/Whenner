@@ -27,7 +27,7 @@ const Task: React.FC<TaskProps> = ({
   maxDepth = 3,
   onTaskModify,
   onTaskSave,
-  onClose
+  onClose,
 }: TaskProps) => {
   const [modified, setModified] = useState(false);
   const [saved, setSaved] = useState(false);
@@ -64,7 +64,7 @@ const Task: React.FC<TaskProps> = ({
             type="text"
             placeholder="What do you want to get done?"
             value={task.title}
-            onChange={(event: React.FormEvent<HTMLInputElement>) =>
+            onChange={(event) =>
               handleTaskModify({ ...task, title: event.currentTarget.value })
             }
           />
@@ -73,19 +73,19 @@ const Task: React.FC<TaskProps> = ({
           <Form.Control
             id={`${id}-description`}
             as="textarea"
-            rows="3"
+            rows={3}
             value={task.description}
-            onChange={(event: React.FormEvent<HTMLInputElement>) =>
+            onChange={(event) =>
               handleTaskModify({
                 ...task,
-                description: event.currentTarget.value
+                description: event.currentTarget.value,
               })
             }
           />
         </Form.Group>
         <EstimateInputFormGroup
           estimatedItem={task}
-          onModify={task => handleTaskModify(task as TaskModel)}
+          onModify={(task) => handleTaskModify(task as TaskModel)}
         />
         <TaskStatusFormGroup
           task={task}
@@ -126,7 +126,7 @@ const Task: React.FC<TaskProps> = ({
           excludeIds={[task.id]}
           show={showSelectSupertask}
           onHide={() => setShowSelectSupertask(false)}
-          onSave={newSuper => {
+          onSave={(newSuper) => {
             handleTaskModify({ ...task, supertaskId: newSuper.id });
             setShowSelectSupertask(false);
             console.log("New super", newSuper);

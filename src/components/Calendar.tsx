@@ -22,7 +22,7 @@ import { earliestOf, latestOf } from "../models/time/utils";
 import { Event } from "../models/Event";
 import {
   TaskActionThunk,
-  TasksResultActionThunk
+  TasksResultActionThunk,
 } from "../redux/tasks/actions";
 import { upsertTask } from "../redux/tasks/actions/upsertTask";
 import { loadTasks } from "../redux/tasks/actions/loadTasks";
@@ -31,8 +31,8 @@ moment.locale(navigator.language, {
   week: {
     // Always start the week "yesterday"
     dow: Time.yesterday().getDay(),
-    doy: 1
-  }
+    doy: 1,
+  },
 });
 
 const localizer = momentLocalizer(moment); // or globalizeLocalizer
@@ -106,18 +106,17 @@ class Calendar extends React.Component<CalendarProps, CalendarState> {
   render() {
     // const { todos } = this.state;
     const { schedule, minTime, maxTime, loading } = this.props;
-    const events = new Schedule(schedule).todos.map(t => new TaskEvent(t));
+    const events = new Schedule(schedule).todos.map((t) => new TaskEvent(t));
     // console.log("Calendar.render", events);
     return (
       <div>
         {loading ? (
           <Toast
             show={loading}
-            transition={false}
             style={{
               position: "absolute",
               top: 0,
-              right: 0
+              right: 0,
             }}
           >
             <Toast.Header>
@@ -149,7 +148,7 @@ class Calendar extends React.Component<CalendarProps, CalendarState> {
               estimate: moment
                 .duration(moment(end).diff(moment(start)))
                 .asMinutes(),
-              end: new Date(end)
+              end: new Date(end),
             });
           }}
           onEventDrop={({ event, start, end }) => {
@@ -158,7 +157,7 @@ class Calendar extends React.Component<CalendarProps, CalendarState> {
               start: new Date(start),
               priority: new Date(start).getTime(),
               estimate: event.estimate,
-              end: new Date(end)
+              end: new Date(end),
             });
           }}
           onSelectSlot={({ start, end }) => {
@@ -170,8 +169,8 @@ class Calendar extends React.Component<CalendarProps, CalendarState> {
               priority: start.getTime(),
               estimate: TaskEvent.periodToEstimate({
                 start,
-                end: new Date(end)
-              })
+                end: new Date(end),
+              }),
             });
             this.handleEventShowSelected(event);
           }}
@@ -193,7 +192,7 @@ class Calendar extends React.Component<CalendarProps, CalendarState> {
 // Map application State to component props
 const mapStateToProps = ({
   schedule,
-  loadsInProgress
+  loadsInProgress,
 }: WhennerState): CalendarStateProps => {
   // console.log("Calendar mapStateToProps schedule", schedule);
   return {
@@ -206,7 +205,7 @@ const mapStateToProps = ({
       endOf(Time.current(), schedule.chronotype),
       Time.current()
     ),
-    loading: loadsInProgress > 0
+    loading: loadsInProgress > 0,
   };
 };
 
@@ -216,7 +215,7 @@ const mapDispatchToProps = (
 ): CalendarDispatchProps => {
   return {
     upsertTask: bindActionCreators(upsertTask, dispatch),
-    loadTasks: bindActionCreators(loadTasks, dispatch)
+    loadTasks: bindActionCreators(loadTasks, dispatch),
   };
 };
 
