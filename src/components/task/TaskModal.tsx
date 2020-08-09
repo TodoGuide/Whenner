@@ -2,7 +2,7 @@ import React from "react";
 import { Modal } from "react-bootstrap";
 import Task from "./Task";
 import { useParams, Link } from "react-router-dom";
-import useTask from "../hooks/useTask";
+import useTask from "../../hooks/useTask";
 
 const TaskModal: React.FC = (modalProps: any) => {
   const { id } = useParams();

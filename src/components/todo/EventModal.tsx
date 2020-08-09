@@ -6,7 +6,6 @@ import { Form, InputGroup, ModalProps, Modal, Button } from "react-bootstrap";
 import { Time } from "../../models/time";
 import { TaskEvent } from "../../models/TaskEvent";
 import { Event } from "../../models/Event";
-import { FormControl } from "react-bootstrap/lib";
 
 interface EventModalProps extends ModalProps {
   event?: Event;

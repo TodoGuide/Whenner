@@ -3,8 +3,8 @@
 
 import React, { useState } from "react";
 import { Form } from "react-bootstrap";
-import { Task as TaskModel } from "../../models/Task";
-import { TaskEvent } from "../../models/TaskEvent";
+import { Task as TaskModel } from "../../../models/Task";
+import { TaskEvent } from "../../../models/TaskEvent";
 
 interface TaskStatusFormGroupProps {
   id: string;
@@ -15,20 +15,19 @@ interface TaskStatusFormGroupProps {
 const TaskStatusFormGroup: React.FC<TaskStatusFormGroupProps> = ({
   id,
   task: taskProp,
-  onModify
+  onModify,
 }: TaskStatusFormGroupProps) => {
   console.log("TaskStatusFormGroup taskProp", taskProp);
   const [task, setTask] = useState(taskProp);
 
   const handleChange = ({
-    currentTarget: { id }
+    currentTarget: { id },
   }: React.ChangeEvent<HTMLInputElement>) => {
     const status = id.substring(id.lastIndexOf("-") + 1);
     let changedTask = new TaskEvent(task);
     switch (status) {
       case "incomplete":
-        changedTask.completed = undefined;
-        changedTask.canceled = undefined;
+        changedTask.completed = changedTask.canceled = undefined;
         break;
       case "complete":
         changedTask.completed = task.completed || new Date();
@@ -59,9 +58,9 @@ const TaskStatusFormGroup: React.FC<TaskStatusFormGroupProps> = ({
         id={`${id}-complete`}
         name="status"
         checked={!!task.completed}
-        label={`Completed ${(task.completed &&
-          new Date(task.completed).toLocaleString()) ??
-          ""}`}
+        label={`Completed ${
+          (task.completed && new Date(task.completed).toLocaleString()) ?? ""
+        }`}
         type="radio"
         onChange={handleChange}
       />
@@ -69,9 +68,9 @@ const TaskStatusFormGroup: React.FC<TaskStatusFormGroupProps> = ({
         id={`${id}-canceled`}
         name="status"
         checked={!!task.canceled}
-        label={`Canceled ${(task.canceled &&
-          new Date(task.canceled).toLocaleString()) ??
-          ""}`}
+        label={`Canceled ${
+          (task.canceled && new Date(task.canceled).toLocaleString()) ?? ""
+        }`}
         type="radio"
         onChange={handleChange}
       />

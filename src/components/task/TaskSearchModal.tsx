@@ -4,7 +4,7 @@
 import React, { useState } from "react";
 import { Card, Modal, Button, Form } from "react-bootstrap";
 import { Task as TaskModel } from "../../models/Task";
-import useTasksSearch from "../hooks/useTasksSearch";
+import useTasksSearch from "../../hooks/useTasksSearch";
 
 type TaskSearchModalProps = {
   id: string;
@@ -21,12 +21,10 @@ const TaskSearchModal: React.FC<TaskSearchModalProps> = ({
   excludeIds = [],
   show,
   onSave,
-  onHide
+  onHide,
 }: TaskSearchModalProps) => {
   const [search, setSearch] = useState("");
   const tasks = useTasksSearch(search, excludeIds);
-
-  console.log("Search", search);
 
   return (
     <Modal id={id} show={show} onHide={onHide}>
@@ -36,12 +34,12 @@ const TaskSearchModal: React.FC<TaskSearchModalProps> = ({
 
       <Modal.Body>
         <Form>
-          <Form.Group controlId="formBasicEmail">
+          <Form.Group>
             <Form.Control
               type="text"
               placeholder="Search..."
               onChange={({
-                currentTarget: { value }
+                currentTarget: { value },
               }: React.ChangeEvent<HTMLInputElement>) => setSearch(value)}
             />
             <Form.Text className="text-muted">
@@ -50,7 +48,7 @@ const TaskSearchModal: React.FC<TaskSearchModalProps> = ({
           </Form.Group>
         </Form>
         <div>
-          {tasks.map(task => (
+          {tasks.map((task) => (
             <Card key={`${id}-${task.id}`} className="mb-3">
               <Card.Header>
                 <Card.Title>{task.title}</Card.Title>

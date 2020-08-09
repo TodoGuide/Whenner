@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import useTasksState from "./useTasksState";
-import { subtasksOf, Task } from "../../models/Task";
+import { subtasksOf, Task } from "../models/Task";
 
 /**
  * Loads subtasks of the specified task into state
@@ -24,7 +24,7 @@ export default function useTaskSubtasks(taskId: number = -1) {
     } else {
       console.log("useTaskSubtasks effect found nothing", {
         taskId,
-        tasks
+        tasks,
       });
     }
   }, [taskId, tasks]);

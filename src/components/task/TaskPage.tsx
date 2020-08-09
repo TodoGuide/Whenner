@@ -4,7 +4,7 @@
 import React from "react";
 import Task from "./Task";
 import { useParams, Link, useHistory } from "react-router-dom";
-import useTask from "../hooks/useTask";
+import useTask from "../../hooks/useTask";
 import { tasksService } from "../../services/services";
 
 const TaskPage: React.FC = () => {
@@ -19,11 +19,11 @@ const TaskPage: React.FC = () => {
       <Task
         id={`$task-${id}`}
         task={task}
-        onTaskModify={modifiedTask => {
+        onTaskModify={(modifiedTask) => {
           console.log("onTaskModify", modifiedTask);
           setTask(modifiedTask);
         }}
-        onTaskSave={task => {
+        onTaskSave={(task) => {
           tasksService.upsert(task);
           history.goBack();
         }}

@@ -1,19 +1,19 @@
 import { useState, useEffect } from "react";
 import useTasksState from "./useTasksState";
-import { supertasksOf, Task } from "../../models/Task";
+import { Task, predecessorsOf } from "../models/Task";
 import useTask from "./useTask";
 
-export default function useTaskSupertasks(taskId: number) {
+export default function useTaskPredecessors(taskId: number = -1) {
   const [task] = useTask(taskId);
   const [tasks] = useTasksState() || [];
-  const [supertasks, setSupertasks] = useState<Task[]>();
+  const [predecessors, setPredecessors] = useState<Task[]>();
 
   useEffect(() => {
     task &&
       tasks &&
       tasks.length > 0 &&
-      setSupertasks(supertasksOf(task, tasks));
+      setPredecessors(predecessorsOf(task, tasks));
   }, [task, taskId, tasks]);
 
-  return supertasks;
+  return predecessors;
 }

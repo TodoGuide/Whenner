@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import useTasksState from "./useTasksState";
-import { Task, successorsOf } from "../../models/Task";
+import { Task, successorsOf } from "../models/Task";
 import useTask from "./useTask";
 
 export default function useTaskSuccessors(taskId: number = -1) {

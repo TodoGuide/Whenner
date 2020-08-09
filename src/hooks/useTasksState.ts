@@ -1,6 +1,6 @@
 import { useState, useEffect, Dispatch, SetStateAction } from "react";
-import { tasksService } from "../../services/services";
-import { Task } from "../../models/Task";
+import { tasksService } from "../services/services";
+import { Task } from "../models/Task";
 
 export default function useTasksState(
   tasksState?: Task[]
@@ -10,7 +10,7 @@ export default function useTasksState(
   useEffect(() => {
     let cancel = false;
     if (!tasksState || tasksState.length === 0) {
-      tasksService.read().then(readTasks => {
+      tasksService.read().then((readTasks) => {
         console.log("useTasksState effect", { cancel, tasks: readTasks });
         !cancel && setTasks(readTasks);
       });

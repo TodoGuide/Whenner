@@ -3,7 +3,7 @@
 
 import React from "react";
 import Calendar from "./calendar/Calendar";
-import useTasksState from "./hooks/useTasksState";
+import useTasksState from "../hooks/useTasksState";
 
 const CalendarPage: React.FC = () => {
   const [tasks] = useTasksState();

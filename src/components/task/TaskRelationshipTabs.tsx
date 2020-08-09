@@ -6,9 +6,9 @@ import { Tabs, Tab } from "react-bootstrap";
 import { Task as TaskModel } from "../../models/Task";
 import TaskAccordion from "./TaskAccordion";
 import { itemKey } from "../utils";
-import useTaskSubtasks from "../hooks/useTaskSubtasks";
-import useTaskPredecessors from "../hooks/useTaskPredecessors";
-import useTaskSuccessors from "../hooks/useTaskSuccessors";
+import useTaskSubtasks from "../../hooks/useTaskSubtasks";
+import useTaskPredecessors from "../../hooks/useTaskPredecessors";
+import useTaskSuccessors from "../../hooks/useTaskSuccessors";
 import { Link } from "react-router-dom";
 
 interface TaskRelationshipTabsProps {
@@ -22,7 +22,7 @@ const TaskRelationshipTabs: React.FC<TaskRelationshipTabsProps> = ({
   id,
   task,
   currentDepth = 1,
-  maxDepth = 3
+  maxDepth = 3,
 }: TaskRelationshipTabsProps) => {
   const fetchTaskId = currentDepth <= maxDepth ? task.id : undefined;
   const subtasks = useTaskSubtasks(fetchTaskId);
@@ -30,16 +30,16 @@ const TaskRelationshipTabs: React.FC<TaskRelationshipTabsProps> = ({
   const successors = useTaskSuccessors(fetchTaskId);
   const nextDepth = currentDepth + 1;
 
-  console.log("TaskRelationshipTabs", { subtasks, currentDepth, maxDepth });
-
   return (
     <div id={id}>
       {(currentDepth < maxDepth && (
         <Tabs
-          defaultActiveKey={`${(subtasks && "Subtasks") ||
+          defaultActiveKey={`${
+            (subtasks && "Subtasks") ||
             (predecessors && "Predecessors") ||
             (successors && "Successors") ||
-            "Subtasks"}`}
+            "Subtasks"
+          }`}
           id={`${id}-tabs`}
         >
           <Tab eventKey="Predecessors" title="Predecessors" className="border">

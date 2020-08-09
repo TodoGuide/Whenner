@@ -4,7 +4,7 @@ import "@testing-library/jest-dom/extend-expect";
 import EstimateInputFormGroup from "./EstimateInputFormGroup";
 import { oneHourTask } from "../../test/data/tasks";
 
-describe("The EstimateInputFormGroup component", () => {
+describe("The TaskEstimateInput component", () => {
   it("Renders a task estimate", () => {
     const { getByRole } = render(
       <EstimateInputFormGroup estimatedItem={oneHourTask} />

@@ -1,7 +1,7 @@
 import { useState, useEffect, Dispatch, SetStateAction } from "react";
-import { tasksService } from "../../services/services";
-import { Task } from "../../models/Task";
-import { Time } from "../../models/time";
+import { tasksService } from "../services/services";
+import { Task } from "../models/Task";
+import { Time } from "../models/time";
 
 export default function useTask(
   taskId: number | string = -1
@@ -14,14 +14,14 @@ export default function useTask(
       title: "",
       description: "",
       priority: Time.now(),
-      estimate: 0
+      estimate: 0,
     };
   }
 
   useEffect(() => {
     let cancel = taskId === "new";
     if (!cancel) {
-      tasksService.find(parseInt(taskId.toString())).then(foundTask => {
+      tasksService.find(parseInt(taskId.toString())).then((foundTask) => {
         !cancel && setTask(foundTask);
       });
     }

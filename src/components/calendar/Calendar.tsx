@@ -5,7 +5,7 @@ import {
   Chronotype,
   defaultChronotype,
   startOf,
-  endOf
+  endOf,
 } from "../../models/Chronotype";
 import { Calendar as BigCalendar, momentLocalizer } from "react-big-calendar";
 import moment from "moment";
@@ -21,27 +21,27 @@ moment.locale(navigator.language, {
   week: {
     // Always start the week "yesterday"
     dow: Time.yesterday().getDay(),
-    doy: 1
-  }
+    doy: 1,
+  },
 });
 
 const localizer = momentLocalizer(moment); // or globalizeLocalizer
 const DnDCalendar = withDragAndDrop(BigCalendar);
 
-interface CalendarStateProps {
+interface CalendarProps {
   tasks: Task[];
   appointments?: Appointment[];
   chronotype?: Chronotype;
 }
 
-const Calendar: React.FC<CalendarStateProps> = ({
+const Calendar: React.FC<CalendarProps> = ({
   tasks,
   appointments = [],
-  chronotype = defaultChronotype
-}: CalendarStateProps) => {
+  chronotype = defaultChronotype,
+}: CalendarProps) => {
   const events = [
-    ...tasks.map(task => new TaskEvent(task)),
-    ...appointments.map(appointment => new AppointmentEvent(appointment))
+    ...tasks.map((task) => new TaskEvent(task)),
+    ...appointments.map((appointment) => new AppointmentEvent(appointment)),
   ];
 
   return (

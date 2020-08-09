@@ -3,9 +3,9 @@
 
 import React, { useState } from "react";
 import { Form, Button } from "react-bootstrap";
-import EstimateInputFormGroup from "./EstimateInputFormGroup";
+import EstimateInputFormGroup from "../inputs/EstimateInputFormGroup";
 import { Task as TaskModel } from "../../models/Task";
-import TaskStatusFormGroup from "./TaskStatusFormGroup";
+import TaskStatusFormGroup from "./inputs/TaskStatusFormGroup";
 import TaskBreadcrumb from "./TaskBreadcrumb";
 import TaskRelationshipTabs from "./TaskRelationshipTabs";
 import TaskSearchModal from "./TaskSearchModal";
@@ -33,12 +33,9 @@ const Task: React.FC<TaskProps> = ({
   const [saved, setSaved] = useState(false);
   const [showSelectSupertask, setShowSelectSupertask] = useState(false);
 
-  console.log("Task", { id, task, currentDepth, maxDepth });
-
   const handleTaskModify = (modifiedTask: TaskModel) => {
     setModified(true);
     setSaved(false);
-    console.log("handleTaskModify", modifiedTask);
     onTaskModify && onTaskModify(modifiedTask);
   };
 
@@ -47,12 +44,11 @@ const Task: React.FC<TaskProps> = ({
     onTaskSave && onTaskSave(task);
     setModified(false);
     setSaved(true);
-    console.log("Save task", task);
   };
 
   return (
     <div id={id}>
-      <Form onSubmit={handleFormSubmit}>
+      <Form onSubmit={handleFormSubmit} id={`${id}-form`}>
         <TaskBreadcrumb
           task={task}
           id={`${id}-breadcrumb`}
@@ -85,7 +81,12 @@ const Task: React.FC<TaskProps> = ({
         </Form.Group>
         <EstimateInputFormGroup
           estimatedItem={task}
-          onModify={(task) => handleTaskModify(task as TaskModel)}
+          onChange={(event) =>
+            handleTaskModify({
+              ...task,
+              estimate: parseInt(event.currentTarget.value),
+            })
+          }
         />
         <TaskStatusFormGroup
           task={task}

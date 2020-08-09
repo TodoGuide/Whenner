@@ -2,7 +2,7 @@
 // Copyright (C) 2019  James Tharpe
 
 import React from "react";
-import useTasksState from "../hooks/useTasksState";
+import useTasksState from "../../hooks/useTasksState";
 import { Task } from "../../models/Task";
 import { Subtract } from "utility-types";
 import { tasksService } from "../../services/services";
@@ -26,7 +26,7 @@ const withTasks = <P extends TasksElementProps>(
   return ({ tasks, ...props }: TasksElementProps) => {
     const handleTaskModify = (modifiedTask: Task) => {
       setTasks(
-        tasksState?.map(task =>
+        tasksState?.map((task) =>
           task.id === modifiedTask.id ? modifiedTask : task
         )
       );
@@ -34,7 +34,7 @@ const withTasks = <P extends TasksElementProps>(
 
     const autoProps = {
       onTaskSave: tasksService.upsert,
-      onTaskModify: handleTaskModify
+      onTaskModify: handleTaskModify,
     };
 
     if (tasks) {

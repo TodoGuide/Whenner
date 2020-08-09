@@ -6,29 +6,27 @@ import { Form, InputGroup } from "react-bootstrap";
 import { Estimated } from "../../models/time/Estimated";
 
 interface EstimateInputProps {
+  label?: string;
+  placeholder?: string;
   estimatedItem: Estimated;
-  onModify?: { (estimated: Estimated): void };
+  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 const EstimateInputFormGroup: React.FC<EstimateInputProps> = ({
+  label = "Estimate",
+  placeholder = "How long will it take?",
   estimatedItem,
-  onModify
+  onChange,
 }: EstimateInputProps) => {
   return (
     <Form.Group>
-      <Form.Label>Estimate</Form.Label>
+      <Form.Label>{label}</Form.Label>
       <InputGroup>
         <Form.Control
           type="number"
-          placeholder="How long will it take?"
+          placeholder={placeholder}
           defaultValue={estimatedItem.estimate.toString()}
-          // onChange={(event: React.FormEvent<HTMLInputElement>) => {
-          //   onModify &&
-          //     onModify({
-          //       ...estimatedItem,
-          //       estimate: event.currentTarget.valueAsNumber
-          //     });
-          // }}
+          onChange={onChange}
         />
         <InputGroup.Append>
           <InputGroup.Text>Minutes</InputGroup.Text>

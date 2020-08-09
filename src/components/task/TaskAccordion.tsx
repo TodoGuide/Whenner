@@ -19,13 +19,11 @@ const TaskAccordion: React.FC<TaskListProps> = ({
   maxDepth = 3,
   tasks,
   onTaskSave,
-  onTaskModify
+  onTaskModify,
 }: TaskListProps) => {
   const [expanded, setExpanded] = useState<string | undefined>(undefined);
   const toggleExpanded = (key?: string) =>
     key === expanded ? setExpanded(key) : setExpanded(undefined);
-
-  console.log("TaskAccordion", { tasks, currentDepth, maxDepth });
 
   return (
     <Accordion id={id} activeKey={expanded}>
@@ -41,7 +39,7 @@ const TaskAccordion: React.FC<TaskListProps> = ({
               onTaskSave,
               onTaskModify,
               currentDepth: currentDepth,
-              maxDepth
+              maxDepth,
             }}
           />
         );
