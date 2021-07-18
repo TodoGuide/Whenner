@@ -4,13 +4,11 @@
 import { ScheduledTask } from "./ScheduledTask";
 import { oneHourTask, twoHourTask } from "../test/data";
 import { defaultChronotype } from "./Chronotype";
-import { customMatchers } from "../test/matchers";
 import { Time } from "./time";
 import { TaskEvent } from "./TaskEvent";
 
 describe("A ScheduledTask", () => {
   beforeEach(() => {
-    jasmine.addMatchers(customMatchers);
     Time.set(new Date(2019, 6, 5, 12, 0, 0, 0)); // 2019-07-05 at Noon
   });
 

@@ -2,7 +2,6 @@
 // Copyright (C) 2019  James Tharpe
 
 import { AppointmentEvent } from "./AppointmentEvent";
-import { customMatchers } from "./../test/matchers";
 import { Schedule } from "./Schedule";
 import { oneHourTask, twoHourTask, threeHourTask } from "../test/data";
 import { defaultChronotype } from "./Chronotype";
@@ -15,7 +14,6 @@ import { add30Minutes } from "./time/utils";
 
 describe("Schedule Mutations", () => {
   beforeEach(() => {
-    jasmine.addMatchers(customMatchers);
     Time.set(new Date(2019, 6, 5, 12, 0, 0, 0)); // 2019-07-05 at Noon
   });
 
@@ -28,10 +26,10 @@ describe("Schedule Mutations", () => {
       incompleteTask1 = new TaskEvent({ ...oneHourTask, priority: Time.now() });
       incompleteTask2 = new TaskEvent({
         ...twoHourTask,
-        priority: add30Minutes(Time.current()).getTime()
+        priority: add30Minutes(Time.current()).getTime(),
       });
       completedTask = new TaskEvent({
-        ...threeHourTask
+        ...threeHourTask,
       });
       completedTask.completed = TaskEvent.calculateEnd(completedTask);
     });
@@ -66,7 +64,7 @@ describe("Schedule Mutations", () => {
         overlappingAppointment = new AppointmentEvent({
           ...incompleteTask1,
           start: add30Minutes(incompleteTask1.start),
-          end: add30Minutes(incompleteTask1.end)
+          end: add30Minutes(incompleteTask1.end),
         });
       });
 

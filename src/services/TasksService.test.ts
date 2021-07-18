@@ -4,7 +4,6 @@
 import { TasksService } from "./TasksService";
 import { Todo } from "../models/Todo";
 import { oneHourTask } from "../test/data";
-import { customMatchers } from "../test/matchers";
 import { defaultChronotype } from "../models/Chronotype";
 import { Time } from "../models/time";
 import { defaultTasks } from "../models/TaskEvent";
@@ -16,7 +15,6 @@ describe("The Tasks Service", () => {
 
   beforeEach(() => {
     tasksService = TasksService.create(defaultChronotype);
-    jasmine.addMatchers(customMatchers);
     Time.set(new Date(2019, 6, 5, 12, 0, 0, 0)); // 2019-07-05 at Noon
   });
 
@@ -27,28 +25,33 @@ describe("The Tasks Service", () => {
 
     describe("When read() is called, it...", () => {
       let allResult: Todo[];
-      beforeEach(async function() {
+      beforeEach(async function () {
         allResult = await tasksService.read();
       });
 
       it("Returns the default tasks", () => {
-        allResult.forEach((item, index) =>
-          expect(item).toBeScheduledCopyOf(defaultTasks[index])
-        );
+        allResult.forEach((item, index) => {
+          expect(item.description).toEqual(defaultTasks[index].description);
+          expect(item.completed).toEqual(defaultTasks[index].completed);
+          expect(item.title).toEqual(defaultTasks[index].title);
+          expect(item.id).toEqual(defaultTasks[index].id);
+        });
       });
     });
 
     describe("When upsert is called with a new Todo, it...", () => {
       let upsertResult: Todo;
 
-      beforeEach(async function() {
+      beforeEach(async function () {
         upsertResult = await tasksService.upsert(oneHourTask);
         expect(upsertResult).toBeDefined();
       });
 
-      it("Inserts the provided Todo", async function() {
+      it("Inserts the provided Todo", async function () {
         const found = await tasksService.find(upsertResult.id);
-        expect(found).toBeScheduledCopyOf(oneHourTask);
+        expect(found?.description).toEqual(oneHourTask.description);
+        expect(found?.estimate).toEqual(oneHourTask.estimate);
+        expect(found?.title).toEqual(oneHourTask.title);
       });
     });
   });

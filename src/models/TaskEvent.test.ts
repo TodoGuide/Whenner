@@ -2,7 +2,6 @@
 // Copyright (C) 2019  James Tharpe
 
 import { Appointment } from "./Appointment";
-import { customMatchers } from "../test/matchers";
 import { Time } from "./time";
 import { TaskEvent, isTask } from "./TaskEvent";
 import { Task } from "./Task";
@@ -10,7 +9,6 @@ import { add30Minutes } from "./time/utils";
 
 describe("A TaskEvent", () => {
   beforeEach(() => {
-    jasmine.addMatchers(customMatchers);
     Time.set(new Date(2019, 6, 20, 13, 1, 0, 0)); // 2019-07-20 at 1:01PM
   });
 
@@ -23,7 +21,7 @@ describe("A TaskEvent", () => {
         title: "ITask Instance",
         description: "This is a valid instance of the ITask interface",
         priority: Time.now(),
-        estimate: 1
+        estimate: 1,
       };
     });
 
@@ -40,7 +38,7 @@ describe("A TaskEvent", () => {
           estimate,
           id,
           title,
-          priority
+          priority,
         }).toEqual({ ...task, priority: Time.now() });
       });
 
@@ -95,7 +93,7 @@ describe("A TaskEvent", () => {
         title: "IAppointment Instance",
         description: "This is a valid instance of an IAppointment",
         start: Time.current(),
-        end: add30Minutes(Time.current())
+        end: add30Minutes(Time.current()),
       };
     });
 
@@ -113,10 +111,10 @@ describe("A TaskEvent", () => {
           id,
           start,
           title,
-          end
+          end,
         }).toEqual({
           ...appointment,
-          estimate: TaskEvent.periodToEstimate(appointment)
+          estimate: TaskEvent.periodToEstimate(appointment),
         });
       });
 

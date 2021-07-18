@@ -6,7 +6,12 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 
 import React from "react";
 import moment from "moment";
-import { Calendar as BigCalendar, momentLocalizer } from "react-big-calendar";
+import {
+  Calendar as BigCalendar,
+  Event as BCEvent,
+  momentLocalizer,
+  stringOrDate,
+} from "react-big-calendar";
 import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop";
 import { connect } from "react-redux";
 import { Dispatch, bindActionCreators } from "redux";
@@ -22,7 +27,7 @@ import { earliestOf, latestOf } from "../models/time/utils";
 import { Event } from "../models/Event";
 import {
   TaskActionThunk,
-  TasksResultActionThunk
+  TasksResultActionThunk,
 } from "../redux/tasks/actions";
 import { upsertTask } from "../redux/tasks/actions/upsertTask";
 import { loadTasks } from "../redux/tasks/actions/loadTasks";
@@ -31,12 +36,12 @@ moment.locale(navigator.language, {
   week: {
     // Always start the week "yesterday"
     dow: Time.yesterday().getDay(),
-    doy: 1
-  }
+    doy: 1,
+  },
 });
 
 const localizer = momentLocalizer(moment); // or globalizeLocalizer
-const DnDCalendar = withDragAndDrop(BigCalendar);
+const DnDCalendar = withDragAndDrop(BigCalendar as any);
 
 /**
  * The internal state of the Calendar component
@@ -88,13 +93,20 @@ class Calendar extends React.Component<CalendarProps, CalendarState> {
     }
   }
 
-  eventStyle = (event: Event) =>
-    event.completed ? { style: { backgroundColor: "grey" } } : { style: {} };
+  eventStyle = (
+    event: BCEvent,
+    start: stringOrDate,
+    end: stringOrDate,
+    isSelected: boolean
+  ): React.HTMLAttributes<HTMLDivElement> =>
+    (event as Event).completed
+      ? { style: { backgroundColor: "grey" } }
+      : { style: {} };
 
-  handleEventShowSelected = (event: Event) => 
-    this.setState({ ...this.state, selectedEvent: event });
+  handleEventShowSelected = (event: BCEvent) =>
+    this.setState({ ...this.state, selectedEvent: event as Event });
 
-  handleEventHideSelected = () => 
+  handleEventHideSelected = () =>
     this.setState({ ...this.state, selectedEvent: undefined });
 
   handleEventSave = (event: Event | undefined = this.state.selectedEvent) => {
@@ -109,7 +121,7 @@ class Calendar extends React.Component<CalendarProps, CalendarState> {
   render() {
     // const { todos } = this.state;
     const { schedule, minTime, maxTime, loading } = this.props;
-    const events = new Schedule(schedule).todos.map(t => new TaskEvent(t));
+    const events = new Schedule(schedule).todos.map((t) => new TaskEvent(t));
     // console.log("Calendar.render", events);
     return (
       <div>
@@ -120,7 +132,7 @@ class Calendar extends React.Component<CalendarProps, CalendarState> {
             style={{
               position: "absolute",
               top: 0,
-              right: 0
+              right: 0,
             }}
           >
             <Toast.Header>
@@ -133,6 +145,54 @@ class Calendar extends React.Component<CalendarProps, CalendarState> {
           </Toast>
         ) : null}
         <DnDCalendar
+          defaultDate={Time.current()}
+          defaultView="week"
+          events={events}
+          localizer={localizer}
+          selectable
+          resizable
+          min={minTime}
+          max={maxTime}
+          step={15}
+          showMultiDayTimes={true}
+          getNow={Time.current}
+          eventPropGetter={this.eventStyle}
+          onEventResize={({ event, start, end }) => {
+            this.handleEventSave({
+              ...(event as Event),
+              priority: new Date(start).getTime(),
+              estimate: moment
+                .duration(moment(end).diff(moment(start)))
+                .asMinutes(),
+              end: new Date(end),
+            });
+          }}
+          onEventDrop={({ event, start, end }) => {
+            this.handleEventSave({
+              ...(event as Event),
+              start: new Date(start),
+              priority: new Date(start).getTime(),
+              estimate: (event as Event).estimate,
+              end: new Date(end),
+            });
+          }}
+          onSelectSlot={({ start, end }) => {
+            start = new Date(start);
+            const event = new TaskEvent({
+              id: Time.now(),
+              title: "",
+              description: "",
+              priority: start.getTime(),
+              estimate: TaskEvent.periodToEstimate({
+                start,
+                end: new Date(end),
+              }),
+            });
+            this.handleEventShowSelected(event);
+          }}
+          onDoubleClickEvent={this.handleEventShowSelected}
+        />
+        {/* <DnDCalendar
           defaultDate={Time.current()}
           defaultView="week"
           events={events}
@@ -152,7 +212,7 @@ class Calendar extends React.Component<CalendarProps, CalendarState> {
               estimate: moment
                 .duration(moment(end).diff(moment(start)))
                 .asMinutes(),
-              end: new Date(end)
+              end: new Date(end),
             });
           }}
           onEventDrop={({ event, start, end }) => {
@@ -161,7 +221,7 @@ class Calendar extends React.Component<CalendarProps, CalendarState> {
               start: new Date(start),
               priority: new Date(start).getTime(),
               estimate: event.estimate,
-              end: new Date(end)
+              end: new Date(end),
             });
           }}
           onSelectSlot={({ start, end }) => {
@@ -173,13 +233,13 @@ class Calendar extends React.Component<CalendarProps, CalendarState> {
               priority: start.getTime(),
               estimate: TaskEvent.periodToEstimate({
                 start,
-                end: new Date(end)
-              })
+                end: new Date(end),
+              }),
             });
             this.handleEventShowSelected(event);
           }}
           onDoubleClickEvent={this.handleEventShowSelected}
-        />
+        /> */}
         {this.state.selectedEvent ? (
           <EventModal
             show={!!this.state.selectedEvent}
@@ -196,7 +256,7 @@ class Calendar extends React.Component<CalendarProps, CalendarState> {
 // Map application State to component props
 const mapStateToProps = ({
   schedule,
-  loadsInProgress
+  loadsInProgress,
 }: WhennerState): CalendarStateProps => {
   // console.log("Calendar mapStateToProps schedule", schedule);
   return {
@@ -209,7 +269,7 @@ const mapStateToProps = ({
       endOf(Time.current(), schedule.chronotype),
       Time.current()
     ),
-    loading: loadsInProgress > 0
+    loading: loadsInProgress > 0,
   };
 };
 
@@ -219,7 +279,7 @@ const mapDispatchToProps = (
 ): CalendarDispatchProps => {
   return {
     upsertTask: bindActionCreators(upsertTask, dispatch),
-    loadTasks: bindActionCreators(loadTasks, dispatch)
+    loadTasks: bindActionCreators(loadTasks, dispatch),
   };
 };
 

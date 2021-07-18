@@ -5,13 +5,11 @@ import { Time } from "./time";
 import { schedule } from "./scheduler";
 import moment from "moment";
 import { oneHourTask, twoHourTask } from "../test/data";
-import { customMatchers } from "../test/matchers";
 import { Chronotype, defaultChronotype } from "./Chronotype";
 import { TaskEvent } from "./TaskEvent";
 
 describe("The schedule method", () => {
   beforeEach(() => {
-    jasmine.addMatchers(customMatchers);
     Time.set(new Date(2019, 6, 5, 12, 0, 0, 0)); // 2019-07-05 at Noon
   });
 
@@ -24,7 +22,7 @@ describe("The schedule method", () => {
         estimate: 1,
         start: new Date(2019, 5, 15, 8, 53, 52, 51),
         priority: 1,
-        done: false
+        done: false,
       },
       {
         id: 2,
@@ -33,8 +31,8 @@ describe("The schedule method", () => {
         estimate: 1,
         start: new Date(2019, 5, 15, 8, 54, 53, 52),
         priority: 2,
-        done: false
-      }
+        done: false,
+      },
     ];
 
     describe("When the schedule method is called", () => {
@@ -62,7 +60,7 @@ describe("The schedule method", () => {
   describe("Given a 1 hour Chronotype from midnight to 1AM", () => {
     const oneHourWindow: Chronotype = {
       start: moment.duration("0:00"),
-      end: moment.duration("1:00")
+      end: moment.duration("1:00"),
     };
 
     describe("AND a 2-hour Todo", () => {

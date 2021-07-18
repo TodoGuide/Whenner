@@ -1,7 +1,6 @@
 // Licensed under GPL v3: https://www.gnu.org/licenses/gpl-3.0.txt
 // Copyright (C) 2019  James Tharpe
 
-import { customMatchers } from "../test/matchers";
 import { Time } from "./time";
 import { Todo } from "./Todo";
 import { AppointmentEvent } from "./AppointmentEvent";
@@ -9,7 +8,6 @@ import { addHour } from "./time/utils";
 
 describe("An Appointment", () => {
   beforeEach(() => {
-    jasmine.addMatchers(customMatchers);
     Time.set(new Date(2019, 6, 20, 13, 1, 0, 0)); // 2019-07-20 at 1:01PM
   });
 
@@ -19,7 +17,7 @@ describe("An Appointment", () => {
       todo = {
         id: 1,
         title: "Todo Instance",
-        description: "This is a valid instance of the Todo interface"
+        description: "This is a valid instance of the Todo interface",
       };
     });
 
@@ -35,7 +33,7 @@ describe("An Appointment", () => {
           _completed: appointment.completed,
           start: Time.current(),
           end: addHour(Time.current()),
-          completed: undefined
+          completed: undefined,
         });
       });
     });
