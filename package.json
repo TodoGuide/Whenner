@@ -7,7 +7,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "// test:ci": "npm audit && CI=true npm test",
-    "test:ci": "npm audit && CI=true npm test",
+    "test:ci": "CI=true npm test",
     "eject": "react-scripts eject",
     "package-updates": "npx ncu",
     "package-updates:global": "npx ncu -g",
