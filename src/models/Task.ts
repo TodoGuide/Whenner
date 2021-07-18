@@ -6,7 +6,7 @@ import { Todo } from "./Todo";
 import {
   Priority,
   prioritize as defaultPrioritize,
-  prioritizer
+  prioritizer,
 } from "./Priority";
 
 /**
@@ -31,7 +31,7 @@ export function prioritize(tasks: Task[]) {
 
 export function supertaskOf(task: Task, candidates: Task[]): Task | undefined {
   return task && task.supertaskId && candidates
-    ? candidates.find(candidate => task.supertaskId === candidate.id)
+    ? candidates.find((candidate) => task.supertaskId === candidate.id)
     : undefined;
 }
 
@@ -48,7 +48,11 @@ export function supertasksOf(
   const result: Task[] = [];
   while (current) {
     const next = supertaskOf(current, candidates);
-    if (next && next.id !== task.id && !result.find(task => task.id === next.id)) {
+    if (
+      next &&
+      next.id !== task.id &&
+      !result.find((task) => task.id === next.id)
+    ) {
       result.push(next);
       candidates.splice(candidates.indexOf(next), 1);
     }
@@ -62,7 +66,7 @@ export function subtasksOf(task: Task, candidates: Task[]): Task[] | undefined {
   const result =
     task && candidates
       ? prioritize(
-          candidates.filter(candidate => candidate.supertaskId === task.id)
+          candidates.filter((candidate) => candidate.supertaskId === task.id)
         )
       : undefined;
   return result && result.length > 0 ? result : undefined;
@@ -74,7 +78,7 @@ export function predecessorsOf(
 ): Task[] | undefined {
   const result =
     task && task.predecessorIds && candidates
-      ? candidates.filter(candidate =>
+      ? candidates.filter((candidate) =>
           (task.predecessorIds || []).includes(candidate.id)
         )
       : undefined;
@@ -85,10 +89,16 @@ export function successorsOf(task: Task, candidates: Task[]) {
   const result =
     task && candidates
       ? candidates.filter(
-          candidate =>
+          (candidate) =>
             candidate.predecessorIds &&
             candidate.predecessorIds.includes(task.id)
         )
       : undefined;
   return result && result.length > 0 ? result : undefined;
 }
+
+// export class TaskList extends TodoList<Task> {
+//   sorted(): TaskList {
+//     this.sort()
+//   }
+// }

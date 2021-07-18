@@ -10,7 +10,7 @@ import {
   defaultChronotype,
   startOf,
   endOf,
-  lengthInMinutes
+  lengthInMinutes,
 } from "./Chronotype";
 import { Time } from "./time";
 import { periodsOverlap } from "./time/Period";
@@ -46,13 +46,13 @@ export class Schedule implements ISchedule {
     this.chronotype = chronotype;
 
     this.appointments = orderByStart(
-      ...appointments.map(appointment => new AppointmentEvent(appointment))
+      ...appointments.map((appointment) => new AppointmentEvent(appointment))
     );
 
     this.tasks = Schedule.mutations.stackTasks(
       Time.current(),
       this.chronotype,
-      ...tasks.map(task => new TaskEvent(task))
+      ...tasks.map((task) => new TaskEvent(task))
     );
 
     this.todos = Schedule.mutations.scheduleTasks(
@@ -88,7 +88,7 @@ export class Schedule implements ISchedule {
   //
 
   static readonly mutations = {
-    stackTasks: function(
+    stackTasks: function (
       start: Date,
       chronotype: Chronotype,
       ...tasks: TaskEvent[]
@@ -127,7 +127,7 @@ export class Schedule implements ISchedule {
       return prioritize(taskPrioritizer, ...tasks);
     },
 
-    scheduleTasks: function(
+    scheduleTasks: function (
       chronotype: Chronotype,
       appointments: AppointmentEvent[],
       tasks: TaskEvent[]
@@ -171,7 +171,7 @@ export class Schedule implements ISchedule {
       }
 
       return result;
-    }
+    },
   };
 }
 
@@ -179,14 +179,14 @@ export function todayOnward(schedule: Schedule): Schedule {
   return new Schedule({
     chronotype: schedule.chronotype,
     appointments: schedule.appointments.filter(
-      appointment => appointment.start >= Time.today()
+      (appointment) => appointment.start >= Time.today()
     ),
-    tasks: schedule.tasks.filter(task => task.start >= Time.today())
+    tasks: schedule.tasks.filter((task) => task.start >= Time.today()),
   });
 }
 
 export const defaultSchedule: ISchedule = {
   chronotype: defaultChronotype,
   appointments: defaultAppointments,
-  tasks: defaultTasks
+  tasks: defaultTasks,
 };

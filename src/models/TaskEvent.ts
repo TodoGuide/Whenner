@@ -7,7 +7,7 @@ import {
   StartEstimated,
   EndEstimated,
   Estimated,
-  estimated
+  estimated,
 } from "./time/Estimated";
 import { Todo, EstimatedTodo } from "./Todo";
 import moment, { Duration } from "moment";
@@ -31,6 +31,7 @@ export class TaskEvent implements Task, Event {
     this.priority = new Date(
       this.start || this.priority || Time.now()
     ).getTime();
+
     if (this._completed) {
       this._completed = new Date(this._completed);
     }
@@ -107,19 +108,31 @@ export function isTask(thing: any) {
     const taskProperties = Object.keys(new TaskEvent());
     const thingProperties = Object.keys(thing);
     return taskProperties.every(
-      property => thingProperties.indexOf(property) >= 0
+      (property) => thingProperties.indexOf(property) >= 0
     );
   } catch {
     return false;
   }
 }
 
+export function tasks(todos: Todo[]) {
+  return todos.filter(isTask);
+}
+
 export const defaultTasks: Task[] = [
   new TaskEvent({
     id: 1,
+    title: "Use Whenner",
+    description: "This is done already!",
+    estimate: 5,
+    completed: Time.current(),
+    priority: Time.now(),
+  }),
+  new TaskEvent({
+    id: 2,
     title: "Get started with Whenner",
     description: "Click stuff, learn how the app works",
     estimate: 5,
-    priority: Time.now()
-  })
+    priority: Time.now() + 1,
+  }),
 ];

@@ -4,4 +4,12 @@
 import { Todo } from "./Todo";
 import { Period } from "./time/Period";
 
+/**
+ * Something to be done in a fixed period of time.
+ *
+ * @export
+ * @interface Appointment
+ * @extends {Todo}
+ * @extends {Period}
+ */
 export interface Appointment extends Todo, Period {}

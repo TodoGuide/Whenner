@@ -30,7 +30,8 @@
     "upsert",
     "upserted",
     "when're",
-    "whenner"
+    "whenner",
+    "xstate"
   ],
   "editor.minimap.enabled": false,
   "eslint.validate": [

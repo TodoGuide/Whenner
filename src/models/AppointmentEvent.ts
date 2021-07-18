@@ -43,9 +43,7 @@ export class AppointmentEvent implements Appointment, Event {
   }
 
   set estimate(estimate: number) {
-    this.end = moment(this.start)
-      .add(estimate, "minutes")
-      .toDate();
+    this.end = moment(this.start).add(estimate, "minutes").toDate();
   }
 
   get priority() {
@@ -57,7 +55,7 @@ export class AppointmentEvent implements Appointment, Event {
   }
 }
 
-export const appointmentPrioritizer: Prioritizer<Appointment> = item =>
+export const appointmentPrioritizer: Prioritizer<Appointment> = (item) =>
   item.start.getTime();
 
 export const defaultAppointments: Appointment[] = [
@@ -70,3 +68,19 @@ export const defaultAppointments: Appointment[] = [
   //   completed: undefined
   // }
 ];
+
+export function isAppointment(thing: any) {
+  try {
+    const appointmentProperties = Object.keys(new AppointmentEvent());
+    const thingProperties = Object.keys(thing);
+    return appointmentProperties.every(
+      (property) => thingProperties.indexOf(property) >= 0
+    );
+  } catch {
+    return false;
+  }
+}
+
+export function appointments(todos: Todo[]) {
+  return todos.filter(isAppointment);
+}

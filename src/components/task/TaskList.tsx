@@ -18,7 +18,7 @@ const TaskList: React.FC<TaskListProps> = ({
   id,
   tasks,
   currentDepth = 1,
-  maxDepth = 3
+  maxDepth = 3,
 }: TaskListProps) => {
   return (
     <Accordion id={id}>
