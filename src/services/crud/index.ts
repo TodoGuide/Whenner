@@ -5,7 +5,7 @@ import Id, { IdGenerator } from "../Id";
 import { Time } from "../../models/time";
 
 /**
- * A function that finds an item of the specified type, optionally from a provided arrary
+ * A function that finds an item of the specified type, optionally from a provided array
  */
 export interface Finder<T extends Id> {
   (id: number, list?: T[]): Promise<T | undefined>;
@@ -21,8 +21,8 @@ export interface FinderComposer {
 export const readListFinder: FinderComposer = <T extends Id>(
   read: Reader<T[]>
 ): Finder<T> => {
-  return async function(id: number, list?: T[]) {
-    return (list || (await read())).find(t => t.id === id);
+  return async function (id: number, list?: T[]) {
+    return (list || (await read())).find((t) => t.id === id);
   };
 };
 
@@ -91,7 +91,7 @@ export const upserter: UpserterComposer = <T extends Id>(
   update: Updater<T>,
   insert: Inserter<T>
 ): Upserter<T> =>
-  async function(item: T): Promise<T> {
+  async function (item: T): Promise<T> {
     return (await update(item)) || (await insert(item));
   };
 
@@ -136,7 +136,7 @@ export default function composeCrud<T extends Id>({
   composeUpdate,
   composeInsert,
   defaultData,
-  generateId = Time.now
+  generateId = Time.now,
 }: ComposeCrudArgs<T>): Crud<T> {
   const read = composeRead(key, defaultData);
   const find = composeFind(read);
@@ -149,6 +149,6 @@ export default function composeCrud<T extends Id>({
     find: composeFind(read),
     insert,
     update,
-    upsert: upserter(update, insert)
+    upsert: upserter(update, insert),
   };
 }

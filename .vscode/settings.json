@@ -9,6 +9,7 @@
   "cSpell.words": [
     "DEVTOOLS",
     "Interop",
+    "Prioritizable",
     "Prioritizer",
     "Upserter",
     "action",
@@ -29,6 +30,7 @@
     "unmount",
     "upsert",
     "upserted",
+    "upserts",
     "when're",
     "whenner",
     "xstate"

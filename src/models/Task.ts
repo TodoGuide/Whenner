@@ -5,9 +5,13 @@ import { Estimated } from "./time/Estimated";
 import { Todo } from "./Todo";
 import {
   Priority,
-  prioritize as defaultPrioritize,
+  sortByPriority as defaultPrioritize,
   prioritizer,
 } from "./Priority";
+import { Period } from "./time/Period";
+import moment from "moment";
+import { Time } from "./time";
+import { time } from "console";
 
 /**
  * A prioritized, estimated to-do with flexible start and end times.
@@ -19,14 +23,39 @@ import {
  * @extends {Estimated}
  */
 export interface Task extends Todo, Priority, Estimated {
-  predecessorIds?: number[];
-  supertaskId?: number;
+  readonly predecessorIds?: number[];
+  readonly supertaskId?: number;
 }
 
 export const taskPrioritizer = prioritizer;
 
 export function prioritize(tasks: Task[]) {
   return defaultPrioritize(taskPrioritizer, ...tasks);
+}
+
+export function estimatedStartOf(task?: Task): Date {
+  return new Date(task?.priority || Time.now());
+}
+
+export function estimatedDurationToComplete(task?: Task): moment.Duration {
+  return task ? moment.duration(task.estimate, "minutes") : moment.duration(0);
+}
+
+export function estimateEndOf(task?: Task): Date {
+  return task
+    ? moment(task.priority)
+        .add(estimatedDurationToComplete(task), "minute")
+        .toDate()
+    : Time.current();
+}
+
+export function estimatedPeriodOf(task?: Task): Period {
+  return task
+    ? {
+        start: estimatedStartOf(task),
+        end: estimateEndOf(task),
+      }
+    : { start: Time.current(), end: Time.current() };
 }
 
 export function supertaskOf(task: Task, candidates: Task[]): Task | undefined {
@@ -97,8 +126,28 @@ export function successorsOf(task: Task, candidates: Task[]) {
   return result && result.length > 0 ? result : undefined;
 }
 
-// export class TaskList extends TodoList<Task> {
-//   sorted(): TaskList {
-//     this.sort()
-//   }
-// }
+export function isTask(thing: any) {
+  return thing?.hasOwnProperty("priority") && thing?.hasOwnProperty("estimate");
+}
+
+export function tasks(todos: Todo[]) {
+  return todos.filter(isTask);
+}
+
+export const defaultTasks: Task[] = [
+  {
+    id: 1,
+    title: "Use Whenner",
+    description: "This is done already!",
+    estimate: 5,
+    completed: Time.current(),
+    priority: Time.now(),
+  },
+  {
+    id: 2,
+    title: "Get started with Whenner",
+    description: "Click stuff, learn how the app works",
+    estimate: 5,
+    priority: Time.now() + 1,
+  },
+];

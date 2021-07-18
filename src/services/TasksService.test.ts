@@ -1,20 +1,20 @@
 // Licensed under GPL v3: https://www.gnu.org/licenses/gpl-3.0.txt
 // Copyright (C) 2019  James Tharpe
 
-import { TasksService } from "./TasksService";
+import { EventsService } from "./TasksService";
 import { Todo } from "../models/Todo";
 import { oneHourTask } from "../test/data";
 import { defaultChronotype } from "../models/Chronotype";
 import { Time } from "../models/time";
-import { defaultTasks } from "../models/TaskEvent";
-import { Task } from "../models/Task";
+import { defaultTasks, Task } from "../models/Task";
 import { Crud } from "./crud";
+import { Event } from "../models/Event";
 
 describe("The Tasks Service", () => {
-  let tasksService: Crud<Task>;
+  let tasksService: Crud<Event>;
 
   beforeEach(() => {
-    tasksService = TasksService.create(defaultChronotype);
+    tasksService = EventsService.create(defaultChronotype);
     Time.set(new Date(2019, 6, 5, 12, 0, 0, 0)); // 2019-07-05 at Noon
   });
 
@@ -48,7 +48,7 @@ describe("The Tasks Service", () => {
       });
 
       it("Inserts the provided Todo", async function () {
-        const found = await tasksService.find(upsertResult.id);
+        const found = (await tasksService.find(upsertResult.id)) as Task;
         expect(found?.description).toEqual(oneHourTask.description);
         expect(found?.estimate).toEqual(oneHourTask.estimate);
         expect(found?.title).toEqual(oneHourTask.title);

@@ -34,8 +34,4 @@ export interface Todo extends Article {
   readonly completed?: Date;
 }
 
-export function incomplete(todos: Todo[]) {
-  return todos.filter((todo) => !todo.completed);
-}
-
 export interface EstimatedTodo extends Todo, Estimated {}

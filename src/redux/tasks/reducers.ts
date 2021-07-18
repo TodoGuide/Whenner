@@ -1,18 +1,17 @@
 // Licensed under GPL v3: https://www.gnu.org/licenses/gpl-3.0.txt
 // Copyright (C) 2019  James Tharpe
 
-import { TasksResultAction, TaskAction } from "./actions";
+import { EventResultAction, EventAction } from "./actions";
 import { WhennerActionType } from "../common/actions";
-import { defaultTasks } from "../../models/TaskEvent";
-import { Task } from "../../models/Task";
+import { defaultTasks, Task } from "../../models/Task";
 
 export function tasks(
   tasks: Task[] = defaultTasks,
-  action: /* WhennerAction | */ TaskAction | TasksResultAction
+  action: /* WhennerAction | */ EventAction | EventResultAction
 ): Task[] {
   switch (action.type) {
     case WhennerActionType.LoadTasksSuccess:
-      return action.tasks;
+      return action.events;
     case WhennerActionType.InsertTaskSuccess:
     // return quickSchedule(...[...tasks, new Todo(action.todo)]);
     case WhennerActionType.UpdateTaskSuccess:

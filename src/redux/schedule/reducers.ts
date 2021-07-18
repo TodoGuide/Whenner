@@ -2,21 +2,12 @@
 // Copyright (C) 2019  James Tharpe
 
 import { WhennerActionType, WhennerAction } from "../common/actions";
-import { defaultTasks } from "../../models/TaskEvent";
-import { Task } from "../../models/Task";
-import { defaultAppointments } from "../../models/AppointmentEvent";
-import { Appointment } from "../../models/Appointment";
 import { combineReducers } from "redux";
 import { Chronotype, defaultChronotype } from "../../models/Chronotype";
-import { TaskAction, TasksResultAction } from "../tasks/actions";
-
-function appointments(
-  appointments: Appointment[] = defaultAppointments,
-  action: /* WhennerAction | */ TaskAction | TasksResultAction
-): Appointment[] {
-  // TODO: Finish appointments reducer
-  return appointments;
-}
+import { EventAction, EventResultAction } from "../tasks/actions";
+import { Event } from "../../models/Event";
+import { defaultTasks } from "../../models/Task";
+import { defaultAppointments } from "../../models/Appointment";
 
 function chronotype(
   chronotype: Chronotype = defaultChronotype,
@@ -26,13 +17,13 @@ function chronotype(
   return chronotype;
 }
 
-function tasks(
-  tasks: Task[] = defaultTasks,
-  action: /* WhennerAction | */ TaskAction | TasksResultAction
-): Task[] {
+function events(
+  events: Event[] = [...defaultTasks, ...defaultAppointments],
+  action: /* WhennerAction | */ EventAction | EventResultAction
+): Event[] {
   switch (action.type) {
     case WhennerActionType.LoadTasksSuccess:
-      return action.tasks;
+      return action.events;
     case WhennerActionType.InsertTaskSuccess:
       // return quickSchedule(...[...tasks, new Todo(action.todo)]);
       break;
@@ -44,11 +35,10 @@ function tasks(
     default:
       break;
   }
-  return tasks;
+  return events;
 }
 
 export const schedule = combineReducers({
-  appointments,
   chronotype,
-  tasks
+  events,
 });

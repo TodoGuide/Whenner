@@ -35,12 +35,14 @@ export function periodOf(item: any): Period | undefined {
  */
 export function periodsOverlap(period1: Period, period2: Period) {
   return (
-    (period1.start < period2.start && period1.end > period2.start) ||
-    (period1.start > period2.start && period1.start < period2.end)
+    period1 &&
+    period2 &&
+    ((period1.start < period2.start && period1.end > period2.start) ||
+      (period1.start > period2.start && period1.start < period2.end))
   );
 }
 
-export function lengthInMinutes(period: Period) {
+export function inMinutes(period: Period) {
   return (
     (period.end.getTime() - period.start.getTime()) / MILLISECONDS_PER_MINUTE
   );

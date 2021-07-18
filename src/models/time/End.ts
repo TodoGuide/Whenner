@@ -2,5 +2,5 @@
 // Copyright (C) 2019  James Tharpe
 
 export interface End {
-  readonly end: Date;
+  end: Date;
 }

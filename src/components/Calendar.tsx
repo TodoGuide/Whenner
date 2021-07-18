@@ -18,19 +18,20 @@ import { Dispatch, bindActionCreators } from "redux";
 import { Time } from "../models/time";
 import { WhennerState } from "../redux";
 import { WhennerAction } from "../redux/common/actions";
-import { startOf, endOf } from "../models/Chronotype";
+import { startOfDayFor, endOfDayFor } from "../models/Chronotype";
 import Toast from "react-bootstrap/Toast";
 import EventModal from "./todo/EventModal";
-import { TaskEvent, defaultTasks } from "../models/TaskEvent";
-import { ISchedule, Schedule } from "../models/Schedule";
+import { schedule, Schedule } from "../models/Schedule";
 import { earliestOf, latestOf } from "../models/time/utils";
-import { Event } from "../models/Event";
+import { Event, NormalizedEvent } from "../models/Event";
 import {
-  TaskActionThunk,
-  TasksResultActionThunk,
+  EventActionThunk,
+  EventsResultActionThunk,
 } from "../redux/tasks/actions";
-import { upsertTask } from "../redux/tasks/actions/upsertTask";
+import { upsertEvent } from "../redux/tasks/actions/upsertTask";
 import { loadTasks } from "../redux/tasks/actions/loadTasks";
+import { defaultTasks, Task } from "../models/Task";
+import { inMinutes } from "../models/time/Period";
 
 moment.locale(navigator.language, {
   week: {
@@ -54,7 +55,7 @@ interface CalendarOwnState {
  * The state of the Calendar component initialized by props
  */
 interface CalendarStateProps {
-  schedule: ISchedule;
+  schedule: Schedule;
   loading: boolean;
   minTime: Date;
   maxTime: Date;
@@ -70,8 +71,8 @@ type CalendarState = CalendarOwnState & CalendarStateProps;
  * Properties of the Calendar component that dispatch Redux actions
  */
 interface CalendarDispatchProps {
-  upsertTask: TaskActionThunk;
-  loadTasks: TasksResultActionThunk;
+  upsertEvent: EventActionThunk;
+  loadTasks: EventsResultActionThunk;
 }
 
 type CalendarProps = CalendarStateProps & CalendarDispatchProps; // & TodoListOwnProps;
@@ -83,10 +84,10 @@ class Calendar extends React.Component<CalendarProps, CalendarState> {
   }
 
   componentDidMount() {
-    const { tasks } = this.props.schedule;
+    const { events } = this.props.schedule;
     if (
-      tasks.length === defaultTasks.length &&
-      tasks.every((value, index) => value.id === defaultTasks[index].id)
+      events.length === defaultTasks.length &&
+      events.every((value, index) => value.id === defaultTasks[index].id)
     ) {
       // Only load if tasks contains defaults
       this.props.loadTasks();
@@ -114,14 +115,17 @@ class Calendar extends React.Component<CalendarProps, CalendarState> {
       throw Error("No todo was specified to save in the handleEventSave event");
     }
     console.log("handleEventSave event", event);
-    this.props.upsertTask(event);
+    this.props.upsertEvent(event as Task);
     this.setState({ ...this.state, selectedEvent: undefined });
   };
 
   render() {
     // const { todos } = this.state;
-    const { schedule, minTime, maxTime, loading } = this.props;
-    const events = new Schedule(schedule).todos.map((t) => new TaskEvent(t));
+    const { schedule: scheduleProp, minTime, maxTime, loading } = this.props;
+    const events = schedule(
+      scheduleProp.events,
+      scheduleProp.chronotype
+    ).events.map((t) => new NormalizedEvent(t));
     // console.log("Calendar.render", events);
     return (
       <div>
@@ -172,79 +176,31 @@ class Calendar extends React.Component<CalendarProps, CalendarState> {
               ...(event as Event),
               start: new Date(start),
               priority: new Date(start).getTime(),
-              estimate: (event as Event).estimate,
+              estimate: (event as Task).estimate,
               end: new Date(end),
             });
           }}
           onSelectSlot={({ start, end }) => {
             start = new Date(start);
-            const event = new TaskEvent({
+            const event = {
               id: Time.now(),
               title: "",
               description: "",
               priority: start.getTime(),
-              estimate: TaskEvent.periodToEstimate({
+              estimate: inMinutes({
                 start,
                 end: new Date(end),
               }),
-            });
+            };
             this.handleEventShowSelected(event);
           }}
           onDoubleClickEvent={this.handleEventShowSelected}
         />
-        {/* <DnDCalendar
-          defaultDate={Time.current()}
-          defaultView="week"
-          events={events}
-          localizer={localizer}
-          step={15}
-          selectable
-          resizable
-          min={minTime}
-          max={maxTime}
-          showMultiDayTimes={true}
-          getNow={Time.current}
-          eventPropGetter={this.eventStyle}
-          onEventResize={({ event, start, end }) => {
-            this.handleEventSave({
-              ...event,
-              priority: new Date(start).getTime(),
-              estimate: moment
-                .duration(moment(end).diff(moment(start)))
-                .asMinutes(),
-              end: new Date(end),
-            });
-          }}
-          onEventDrop={({ event, start, end }) => {
-            this.handleEventSave({
-              ...event,
-              start: new Date(start),
-              priority: new Date(start).getTime(),
-              estimate: event.estimate,
-              end: new Date(end),
-            });
-          }}
-          onSelectSlot={({ start, end }) => {
-            start = new Date(start);
-            const event = new TaskEvent({
-              id: Time.now(),
-              title: "",
-              description: "",
-              priority: start.getTime(),
-              estimate: TaskEvent.periodToEstimate({
-                start,
-                end: new Date(end),
-              }),
-            });
-            this.handleEventShowSelected(event);
-          }}
-          onDoubleClickEvent={this.handleEventShowSelected}
-        /> */}
         {this.state.selectedEvent ? (
           <EventModal
             show={!!this.state.selectedEvent}
             event={this.state.selectedEvent}
-            onSaveTodo={this.handleEventSave}
+            onSaveEvent={this.handleEventSave}
             onHide={this.handleEventHideSelected}
           />
         ) : null}
@@ -262,11 +218,11 @@ const mapStateToProps = ({
   return {
     schedule,
     minTime: earliestOf(
-      startOf(Time.current(), schedule.chronotype),
+      startOfDayFor(Time.current(), schedule.chronotype),
       Time.current()
     ),
     maxTime: latestOf(
-      endOf(Time.current(), schedule.chronotype),
+      endOfDayFor(Time.current(), schedule.chronotype),
       Time.current()
     ),
     loading: loadsInProgress > 0,
@@ -278,7 +234,7 @@ const mapDispatchToProps = (
   dispatch: Dispatch<WhennerAction>
 ): CalendarDispatchProps => {
   return {
-    upsertTask: bindActionCreators(upsertTask, dispatch),
+    upsertEvent: bindActionCreators(upsertEvent, dispatch),
     loadTasks: bindActionCreators(loadTasks, dispatch),
   };
 };

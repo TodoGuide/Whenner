@@ -3,9 +3,11 @@
 
 import { Todo } from "./Todo";
 import { Period } from "./time/Period";
+import { Time } from "./time";
+import { addHour } from "./time/utils";
 
 /**
- * Something to be done in a fixed period of time.
+ * Something to be done in a preset period of time.
  *
  * @export
  * @interface Appointment
@@ -13,3 +15,22 @@ import { Period } from "./time/Period";
  * @extends {Period}
  */
 export interface Appointment extends Todo, Period {}
+
+export const defaultAppointments: Appointment[] = [
+  {
+    id: Time.now(),
+    title: "Call someone you love",
+    description: "Let them know how much you appreciate them",
+    start: addHour(Time.current()),
+    end: addHour(addHour(Time.current())),
+    completed: undefined,
+  },
+];
+
+export function isAppointment(thing: any) {
+  return thing?.hasOwnProperty("start") && thing?.hasOwnProperty("end");
+}
+
+export function appointments(todos: Todo[]) {
+  return todos.filter(isAppointment);
+}

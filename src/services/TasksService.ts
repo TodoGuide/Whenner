@@ -1,22 +1,23 @@
 import { Chronotype } from "../models/Chronotype";
-import { schedule } from "../models/scheduler";
-import { defaultTasks } from "../models/TaskEvent";
-import { Task } from "../models/Task";
+import { defaultTasks } from "../models/Task";
 import { localStorageCrud } from "./crud/local-storage";
 import { Crud } from "./crud";
+import { schedule } from "../models/Schedule";
+import { Event } from "../models/Event";
+import { defaultAppointments } from "../models/Appointment";
 
-export const TASKS_KEY = "Whenner.Tasks";
+export const EVENTS_KEY = "Whenner.Events";
 
-export class TasksService {
-  static create(chronotype: Chronotype): Crud<Task> {
+export class EventsService {
+  static create(chronotype: Chronotype): Crud<Event> {
     const result = {
       ...localStorageCrud({
-        key: TASKS_KEY,
-        initialData: defaultTasks
-      })
+        key: EVENTS_KEY,
+        initialData: [...defaultTasks, ...defaultAppointments],
+      }),
     };
     const { read, find } = result;
-    result.read = async () => schedule(chronotype, ...(await read()));
+    result.read = async () => schedule(await read(), chronotype).events;
     result.find = async (id: number) => find(id, await result.read());
     return result;
   }

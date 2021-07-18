@@ -1,40 +1,40 @@
 // Licensed under GPL v3: https://www.gnu.org/licenses/gpl-3.0.txt
 // Copyright (C) 2019  James Tharpe
 
-import { TaskAction, TaskActionThunk } from ".";
+import { EventAction, EventActionThunk } from ".";
 import { Dispatch } from "redux";
 import { tasksService } from "../../../services/services";
 import { WhennerActionType } from "../../common/actions";
-import { Task } from "../../../models/Task";
+import { Event } from "../../../../src/models/Event";
 
 // Action Creators
 
-function insertTaskSuccess(task: Task): TaskAction {
+function insertEventSuccess(event: Event): EventAction {
   return {
     type: WhennerActionType.InsertTaskSuccess,
-    task
+    event,
   };
 }
 
-function updateTaskSuccess(task: Task): TaskAction {
+function updateEventSuccess(event: Event): EventAction {
   return {
     type: WhennerActionType.UpdateTaskSuccess,
-    task
+    event,
   };
 }
 
 // Action Thunks //
 
-export const upsertTask: TaskActionThunk = (task: Task) => {
-  return function(dispatch: Dispatch) {
+export const upsertEvent: EventActionThunk = (event: Event) => {
+  return function (dispatch: Dispatch) {
     const result = tasksService
-      .upsert(task)
-      .then(upsertedTask =>
-        upsertedTask.id === task.id
-          ? dispatch(updateTaskSuccess(upsertedTask))
-          : dispatch(insertTaskSuccess(upsertedTask))
+      .upsert(event)
+      .then((upsertedTask) =>
+        upsertedTask.id === event.id
+          ? dispatch(updateEventSuccess(upsertedTask))
+          : dispatch(insertEventSuccess(upsertedTask))
       )
-      .catch(e => {
+      .catch((e) => {
         throw e;
       });
     return result;

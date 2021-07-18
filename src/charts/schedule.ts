@@ -1,7 +1,7 @@
 import { createMachine, EventObject } from "xstate";
-import { defaultAppointments } from "../models/AppointmentEvent";
+import { defaultAppointments } from "../models/Appointment";
 import { Chronotype, defaultChronotype } from "../models/Chronotype";
-import { defaultTasks } from "../models/TaskEvent";
+import { defaultTasks } from "../models/Task";
 import { Todo } from "../models/Todo";
 
 interface ScheduleContext {

@@ -1,28 +1,28 @@
 // Licensed under GPL v3: https://www.gnu.org/licenses/gpl-3.0.txt
 // Copyright (C) 2019  James Tharpe
 
-import { TasksResultAction, TasksResultActionThunk } from ".";
+import { EventResultAction, EventsResultActionThunk } from ".";
 import { Dispatch } from "redux";
 import { tasksService } from "../../../services/services";
 import { WhennerActionType } from "../../common/actions";
-import { Task } from "../../../models/Task";
+import { Event } from "../../../models/Event";
 
-function loadTasksSuccess(tasks: Task[]): TasksResultAction {
+function loadEventsSuccess(events: Event[]): EventResultAction {
   return {
     type: WhennerActionType.LoadTasksSuccess,
-    tasks: tasks
+    events,
   };
 }
 
 /**
  * A thunk to load todo items
  */
-export const loadTasks: TasksResultActionThunk = () => {
-  return function(dispatch: Dispatch) {
+export const loadTasks: EventsResultActionThunk = () => {
+  return function (dispatch: Dispatch) {
     return tasksService
       .read()
-      .then(tasks => dispatch(loadTasksSuccess(tasks)))
-      .catch(e => {
+      .then((tasks) => dispatch(loadEventsSuccess(tasks)))
+      .catch((e) => {
         console.log("loadTasks error", e);
         throw e;
       });
