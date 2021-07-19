@@ -42,7 +42,7 @@ export function periodsOverlap(period1: Period, period2: Period) {
   );
 }
 
-export function inMinutes(period: Period) {
+export function minutesIn(period: Period) {
   return (
     (period.end.getTime() - period.start.getTime()) / MILLISECONDS_PER_MINUTE
   );

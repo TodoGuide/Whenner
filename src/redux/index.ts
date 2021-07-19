@@ -4,7 +4,9 @@
 import { combineReducers } from "redux";
 import { schedule } from "./schedule/reducers";
 import { loadsInProgress } from "./common/reducers";
-import { Schedule, defaultSchedule } from "../models/Schedule";
+import { Schedule } from "../models/Schedule";
+import { defaultChronotype } from "../models/Chronotype";
+import { defaultEvents } from "../services/EventsService";
 
 // State //
 
@@ -15,7 +17,10 @@ export interface WhennerState {
 }
 
 export const initialState: WhennerState = {
-  schedule: defaultSchedule,
+  schedule: {
+    chronotype: defaultChronotype,
+    events: defaultEvents,
+  },
   loadsInProgress: 0,
 };
 

@@ -5,19 +5,21 @@ import { EventResultAction, EventAction } from "./actions";
 import { WhennerActionType } from "../common/actions";
 import { defaultTasks, Task } from "../../models/Task";
 
-export function tasks(
+export function events(
   tasks: Task[] = defaultTasks,
   action: /* WhennerAction | */ EventAction | EventResultAction
 ): Task[] {
   switch (action.type) {
-    case WhennerActionType.LoadTasksSuccess:
+    case WhennerActionType.LoadEventsSuccess:
       return action.events;
-    case WhennerActionType.InsertTaskSuccess:
-    // return quickSchedule(...[...tasks, new Todo(action.todo)]);
-    case WhennerActionType.UpdateTaskSuccess:
-    // return tasks.map(todo =>
-    //   todo.id === action.todo.id ? action.todo : todo
-    // );
+    case WhennerActionType.InsertEventSuccess:
+      // return quickSchedule(...[...tasks, new Todo(action.todo)]);
+      break;
+    case WhennerActionType.UpdateEventSuccess:
+      // return tasks.map(todo =>
+      //   todo.id === action.todo.id ? action.todo : todo
+      // );
+      break;
     default:
       break;
   }

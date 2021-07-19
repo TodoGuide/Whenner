@@ -1,11 +1,10 @@
 // Licensed under GPL v3: https://www.gnu.org/licenses/gpl-3.0.txt
 // Copyright (C) 2019  James Tharpe
 
-import { defaultAppointments, isAppointment } from "./Appointment";
-import { defaultTasks, isTask, Task } from "./Task";
+import { isAppointment } from "./Appointment";
+import { isTask, Task } from "./Task";
 import {
   Chronotype,
-  defaultChronotype,
   endOfDayFor,
   lengthInMinutes,
   preferredStart,
@@ -14,7 +13,7 @@ import { Time } from "./time";
 import { Estimated } from "./time/Estimated";
 import { End } from "./time/End";
 import { sortByPriority } from "./Priority";
-import { endPriorityOf, eventsOverlap, Event, eventPrioritizer } from "./Event";
+import { endPriorityOf, eventsOverlap, Event, startPriorityOf } from "./Event";
 
 export interface Schedule {
   readonly chronotype: Chronotype;
@@ -25,34 +24,37 @@ export function schedule(events: Event[], chronotype: Chronotype): Schedule {
   let currentPriority = Time.now();
   return {
     chronotype,
-    events: sortByPriority(eventPrioritizer, ...events).reduce<Event[]>(
+    events: sortByPriority(startPriorityOf, ...events).reduce<Event[]>(
       (schedule, todo) => {
-        const previous: Event = schedule[schedule.length - 1];
+        // Avoid Mutations
+        const previousCopy: Event = { ...schedule[schedule.length - 1] };
+        const currentCopy: Event = { ...todo };
+
         if (
-          eventsOverlap(previous, todo) &&
-          isTask(previous) &&
-          isAppointment(todo)
+          eventsOverlap(previousCopy, currentCopy) &&
+          isTask(previousCopy) &&
+          isAppointment(currentCopy)
         ) {
-          (previous as Task).priority = Math.max(
-            endPriorityOf(todo),
+          (previousCopy as Task).priority = Math.max(
+            endPriorityOf(currentCopy),
             currentPriority
           );
-          currentPriority = endPriorityOf(previous);
-        } else if (isTask(todo)) {
-          (todo as Task).priority = Math.max(
-            endPriorityOf(previous),
+          currentPriority = endPriorityOf(previousCopy);
+        } else if (isTask(currentCopy)) {
+          (currentCopy as Task).priority = Math.max(
+            endPriorityOf(previousCopy),
             currentPriority
           );
 
-          (todo as Task).priority = preferredStart(
-            new Date((todo as Task).priority),
+          (currentCopy as Task).priority = preferredStart(
+            new Date((currentCopy as Task).priority),
             chronotype
           ).getTime();
 
-          currentPriority = endPriorityOf(todo);
+          currentPriority = endPriorityOf(currentCopy);
         }
 
-        schedule.push(todo);
+        schedule.push(currentCopy);
         return schedule;
       },
       new Array<Event>()
@@ -73,8 +75,3 @@ export function canBeCompletedWithinOneDay(
 ) {
   return estimate <= lengthInMinutes(chronotype);
 }
-
-export const defaultSchedule: Schedule = {
-  chronotype: defaultChronotype,
-  events: [...defaultTasks, ...defaultAppointments],
-};

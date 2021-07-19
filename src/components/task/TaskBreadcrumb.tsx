@@ -3,8 +3,8 @@
 
 import React from "react";
 import { Breadcrumb } from "react-bootstrap";
-import { Task as TaskModel, supertasksOf } from "../../models/Task";
-import { allTestDataTasks } from "../../test/data";
+import { Task as TaskModel, supertasksOf, tasksIn } from "../../models/Task";
+import { allTestDataEvents } from "../../test/data";
 import { itemKey } from "../utils";
 
 interface TaskBreadcrumbProps {
@@ -21,14 +21,16 @@ const TaskBreadcrumb: React.FC<TaskBreadcrumbProps> = ({
           ✨{/* TODO: Implement set for supertask */}
         </span>
       </Breadcrumb.Item>
-      {supertasksOf(task, allTestDataTasks)?.map((supertask, index) => (
-        <Breadcrumb.Item
-          title={supertask.description}
-          key={itemKey("task-breadcrumb", supertask, index)}
-        >
-          {supertask.title}
-        </Breadcrumb.Item>
-      ))}
+      {supertasksOf(task, tasksIn(allTestDataEvents))?.map(
+        (supertask, index) => (
+          <Breadcrumb.Item
+            title={supertask.description}
+            key={itemKey("task-breadcrumb", supertask, index)}
+          >
+            {supertask.title}
+          </Breadcrumb.Item>
+        )
+      )}
       <Breadcrumb.Item active>{task.title}</Breadcrumb.Item>
     </Breadcrumb>
   );

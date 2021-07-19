@@ -1,23 +1,22 @@
 import { createMachine, EventObject } from "xstate";
-import { defaultAppointments } from "../models/Appointment";
 import { Chronotype, defaultChronotype } from "../models/Chronotype";
-import { defaultTasks } from "../models/Task";
-import { Todo } from "../models/Todo";
+import { Event } from "../models/Event";
+import { defaultEvents } from "../services/EventsService";
 
 interface ScheduleContext {
   chronotype: Chronotype;
-  todos: Todo[];
+  events: Event[];
 }
 
 interface ScheduleEvent extends EventObject {
-  todo: Todo;
+  event: Event;
 }
 
 export const scheduleMachine = createMachine<ScheduleContext, ScheduleEvent>({
   id: "schedule",
   initial: "idle",
   context: {
-    todos: [...(defaultAppointments as Todo[]), ...defaultTasks],
+    events: [...defaultEvents],
     chronotype: defaultChronotype,
   },
   states: {

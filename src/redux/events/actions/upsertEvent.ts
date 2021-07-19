@@ -3,22 +3,22 @@
 
 import { EventAction, EventActionThunk } from ".";
 import { Dispatch } from "redux";
-import { tasksService } from "../../../services/services";
+import { eventsService } from "../../../services/services";
 import { WhennerActionType } from "../../common/actions";
-import { Event } from "../../../../src/models/Event";
+import { Event } from "../../../models/Event";
 
 // Action Creators
 
 function insertEventSuccess(event: Event): EventAction {
   return {
-    type: WhennerActionType.InsertTaskSuccess,
+    type: WhennerActionType.InsertEventSuccess,
     event,
   };
 }
 
 function updateEventSuccess(event: Event): EventAction {
   return {
-    type: WhennerActionType.UpdateTaskSuccess,
+    type: WhennerActionType.UpdateEventSuccess,
     event,
   };
 }
@@ -27,12 +27,12 @@ function updateEventSuccess(event: Event): EventAction {
 
 export const upsertEvent: EventActionThunk = (event: Event) => {
   return function (dispatch: Dispatch) {
-    const result = tasksService
+    const result = eventsService
       .upsert(event)
-      .then((upsertedTask) =>
-        upsertedTask.id === event.id
-          ? dispatch(updateEventSuccess(upsertedTask))
-          : dispatch(insertEventSuccess(upsertedTask))
+      .then((upsertedEvent) =>
+        upsertedEvent.id === event.id
+          ? dispatch(updateEventSuccess(upsertedEvent))
+          : dispatch(insertEventSuccess(upsertedEvent))
       )
       .catch((e) => {
         throw e;

@@ -7,9 +7,10 @@ import {
   Task as TaskModel,
   subtasksOf,
   successorsOf,
-  predecessorsOf
+  predecessorsOf,
+  tasksIn,
 } from "../../models/Task";
-import { allTestDataTasks } from "../../test/data";
+import { allTestDataEvents } from "../../test/data";
 import TaskList from "./TaskList";
 import { itemKey } from "../utils";
 
@@ -24,23 +25,24 @@ const TaskRelationshipTabs: React.FC<TaskRelationshipTabsProps> = ({
   id,
   task,
   currentDepth = 1,
-  maxDepth = 3
+  maxDepth = 3,
 }: TaskRelationshipTabsProps) => {
-  const subtasks =
-    currentDepth <= maxDepth && subtasksOf(task, allTestDataTasks);
+  const allTasks = tasksIn(allTestDataEvents);
+  const subtasks = currentDepth <= maxDepth && subtasksOf(task, allTasks);
   const predecessors =
-    currentDepth <= maxDepth && predecessorsOf(task, allTestDataTasks);
-  const successors =
-    currentDepth <= maxDepth && successorsOf(task, allTestDataTasks);
+    currentDepth <= maxDepth && predecessorsOf(task, allTasks);
+  const successors = currentDepth <= maxDepth && successorsOf(task, allTasks);
   const nextDepth = currentDepth + 1;
 
   return (
     <div id={id}>
       <Tabs
-        defaultActiveKey={`${(subtasks && "Subtasks") ||
+        defaultActiveKey={`${
+          (subtasks && "Subtasks") ||
           (predecessors && "Predecessors") ||
           (successors && "Successors") ||
-          "Subtasks"}`}
+          "Subtasks"
+        }`}
         id="uncontrolled-tab-example"
         variant="pills"
       >

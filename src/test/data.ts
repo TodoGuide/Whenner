@@ -1,14 +1,17 @@
 // Licensed under GPL v3: https://www.gnu.org/licenses/gpl-3.0.txt
 // Copyright (C) 2019  James Tharpe
 
+import moment from "moment";
+import { Appointment } from "../models/Appointment";
 import { Task } from "../models/Task";
+import { Time } from "../models/time";
 
 export const oneHourTask: Task = {
   id: 100,
   title: "One hour task",
   description: "This is a one hour task",
   priority: 1,
-  estimate: 60
+  estimate: 60,
 };
 
 export const twoHourTask: Task = {
@@ -16,7 +19,7 @@ export const twoHourTask: Task = {
   title: "Two hour task",
   description: "This is a two hour task",
   priority: 2,
-  estimate: 120
+  estimate: 120,
 };
 
 export const threeHourTask: Task = {
@@ -24,7 +27,7 @@ export const threeHourTask: Task = {
   title: "Three hour task",
   description: "This is a three hour task",
   priority: 3,
-  estimate: 180
+  estimate: 180,
 };
 
 export const supertask: Task = {
@@ -32,7 +35,7 @@ export const supertask: Task = {
   description: "This task has no supertask because it IS the supertask",
   priority: 1,
   estimate: 60,
-  title: "Supertask"
+  title: "Supertask",
 };
 
 export const subtaskA: Task = {
@@ -41,7 +44,7 @@ export const subtaskA: Task = {
   priority: 2,
   estimate: 120,
   title: "Subtask A",
-  supertaskId: supertask.id
+  supertaskId: supertask.id,
 };
 export const subtaskB: Task = {
   id: 203,
@@ -50,7 +53,7 @@ export const subtaskB: Task = {
   estimate: 180,
   title: "Subtask B",
   supertaskId: supertask.id,
-  predecessorIds: [subtaskA.id]
+  predecessorIds: [subtaskA.id],
 };
 export const subSubTask: Task = {
   id: 204,
@@ -58,7 +61,7 @@ export const subSubTask: Task = {
   description: "Sub-subtask belongs to Subtask B which belongs to Supertask",
   priority: 1,
   estimate: 60,
-  supertaskId: subtaskB.id
+  supertaskId: subtaskB.id,
 };
 
 export const subSubSubtask: Task = {
@@ -68,10 +71,18 @@ export const subSubSubtask: Task = {
     "Sub-sub-subtask belongs to sub-subtask which belongs to subtask B which belongs to Supertask",
   priority: 1,
   estimate: 60,
-  supertaskId: subSubTask.id
+  supertaskId: subSubTask.id,
 };
 
-export const allTestDataTasks = [
+export const pastAppointment: Appointment = {
+  description: "Appointment in the past",
+  end: Time.yesterday(),
+  id: 300,
+  start: moment(Time.yesterday()).subtract(1, "hour").toDate(),
+  title: "Appointment in the past",
+};
+
+export const allTestDataEvents = [
   oneHourTask,
   twoHourTask,
   threeHourTask,
@@ -79,5 +90,6 @@ export const allTestDataTasks = [
   subtaskA,
   subtaskB,
   subSubTask,
-  subSubSubtask
+  subSubSubtask,
+  pastAppointment,
 ];

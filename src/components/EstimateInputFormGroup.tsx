@@ -10,7 +10,7 @@ interface EstimateInputProps {
 }
 
 const EstimateInputFormGroup: React.FC<EstimateInputProps> = ({
-  estimatedItem
+  estimatedItem,
 }: EstimateInputProps) => {
   return (
     <Form.Group>
@@ -19,7 +19,7 @@ const EstimateInputFormGroup: React.FC<EstimateInputProps> = ({
         <Form.Control
           type="text"
           placeholder="How long will it take?"
-          value={estimatedItem.estimate.toString()}
+          value={(estimatedItem.estimate || 0).toString()}
           readOnly
         />
         <InputGroup.Append>

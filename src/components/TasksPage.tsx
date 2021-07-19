@@ -3,10 +3,15 @@
 
 import React from "react";
 import TaskList from "./task/TaskList";
-import { allTestDataTasks } from "../test/data";
+import { allTestDataEvents } from "../test/data";
+import { tasksIn } from "../models/Task";
 
 const TasksPage: React.FC = () => (
-  <TaskList tasks={allTestDataTasks} id="tasks" maxDepth={15}></TaskList>
+  <TaskList
+    tasks={tasksIn(allTestDataEvents)}
+    id="tasks"
+    maxDepth={15}
+  ></TaskList>
 );
 
 export default TasksPage;

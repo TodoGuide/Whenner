@@ -21,7 +21,7 @@ const Task: React.FC<TaskProps> = ({
   id,
   task,
   currentDepth = 1,
-  maxDepth = 3
+  maxDepth = 3,
 }: TaskProps) => {
   return (
     <div id={id}>

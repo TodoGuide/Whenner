@@ -7,13 +7,14 @@ import { Event } from "../models/Event";
 import { defaultAppointments } from "../models/Appointment";
 
 export const EVENTS_KEY = "Whenner.Events";
+export const defaultEvents = [...defaultTasks, ...defaultAppointments];
 
 export class EventsService {
   static create(chronotype: Chronotype): Crud<Event> {
     const result = {
       ...localStorageCrud({
         key: EVENTS_KEY,
-        initialData: [...defaultTasks, ...defaultAppointments],
+        initialData: defaultEvents,
       }),
     };
     const { read, find } = result;

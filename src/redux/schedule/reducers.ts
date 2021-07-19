@@ -4,10 +4,9 @@
 import { WhennerActionType, WhennerAction } from "../common/actions";
 import { combineReducers } from "redux";
 import { Chronotype, defaultChronotype } from "../../models/Chronotype";
-import { EventAction, EventResultAction } from "../tasks/actions";
+import { EventAction, EventResultAction } from "../events/actions";
 import { Event } from "../../models/Event";
-import { defaultTasks } from "../../models/Task";
-import { defaultAppointments } from "../../models/Appointment";
+import { defaultEvents } from "../../services/EventsService";
 
 function chronotype(
   chronotype: Chronotype = defaultChronotype,
@@ -18,16 +17,16 @@ function chronotype(
 }
 
 function events(
-  events: Event[] = [...defaultTasks, ...defaultAppointments],
+  events: Event[] = defaultEvents,
   action: /* WhennerAction | */ EventAction | EventResultAction
 ): Event[] {
   switch (action.type) {
-    case WhennerActionType.LoadTasksSuccess:
+    case WhennerActionType.LoadEventsSuccess:
       return action.events;
-    case WhennerActionType.InsertTaskSuccess:
+    case WhennerActionType.InsertEventSuccess:
       // return quickSchedule(...[...tasks, new Todo(action.todo)]);
       break;
-    case WhennerActionType.UpdateTaskSuccess:
+    case WhennerActionType.UpdateEventSuccess:
       // return tasks.map(todo =>
       //   todo.id === action.todo.id ? action.todo : todo
       // );

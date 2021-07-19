@@ -2,29 +2,23 @@
 // Copyright (C) 2019  James Tharpe
 
 import { Appointment } from "./Appointment";
-import { Prioritizer } from "./Priority";
 import { estimatedPeriodOf, estimateEndOf, Task } from "./Task";
 import { Time } from "./time";
 import {
-  inMinutes,
+  minutesIn,
   Period,
   periodOf as getPeriod,
   periodsOverlap,
 } from "./time/Period";
+import { dateValueOf, timeValueOf } from "./time/utils";
 
 export type Event = Task | Appointment;
 
 export class NormalizedEvent implements Task, Appointment {
-  private task: Task;
-  private appointment: Appointment;
-
-  constructor(private event: Event) {
-    this.task = event as Task;
-    this.appointment = event as Appointment;
-  }
+  constructor(private event: Event) {}
 
   get start() {
-    return startOf(this.event);
+    return startOf(this.event) || Time.current();
   }
 
   get end() {
@@ -32,11 +26,11 @@ export class NormalizedEvent implements Task, Appointment {
   }
 
   get predecessorIds() {
-    return this.task.predecessorIds;
+    return (this.event as Task).predecessorIds;
   }
 
   get supertaskId() {
-    return this.task.supertaskId;
+    return (this.event as Task).supertaskId;
   }
 
   get completed() {
@@ -56,7 +50,7 @@ export class NormalizedEvent implements Task, Appointment {
   }
 
   get priority() {
-    return startPriorityOf(this.event);
+    return startPriorityOf(this.event) || Time.now();
   }
 
   get estimate() {
@@ -69,48 +63,45 @@ export function periodOf(event: Event): Period {
 }
 
 export function durationInMinutes(event: Event): number {
-  return inMinutes(periodOf(event));
+  return minutesIn(periodOf(event));
 }
 
 export function eventsOverlap(event1: Event, event2: Event): boolean {
   return event1 && event2 && periodsOverlap(periodOf(event1), periodOf(event2));
 }
 
-export function startPriorityOf(event: Event): number {
-  return (
-    (event as Task).priority ||
-    (event as Appointment).start?.getTime() ||
-    Time.now()
-  );
-}
-
 export function endPriorityOf(event: Event | Period): number {
   return (
-    (event as Period)?.end?.getTime() ||
-    estimateEndOf(event as Task)?.getTime() ||
+    timeValueOf((event as Period)?.end || estimateEndOf(event as Task)) ||
     Time.now()
   );
 }
 
 export function startOf(event: Event): Date {
-  return (event as Appointment).start || new Date((event as Task).priority);
+  return (
+    dateValueOf((event as Appointment).start || (event as Task).priority) ||
+    Time.current()
+  );
+}
+
+export function startPriorityOf(event: Event, log = false): number {
+  return startOf(event)?.getTime() || Time.now();
 }
 
 export function endOf(event: Event): Date {
-  return (event as Appointment).end || estimateEndOf(event as Task);
+  return new Date((event as Appointment).end || estimateEndOf(event as Task));
 }
 
 export function completed(event: Event): Date | undefined {
-  return (event as Task).completed ||
-    (event as Appointment).end?.getTime() ||
-    0 <= Time.now()
-    ? (event as Appointment).end
-    : undefined;
+  const result =
+    dateValueOf((event as Task).completed) ||
+    ((timeValueOf((event as Appointment).end) || 0) <= Time.now()
+      ? (event as Appointment).end
+      : undefined);
+
+  return result && new Date(result);
 }
 
 export function incomplete(events: Event[]): Event[] {
   return events.filter((event) => !completed(event));
 }
-
-export const eventPrioritizer: Prioritizer<Event> = (event: Event) =>
-  (event as Task).priority || (event as Appointment).start.getTime();

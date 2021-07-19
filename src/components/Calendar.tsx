@@ -22,16 +22,22 @@ import { startOfDayFor, endOfDayFor } from "../models/Chronotype";
 import Toast from "react-bootstrap/Toast";
 import EventModal from "./todo/EventModal";
 import { schedule, Schedule } from "../models/Schedule";
-import { earliestOf, latestOf } from "../models/time/utils";
+import {
+  dateValueOf,
+  earliestOf,
+  latestOf,
+  timeValueOf,
+} from "../models/time/utils";
 import { Event, NormalizedEvent } from "../models/Event";
 import {
   EventActionThunk,
   EventsResultActionThunk,
-} from "../redux/tasks/actions";
-import { upsertEvent } from "../redux/tasks/actions/upsertTask";
-import { loadTasks } from "../redux/tasks/actions/loadTasks";
-import { defaultTasks, Task } from "../models/Task";
-import { inMinutes } from "../models/time/Period";
+} from "../redux/events/actions";
+import { upsertEvent } from "../redux/events/actions/upsertEvent";
+import { loadEvents } from "../redux/events/actions/loadEvents";
+import { Task } from "../models/Task";
+import { minutesIn } from "../models/time/Period";
+import { defaultEvents } from "../services/EventsService";
 
 moment.locale(navigator.language, {
   week: {
@@ -72,7 +78,7 @@ type CalendarState = CalendarOwnState & CalendarStateProps;
  */
 interface CalendarDispatchProps {
   upsertEvent: EventActionThunk;
-  loadTasks: EventsResultActionThunk;
+  loadEvents: EventsResultActionThunk;
 }
 
 type CalendarProps = CalendarStateProps & CalendarDispatchProps; // & TodoListOwnProps;
@@ -84,13 +90,15 @@ class Calendar extends React.Component<CalendarProps, CalendarState> {
   }
 
   componentDidMount() {
-    const { events } = this.props.schedule;
+    const events = this.props.schedule.events.map(
+      (t) => new NormalizedEvent(t)
+    );
     if (
-      events.length === defaultTasks.length &&
-      events.every((value, index) => value.id === defaultTasks[index].id)
+      events.length === defaultEvents.length &&
+      events.every((value, index) => value.id === defaultEvents[index].id)
     ) {
       // Only load if tasks contains defaults
-      this.props.loadTasks();
+      this.props.loadEvents();
     }
   }
 
@@ -115,7 +123,7 @@ class Calendar extends React.Component<CalendarProps, CalendarState> {
       throw Error("No todo was specified to save in the handleEventSave event");
     }
     console.log("handleEventSave event", event);
-    this.props.upsertEvent(event as Task);
+    this.props.upsertEvent(event);
     this.setState({ ...this.state, selectedEvent: undefined });
   };
 
@@ -126,7 +134,7 @@ class Calendar extends React.Component<CalendarProps, CalendarState> {
       scheduleProp.events,
       scheduleProp.chronotype
     ).events.map((t) => new NormalizedEvent(t));
-    // console.log("Calendar.render", events);
+    console.log("Calendar.render", events);
     return (
       <div>
         {loading ? (
@@ -164,11 +172,11 @@ class Calendar extends React.Component<CalendarProps, CalendarState> {
           onEventResize={({ event, start, end }) => {
             this.handleEventSave({
               ...(event as Event),
-              priority: new Date(start).getTime(),
+              priority: timeValueOf(start) || Time.now(),
               estimate: moment
                 .duration(moment(end).diff(moment(start)))
                 .asMinutes(),
-              end: new Date(end),
+              end: dateValueOf(end),
             });
           }}
           onEventDrop={({ event, start, end }) => {
@@ -177,7 +185,7 @@ class Calendar extends React.Component<CalendarProps, CalendarState> {
               start: new Date(start),
               priority: new Date(start).getTime(),
               estimate: (event as Task).estimate,
-              end: new Date(end),
+              end: dateValueOf(end),
             });
           }}
           onSelectSlot={({ start, end }) => {
@@ -187,7 +195,7 @@ class Calendar extends React.Component<CalendarProps, CalendarState> {
               title: "",
               description: "",
               priority: start.getTime(),
-              estimate: inMinutes({
+              estimate: minutesIn({
                 start,
                 end: new Date(end),
               }),
@@ -235,7 +243,7 @@ const mapDispatchToProps = (
 ): CalendarDispatchProps => {
   return {
     upsertEvent: bindActionCreators(upsertEvent, dispatch),
-    loadTasks: bindActionCreators(loadTasks, dispatch),
+    loadEvents: bindActionCreators(loadEvents, dispatch),
   };
 };
 

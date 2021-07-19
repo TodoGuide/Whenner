@@ -1,20 +1,20 @@
 // Licensed under GPL v3: https://www.gnu.org/licenses/gpl-3.0.txt
 // Copyright (C) 2019  James Tharpe
 
-import { EventsService } from "./TasksService";
+import { defaultEvents, EventsService } from "./EventsService";
 import { Todo } from "../models/Todo";
 import { oneHourTask } from "../test/data";
 import { defaultChronotype } from "../models/Chronotype";
 import { Time } from "../models/time";
-import { defaultTasks, Task } from "../models/Task";
+import { Task } from "../models/Task";
 import { Crud } from "./crud";
 import { Event } from "../models/Event";
 
-describe("The Tasks Service", () => {
-  let tasksService: Crud<Event>;
+describe("The Events Service", () => {
+  let eventsService: Crud<Event>;
 
   beforeEach(() => {
-    tasksService = EventsService.create(defaultChronotype);
+    eventsService = EventsService.create(defaultChronotype);
     Time.set(new Date(2019, 6, 5, 12, 0, 0, 0)); // 2019-07-05 at Noon
   });
 
@@ -26,29 +26,30 @@ describe("The Tasks Service", () => {
     describe("When read() is called, it...", () => {
       let allResult: Todo[];
       beforeEach(async function () {
-        allResult = await tasksService.read();
+        allResult = await eventsService.read();
       });
 
       it("Returns the default tasks", () => {
         allResult.forEach((item, index) => {
-          expect(item.description).toEqual(defaultTasks[index].description);
-          expect(item.completed).toEqual(defaultTasks[index].completed);
-          expect(item.title).toEqual(defaultTasks[index].title);
-          expect(item.id).toEqual(defaultTasks[index].id);
+          expect(item.description).toEqual(defaultEvents[index].description);
+          expect(item.completed).toEqual(defaultEvents[index].completed);
+          expect(item.title).toEqual(defaultEvents[index].title);
+          expect(item.id).toEqual(defaultEvents[index].id);
         });
       });
     });
 
-    describe("When upsert is called with a new Todo, it...", () => {
+    describe("When upsert is called with a new Task, it...", () => {
       let upsertResult: Todo;
 
       beforeEach(async function () {
-        upsertResult = await tasksService.upsert(oneHourTask);
+        upsertResult = await eventsService.upsert(oneHourTask);
+        console.log("upsertResult", upsertResult);
         expect(upsertResult).toBeDefined();
       });
 
-      it("Inserts the provided Todo", async function () {
-        const found = (await tasksService.find(upsertResult.id)) as Task;
+      it("Inserts the provided Task", async function () {
+        const found = (await eventsService.find(upsertResult.id)) as Task;
         expect(found?.description).toEqual(oneHourTask.description);
         expect(found?.estimate).toEqual(oneHourTask.estimate);
         expect(found?.title).toEqual(oneHourTask.title);

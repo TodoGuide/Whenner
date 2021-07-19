@@ -3,13 +3,13 @@
 
 import { EventResultAction, EventsResultActionThunk } from ".";
 import { Dispatch } from "redux";
-import { tasksService } from "../../../services/services";
+import { eventsService } from "../../../services/services";
 import { WhennerActionType } from "../../common/actions";
 import { Event } from "../../../models/Event";
 
 function loadEventsSuccess(events: Event[]): EventResultAction {
   return {
-    type: WhennerActionType.LoadTasksSuccess,
+    type: WhennerActionType.LoadEventsSuccess,
     events,
   };
 }
@@ -17,13 +17,13 @@ function loadEventsSuccess(events: Event[]): EventResultAction {
 /**
  * A thunk to load todo items
  */
-export const loadTasks: EventsResultActionThunk = () => {
+export const loadEvents: EventsResultActionThunk = () => {
   return function (dispatch: Dispatch) {
-    return tasksService
+    return eventsService
       .read()
       .then((tasks) => dispatch(loadEventsSuccess(tasks)))
       .catch((e) => {
-        console.log("loadTasks error", e);
+        console.log("loadEvents error", e);
         throw e;
       });
   };

@@ -11,7 +11,6 @@ import {
 import { Period } from "./time/Period";
 import moment from "moment";
 import { Time } from "./time";
-import { time } from "console";
 
 /**
  * A prioritized, estimated to-do with flexible start and end times.
@@ -130,8 +129,8 @@ export function isTask(thing: any) {
   return thing?.hasOwnProperty("priority") && thing?.hasOwnProperty("estimate");
 }
 
-export function tasks(todos: Todo[]) {
-  return todos.filter(isTask);
+export function tasksIn(todos: Todo[]): Task[] {
+  return todos.filter(isTask) as Task[];
 }
 
 export const defaultTasks: Task[] = [
