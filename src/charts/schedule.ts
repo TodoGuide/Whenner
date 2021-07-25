@@ -1,4 +1,4 @@
-import { createMachine, EventObject } from "xstate";
+import { assign, createMachine, EventObject } from "xstate";
 import { Chronotype, defaultChronotype } from "../models/Chronotype";
 import { Event } from "../models/Event";
 import { defaultEvents } from "../services/EventsService";

@@ -1,5 +1,5 @@
 import { oneHourTask, pastAppointment, twoHourTask } from "../test/data";
-import { incomplete, Event, completed } from "./Event";
+import { incomplete, Event, completed, isInTheFuture } from "./Event";
 import { Time } from "./time";
 
 describe("The Event Module", () => {

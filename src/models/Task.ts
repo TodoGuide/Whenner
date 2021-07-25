@@ -11,6 +11,8 @@ import {
 import { Period } from "./time/Period";
 import moment from "moment";
 import { Time } from "./time";
+import { assign, createMachine } from "xstate";
+import { Upserter } from "../services/crud";
 
 /**
  * A prioritized, estimated to-do with flexible start and end times.
@@ -132,6 +134,45 @@ export function isTask(thing: any) {
 export function tasksIn(todos: Todo[]): Task[] {
   return todos.filter(isTask) as Task[];
 }
+
+export interface TaskContext {
+  task: Task;
+  error?: string;
+}
+
+export const createTaskMachine = (task: Task, upsert: Upserter<Task>) =>
+  createMachine<TaskContext>({
+    id: "task",
+    initial: "viewing",
+    context: { task },
+    on: {},
+    states: {
+      viewing: {
+        on: {
+          SAVE: {
+            target: "saving",
+          },
+        },
+      },
+      saving: {
+        invoke: {
+          id: "upsert",
+          src: (context, event) => upsert({ ...context.task, ...event.task }),
+          onDone: {
+            target: "viewing",
+            actions: assign({ task: (context, event) => event.data }),
+          },
+          onError: {
+            target: "error",
+            actions: assign({
+              error: (context, event) => JSON.stringify({ context, event }),
+            }),
+          },
+        },
+      },
+      error: {},
+    },
+  });
 
 export const defaultTasks: Task[] = [
   {

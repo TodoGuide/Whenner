@@ -92,6 +92,14 @@ export function endOf(event: Event): Date {
   return new Date((event as Appointment).end || estimateEndOf(event as Task));
 }
 
+/**
+ * If the given event is a task, the completed date is returned. If the event is an appointment,
+ * returns the appointment end date only if the end date is in the past.
+ *
+ * @export
+ * @param {Event} event
+ * @returns {(Date | undefined)}
+ */
 export function completed(event: Event): Date | undefined {
   const result =
     dateValueOf((event as Task).completed) ||

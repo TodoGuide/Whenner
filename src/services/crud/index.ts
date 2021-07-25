@@ -3,6 +3,7 @@
 
 import Id, { IdGenerator } from "../Id";
 import { Time } from "../../models/time";
+import { assign, createMachine, EventObject } from "xstate";
 
 /**
  * A function that finds an item of the specified type, optionally from a provided array
@@ -108,6 +109,8 @@ export interface Writer<T> {
 export interface WriterComposer {
   <T>(key: string): Writer<T>;
 }
+
+export type Operation<T extends Id> = Inserter<T> | Updater<T> | Upserter<T>;
 
 export interface Crud<T extends Id> {
   read: Reader<T[]>;

@@ -12,7 +12,7 @@ import composeCrud, {
   Updater,
   InserterComposer,
   readListFinder,
-  FinderComposer
+  FinderComposer,
 } from ".";
 import Id, { IdGenerator } from "../Id";
 import { Time } from "../../models/time";
@@ -23,7 +23,7 @@ export const localStorageInserter: InserterComposer = <T extends Id>(
   find: Finder<T> = readListFinder(read),
   nextId: IdGenerator = Time.now
 ): Inserter<T> =>
-  async function(item: T): Promise<T> {
+  async function (item: T): Promise<T> {
     const existing = await find(item.id);
     if (existing) {
       throw new Error(
@@ -36,18 +36,19 @@ export const localStorageInserter: InserterComposer = <T extends Id>(
     return insertItem;
   };
 
-export const localStorageReader: ReaderComposer = <T>(
-  key: string,
-  defaultValue?: T
-): Reader<T> => (): Promise<T> =>
-  JSON.parse(localStorage.getItem(key) || "null") || defaultValue;
+export const localStorageReader: ReaderComposer =
+  <T>(key: string, defaultValue?: T): Reader<T> =>
+  (): Promise<T> =>
+    Promise.resolve(
+      JSON.parse(localStorage.getItem(key) || "null") || defaultValue
+    );
 
 export const localStorageUpdater: UpdaterComposer = <T extends Id>(
   read: Reader<T[]>,
   write: Writer<T[]>,
   find: Finder<T> = readListFinder(read)
 ): Updater<T> =>
-  async function(item: T): Promise<T | undefined> {
+  async function (item: T): Promise<T | undefined> {
     const items = await read();
     const existing = await find(item.id, items);
     if (existing) {
@@ -58,7 +59,8 @@ export const localStorageUpdater: UpdaterComposer = <T extends Id>(
   };
 
 export const localStorageWriter: WriterComposer = <T>(key: string) =>
-  function(item: T): Promise<T> {
+  function (item: T): Promise<T> {
+    console.log("localStorageWriter", { item });
     localStorage.setItem(key, JSON.stringify(item));
     return Promise.resolve(item);
   };
@@ -82,7 +84,7 @@ export const localStorageCrud = <T extends Id>({
   composeWrite: composeWriter = localStorageWriter,
   composeFind: composeFinder = readListFinder,
   composeUpdate = localStorageUpdater,
-  composeInsert: composeInserter = localStorageInserter
+  composeInsert: composeInserter = localStorageInserter,
 }: LocalStorageCrudArgs<T>) =>
   composeCrud({
     key,
@@ -92,5 +94,5 @@ export const localStorageCrud = <T extends Id>({
     composeUpdate,
     composeInsert: composeInserter,
     defaultData: initialData,
-    generateId
+    generateId,
   });

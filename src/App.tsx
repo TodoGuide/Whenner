@@ -11,8 +11,20 @@ import Container from "react-bootstrap/Container";
 import SettingsPage from "./components/SettingsPage";
 import Header from "./components/common/Header";
 import TasksPage from "./components/TasksPage";
+import { useMachine } from "@xstate/react";
+import { localStorageCrud } from "./services/crud/local-storage";
+import { createRecordSetMachine } from "./services/crud/record";
+import { defaultEvents } from "./services/EventsService";
+
+const crud = localStorageCrud({
+  key: "whenner.events",
+  initialData: defaultEvents,
+});
 
 const App: React.FC = () => {
+  useMachine(createRecordSetMachine(crud), {
+    devTools: true,
+  });
   return (
     <Router>
       <Container>

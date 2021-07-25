@@ -3,6 +3,8 @@
 
 import { Estimated } from "./time/Estimated";
 import Id from "../services/Id";
+import { Time } from "./time";
+import { dateValueOf } from "./time/utils";
 
 export interface Title {
   readonly title: string;
@@ -35,3 +37,12 @@ export interface Todo extends Article {
 }
 
 export interface EstimatedTodo extends Todo, Estimated {}
+
+export function toggleCompleted<TTodo extends Todo>(todo: TTodo): TTodo {
+  const result = {
+    ...todo,
+    completed: todo.completed ? undefined : Time.current(),
+  };
+  console.log("toggleCompleted", { todo, result });
+  return result;
+}
