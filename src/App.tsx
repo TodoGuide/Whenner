@@ -18,7 +18,7 @@ import { localStorageCrud } from "./services/crud/impl/local-storage";
 
 const crud = localStorageCrud({
   key: "whenner.events",
-  initialData: defaultEvents,
+  defaultData: defaultEvents,
 });
 
 const App: React.FC = () => {
