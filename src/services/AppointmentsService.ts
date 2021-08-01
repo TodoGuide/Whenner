@@ -11,7 +11,7 @@ export class AppointmentsService {
   static create(): Crud<Appointment> {
     return localStorageCrud({
       key: APPOINTMENTS_KEY,
-      initialData: defaultAppointments,
+      defaultData: defaultAppointments,
     });
   }
 }
