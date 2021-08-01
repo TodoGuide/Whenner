@@ -1,4 +1,11 @@
-import { assign, createMachine, DoneInvokeEvent, EventObject } from "xstate";
+import {
+  assign,
+  createMachine,
+  DoneInvokeEvent,
+  EventObject,
+  sendParent,
+  spawn,
+} from "xstate";
 import { Crud, Operation } from ".";
 import Id from "../Id";
 
@@ -26,28 +33,9 @@ function createOperationErrorConfig() {
   };
 }
 
-function createOperationSuccessConfig<T extends Id>() {
-  return {
-    target: "viewing",
-    actions: createRecordAssigner<T>(),
-  };
-}
-
 function createOperationInvoker<T extends Id>(operation: Operation<T>) {
   return (context: RecordContext<T>, event: RecordEvent<T>) =>
     operation({ ...context.record, ...event.record });
-}
-
-function createOperationInvokerConfig<T extends Id>(
-  id: string,
-  operation: Operation<T>
-) {
-  return {
-    id,
-    src: createOperationInvoker(operation),
-    onDone: createOperationSuccessConfig<T>(),
-    onError: createOperationErrorConfig(),
-  };
 }
 
 export const createRecordMachine = <T extends Id>(record: T, crud: Crud<T>) =>
@@ -77,23 +65,75 @@ export const createRecordMachine = <T extends Id>(record: T, crud: Crud<T>) =>
           id: "find",
           src: (context, event) =>
             crud.find(context.record.id || event.record.id),
-          onDone: createOperationSuccessConfig<T>(),
+          onDone: {
+            target: "viewing",
+            actions: [
+              createRecordAssigner<T>(),
+              sendParent((context) => ({
+                type: "RECORD_CHANGED",
+                record: context.record,
+              })),
+            ],
+          },
           onError: createOperationErrorConfig(),
         },
       },
       saving: {
-        invoke: createOperationInvokerConfig<T>("upsert", crud.upsert),
+        invoke: {
+          id: "upsert",
+          src: createOperationInvoker(crud.upsert),
+          onDone: {
+            target: "viewing",
+            actions: [
+              createRecordAssigner<T>(),
+              sendParent((context) => ({
+                type: "RECORD_CHANGED",
+                record: context.record,
+              })),
+            ],
+          },
+          onError: createOperationErrorConfig(),
+        },
       },
       inserting: {
-        invoke: createOperationInvokerConfig<T>("insert", crud.insert),
+        invoke: {
+          id: "insert",
+          src: createOperationInvoker(crud.insert),
+          onDone: {
+            target: "viewing",
+            actions: [
+              createRecordAssigner<T>(),
+              sendParent((context) => ({
+                type: "RECORD_CHANGED",
+                record: context.record,
+              })),
+            ],
+          },
+          onError: createOperationErrorConfig(),
+        },
       },
       updating: {
-        invoke: createOperationInvokerConfig<T>("update", crud.update),
+        invoke: {
+          id: "update",
+          src: createOperationInvoker(crud.update),
+          onDone: {
+            target: "viewing",
+            actions: [
+              createRecordAssigner<T>(),
+              sendParent((context) => ({
+                type: "RECORD_CHANGED",
+                record: context.record,
+              })),
+            ],
+          },
+          onError: createOperationErrorConfig(),
+        },
       },
       error: {
         on: {
           ACKNOWLEDGE: {
             target: "viewing",
+            // todo: Clear context.error
           },
         },
       },
@@ -107,12 +147,8 @@ export interface RecordSetContext<T extends Id> {
   error?: string;
 }
 
-export interface RecordSetEvent<T extends Id> extends EventObject {
-  records: T[];
-}
-
 export const createRecordSetMachine = <T extends Id>(crud: Crud<T>) =>
-  createMachine<RecordSetContext<T>, RecordSetEvent<T>>({
+  createMachine<RecordSetContext<T>, RecordEvent<T>>({
     id: "record-set",
     initial: "loading",
     context: {
@@ -126,7 +162,13 @@ export const createRecordSetMachine = <T extends Id>(crud: Crud<T>) =>
           onDone: {
             target: "ready",
             actions: assign({
-              records: (context, event) => event.data,
+              records: (_context, event: DoneInvokeEvent<T[]>) =>
+                event.data.map((record) => {
+                  return {
+                    ...record,
+                    ref: spawn(createRecordMachine(record, crud)),
+                  };
+                }),
             }),
           },
           onError: createOperationErrorConfig(),
@@ -136,6 +178,16 @@ export const createRecordSetMachine = <T extends Id>(crud: Crud<T>) =>
         on: {
           REFRESH: {
             target: "loading",
+          },
+          RECORD_CHANGED: {
+            actions: assign((context, event) => {
+              const result = {
+                records: context.records.map((record) =>
+                  record.id === event.record.id ? event.record : record
+                ),
+              };
+              return result;
+            }),
           },
         },
       },
