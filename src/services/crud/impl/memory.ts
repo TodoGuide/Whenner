@@ -43,7 +43,7 @@ export const memoryInserter: InserterComposer = <T extends Id>(
 export const memoryReader: ReaderComposer =
   <T>(key: string, defaultValue?: T): Reader<T> =>
   (): Promise<T> =>
-    Promise.resolve((buckets[key] || defaultValue) as T);
+    Promise.resolve((buckets[key] || defaultValue) as unknown as T);
 
 export const memoryUpdater: UpdaterComposer = <T extends Id>(
   read: Reader<T[]>,
