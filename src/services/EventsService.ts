@@ -14,7 +14,7 @@ export class EventsService {
     const result = {
       ...localStorageCrud({
         key: EVENTS_KEY,
-        initialData: defaultEvents,
+        defaultData: defaultEvents,
       }),
     };
     const { read, find } = result;
