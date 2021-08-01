@@ -42,7 +42,7 @@ export const localStorageReader: ReaderComposer =
   <T>(key: string, defaultValue?: T): Reader<T> =>
   (): Promise<T> =>
     Promise.resolve(
-      JSON.parse(localStorage.getItem(key) || "null") || defaultValue
+      JSON.parse(localStorage.getItem(key) || "null") || defaultValue || []
     );
 
 export const localStorageUpdater: UpdaterComposer = <T extends Id>(
@@ -69,7 +69,7 @@ export const localStorageWriter: WriterComposer = <T>(key: string) =>
 
 type LocalStorageCrudArgs<T extends Id> = {
   key: string;
-  initialData?: T[];
+  defaultData?: T[];
   generateId?: IdGenerator;
   composeRead?: ReaderComposer;
   composeWrite?: WriterComposer;
@@ -80,21 +80,21 @@ type LocalStorageCrudArgs<T extends Id> = {
 
 export const localStorageCrud = <T extends Id>({
   key,
-  initialData,
+  defaultData,
   generateId,
-  composeRead: composeReader = localStorageReader,
-  composeWrite: composeWriter = localStorageWriter,
-  composeFind: composeFinder = readListFinder,
+  composeRead = localStorageReader,
+  composeWrite = localStorageWriter,
+  composeFind = readListFinder,
   composeUpdate = localStorageUpdater,
-  composeInsert: composeInserter = localStorageInserter,
+  composeInsert = localStorageInserter,
 }: LocalStorageCrudArgs<T>) =>
   composeCrud({
     key,
-    composeRead: composeReader,
-    composeWrite: composeWriter,
-    composeFind: composeFinder,
+    composeRead,
+    composeWrite,
+    composeFind,
     composeUpdate,
-    composeInsert: composeInserter,
-    defaultData: initialData,
+    composeInsert,
+    defaultData,
     generateId,
   });

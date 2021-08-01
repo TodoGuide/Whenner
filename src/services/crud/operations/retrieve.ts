@@ -1,7 +1,6 @@
 // Licensed under GPL v3: https://www.gnu.org/licenses/gpl-3.0.txt
 // Copyright (C) 2021  James Tharpe
 import Id from "../../Id";
-import { logResult } from "../../log";
 
 /**
  * A function that finds an item of the specified type, optionally from a provided array

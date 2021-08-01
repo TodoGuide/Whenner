@@ -43,7 +43,7 @@ export const memoryInserter: InserterComposer = <T extends Id>(
 export const memoryReader: ReaderComposer =
   <T>(key: string, defaultValue?: T): Reader<T> =>
   (): Promise<T> =>
-    Promise.resolve((buckets[key] || defaultValue) as unknown as T);
+    Promise.resolve((buckets[key] || defaultValue) as unknown as T) || [];
 
 export const memoryUpdater: UpdaterComposer = <T extends Id>(
   read: Reader<T[]>,
@@ -68,7 +68,7 @@ export const memoryWriter: WriterComposer = <T>(key: string) =>
 
 type MemoryCrudArgs<T extends Id> = {
   key: string;
-  initialData?: T[];
+  defaultData?: T[];
   generateId?: IdGenerator;
   composeRead?: ReaderComposer;
   composeWrite?: WriterComposer;
@@ -79,7 +79,7 @@ type MemoryCrudArgs<T extends Id> = {
 
 export const memoryCrud = <T extends Id>({
   key,
-  initialData,
+  defaultData,
   generateId,
   composeRead = memoryReader,
   composeWrite = memoryWriter,
@@ -94,6 +94,6 @@ export const memoryCrud = <T extends Id>({
     composeFind,
     composeUpdate,
     composeInsert,
-    defaultData: initialData || [],
+    defaultData: defaultData || [],
     generateId,
   });
