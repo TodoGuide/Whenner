@@ -1,14 +1,14 @@
+// Licensed under GPL v3: https://www.gnu.org/licenses/gpl-3.0.txt
+// Copyright (C) 2019  James Tharpe
+
 import { oneHourTask, twoHourTask, threeHourTask } from "../test/data";
 import {
   predecessorsOf,
   successorsOf,
   supertaskOf,
   subtasksOf,
-  supertasksOf
+  supertasksOf,
 } from "./Task";
-
-// Licensed under GPL v3: https://www.gnu.org/licenses/gpl-3.0.txt
-// Copyright (C) 2019  James Tharpe
 
 describe("The Tasks module", () => {
   describe("Given a task with a predecessor", () => {
@@ -106,8 +106,8 @@ describe("The Tasks module", () => {
   });
 
   describe("Given a task with a recursive supertask", () => {
-    const taskA = {...oneHourTask };
-    const taskB = {...twoHourTask, supertaskId: taskA.id}
+    const taskA = { ...oneHourTask };
+    const taskB = { ...twoHourTask, supertaskId: taskA.id };
     taskA.supertaskId = taskB.id;
     const allTasks = [taskA, taskB];
 

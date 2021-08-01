@@ -1,6 +1,6 @@
 import { Chronotype } from "../models/Chronotype";
 import { defaultTasks } from "../models/Task";
-import { localStorageCrud } from "./crud/local-storage";
+import { localStorageCrud } from "./crud/impl/local-storage";
 import { Crud } from "./crud";
 import { schedule } from "../models/Schedule";
 import { Event } from "../models/Event";

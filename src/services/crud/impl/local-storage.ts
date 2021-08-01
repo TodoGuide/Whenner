@@ -1,21 +1,23 @@
 // Licensed under GPL v3: https://www.gnu.org/licenses/gpl-3.0.txt
 // Copyright (C) 2019  James Tharpe
 
-import composeCrud, {
-  ReaderComposer,
-  Reader,
-  WriterComposer,
-  Writer,
-  Inserter,
+import Id, { IdGenerator } from "../../Id";
+import { Time } from "../../../models/time";
+import {
   Finder,
-  UpdaterComposer,
-  Updater,
-  InserterComposer,
-  readListFinder,
   FinderComposer,
-} from ".";
-import Id, { IdGenerator } from "../Id";
-import { Time } from "../../models/time";
+  Reader,
+  ReaderComposer,
+  readListFinder,
+} from "../operations/retrieve";
+import { Inserter, InserterComposer } from "../operations/insert";
+import {
+  Updater,
+  UpdaterComposer,
+  Writer,
+  WriterComposer,
+} from "../operations/update";
+import composeCrud from "../";
 
 export const localStorageInserter: InserterComposer = <T extends Id>(
   read: Reader<T[]>,

@@ -1,6 +1,7 @@
 // Licensed under GPL v3: https://www.gnu.org/licenses/gpl-3.0.txt
 // Copyright (C) 2019  James Tharpe
 
+import { time } from "console";
 import { MILLISECONDS_PER_DAY } from "./constants";
 
 /**
@@ -19,7 +20,8 @@ export const Time = {
   set: (to: Date) => {
     Time.current = () => new Date(to);
     Time.now = () => to.getTime();
-  }
+    return Time.current();
+  },
 };
 
 /**

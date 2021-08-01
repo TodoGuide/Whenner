@@ -1,13 +1,16 @@
+// Licensed under GPL v3: https://www.gnu.org/licenses/gpl-3.0.txt
+// Copyright (C) 2021  James Tharpe
+
 import {
   assign,
   createMachine,
   DoneInvokeEvent,
   EventObject,
   sendParent,
-  spawn,
 } from "xstate";
-import { Crud, Operation } from ".";
+import { Crud } from ".";
 import Id from "../Id";
+import { Operation } from "./operations";
 
 export interface RecordContext<T extends Id> {
   record: T;
@@ -24,7 +27,7 @@ function createRecordAssigner<T extends Id>() {
   });
 }
 
-function createOperationErrorConfig() {
+export function createOperationErrorConfig() {
   return {
     target: "error",
     actions: assign<any, DoneInvokeEvent<any>>({
@@ -38,9 +41,13 @@ function createOperationInvoker<T extends Id>(operation: Operation<T>) {
     operation({ ...context.record, ...event.record });
 }
 
-export const createRecordMachine = <T extends Id>(record: T, crud: Crud<T>) =>
+export const createRecordMachine = <T extends Id>(
+  record: T,
+  crud: Crud<T>,
+  type: string = "record"
+) =>
   createMachine<RecordContext<T>, RecordEvent<T>>({
-    id: "record",
+    id: `${type}_${record.id}`,
     initial: "viewing",
     context: { record },
     states: {
@@ -134,67 +141,6 @@ export const createRecordMachine = <T extends Id>(record: T, crud: Crud<T>) =>
           ACKNOWLEDGE: {
             target: "viewing",
             // todo: Clear context.error
-          },
-        },
-      },
-    },
-  });
-
-// ---
-
-export interface RecordSetContext<T extends Id> {
-  records: T[];
-  error?: string;
-}
-
-export const createRecordSetMachine = <T extends Id>(crud: Crud<T>) =>
-  createMachine<RecordSetContext<T>, RecordEvent<T>>({
-    id: "record-set",
-    initial: "loading",
-    context: {
-      records: [],
-    },
-    states: {
-      loading: {
-        invoke: {
-          id: "loading",
-          src: crud.read,
-          onDone: {
-            target: "ready",
-            actions: assign({
-              records: (_context, event: DoneInvokeEvent<T[]>) =>
-                event.data.map((record) => {
-                  return {
-                    ...record,
-                    ref: spawn(createRecordMachine(record, crud)),
-                  };
-                }),
-            }),
-          },
-          onError: createOperationErrorConfig(),
-        },
-      },
-      ready: {
-        on: {
-          REFRESH: {
-            target: "loading",
-          },
-          RECORD_CHANGED: {
-            actions: assign((context, event) => {
-              const result = {
-                records: context.records.map((record) =>
-                  record.id === event.record.id ? event.record : record
-                ),
-              };
-              return result;
-            }),
-          },
-        },
-      },
-      error: {
-        on: {
-          ACKNOWLEDGE: {
-            target: "ready",
           },
         },
       },

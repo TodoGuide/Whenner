@@ -12,7 +12,7 @@ import { Period } from "./time/Period";
 import moment from "moment";
 import { Time } from "./time";
 import { assign, createMachine } from "xstate";
-import { Upserter } from "../services/crud";
+import { Upserter } from "../services/crud/operations/update";
 
 /**
  * A prioritized, estimated to-do with flexible start and end times.

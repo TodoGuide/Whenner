@@ -12,9 +12,9 @@ import SettingsPage from "./components/SettingsPage";
 import Header from "./components/common/Header";
 import TasksPage from "./components/TasksPage";
 import { useMachine } from "@xstate/react";
-import { localStorageCrud } from "./services/crud/local-storage";
-import { createRecordSetMachine } from "./services/crud/record";
 import { defaultEvents } from "./services/EventsService";
+import { createRecordSetMachine } from "./services/crud/record-set";
+import { localStorageCrud } from "./services/crud/impl/local-storage";
 
 const crud = localStorageCrud({
   key: "whenner.events",
@@ -22,7 +22,7 @@ const crud = localStorageCrud({
 });
 
 const App: React.FC = () => {
-  useMachine(createRecordSetMachine(crud), {
+  useMachine(createRecordSetMachine(crud, "Event"), {
     devTools: true,
   });
   return (
