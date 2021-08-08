@@ -1,6 +1,5 @@
 import Id from "../../Id";
-import { Inserter } from "./insert";
-import { Updater, Upserter, upserter } from "./update";
+import { Upserter, upserter } from "./update";
 
 describe("The update module", () => {
   describe("upserter function", () => {
