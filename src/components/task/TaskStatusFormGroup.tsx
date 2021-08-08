@@ -4,7 +4,6 @@
 import React from "react";
 import { Form } from "react-bootstrap";
 import { Task as TaskModel } from "../../models/Task";
-import { itemKey } from "../utils";
 
 interface TaskStatusFormGroupProps {
   id: string;
@@ -13,12 +12,12 @@ interface TaskStatusFormGroupProps {
 
 const TaskStatusFormGroup: React.FC<TaskStatusFormGroupProps> = ({
   id,
-  task
+  task,
 }: TaskStatusFormGroupProps) => {
   return (
     <Form.Group id={id}>
       <Form.Check
-        id={itemKey(id + "-incomplete", task)}
+        id={`${id}-incomplete-${task.id}`}
         checked
         name="status"
         label="Incomplete"
@@ -26,14 +25,14 @@ const TaskStatusFormGroup: React.FC<TaskStatusFormGroupProps> = ({
         readOnly
       />
       <Form.Check
-        id={itemKey(id + "-complete", task)}
+        id={`${id}-complete-${task.id}`}
         name="status"
         label="Complete [yyyy-MM-dd]"
         type="radio"
         readOnly
       />
       <Form.Check
-        id={itemKey(id + "-canceled", task)}
+        id={`${id}-canceled-${task}`}
         name="status"
         label="Canceled [yyyy-MM-dd]"
         type="radio"

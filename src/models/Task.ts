@@ -11,8 +11,10 @@ import {
 import { Period } from "./time/Period";
 import moment from "moment";
 import { Time } from "./time";
-import { assign, createMachine } from "xstate";
+import { ActorRef, assign, createMachine, State } from "xstate";
 import { Upserter } from "../services/crud/operations/update";
+import { RecordActor } from "../services/crud/record-set";
+import { RecordContext, RecordEvent } from "../services/crud/record";
 
 /**
  * A prioritized, estimated to-do with flexible start and end times.
@@ -28,9 +30,15 @@ export interface Task extends Todo, Priority, Estimated {
   readonly supertaskId?: number;
 }
 
+export type TaskRecord = RecordActor<Task>;
+export type TaskActorRef = ActorRef<
+  RecordEvent<Task>,
+  State<RecordContext<Task>, RecordEvent<Task>>
+>;
+
 export const taskPrioritizer = prioritizer;
 
-export function prioritize(tasks: Task[]) {
+export function prioritize<T extends Task>(tasks: T[]) {
   return defaultPrioritize(taskPrioritizer, ...tasks);
 }
 
@@ -92,7 +100,10 @@ export function supertasksOf(
   return result;
 }
 
-export function subtasksOf(task: Task, candidates: Task[]): Task[] | undefined {
+export function subtasksOf<T extends Task>(
+  task: T,
+  candidates: T[]
+): T[] | undefined {
   const result =
     task && candidates
       ? prioritize(
@@ -102,10 +113,10 @@ export function subtasksOf(task: Task, candidates: Task[]): Task[] | undefined {
   return result && result.length > 0 ? result : undefined;
 }
 
-export function predecessorsOf(
-  task: Task,
-  candidates: Task[]
-): Task[] | undefined {
+export function predecessorsOf<T extends Task>(
+  task: T,
+  candidates: T[]
+): T[] | undefined {
   const result =
     task && task.predecessorIds && candidates
       ? candidates.filter((candidate) =>
@@ -115,7 +126,7 @@ export function predecessorsOf(
   return result && result.length > 0 ? result : undefined;
 }
 
-export function successorsOf(task: Task, candidates: Task[]) {
+export function successorsOf<T extends Task>(task: T, candidates: T[]) {
   const result =
     task && candidates
       ? candidates.filter(
@@ -127,12 +138,15 @@ export function successorsOf(task: Task, candidates: Task[]) {
   return result && result.length > 0 ? result : undefined;
 }
 
-export function isTask(thing: any) {
-  return thing?.hasOwnProperty("priority") && thing?.hasOwnProperty("estimate");
+export function isTask(candidate: any) {
+  return (
+    candidate?.hasOwnProperty("priority") &&
+    candidate?.hasOwnProperty("estimate")
+  );
 }
 
-export function tasksIn(todos: Todo[]): Task[] {
-  return todos.filter(isTask) as Task[];
+export function tasksIn<T extends Todo>(todos: Todo[]): T[] {
+  return todos.filter(isTask) as T[];
 }
 
 export interface TaskContext {
@@ -143,11 +157,11 @@ export interface TaskContext {
 export const createTaskMachine = (task: Task, upsert: Upserter<Task>) =>
   createMachine<TaskContext>({
     id: "task",
-    initial: "viewing",
+    initial: "unmodified",
     context: { task },
     on: {},
     states: {
-      viewing: {
+      unmodified: {
         on: {
           SAVE: {
             target: "saving",
@@ -159,7 +173,7 @@ export const createTaskMachine = (task: Task, upsert: Upserter<Task>) =>
           id: "upsert",
           src: (context, event) => upsert({ ...context.task, ...event.task }),
           onDone: {
-            target: "viewing",
+            target: "unmodified",
             actions: assign({ task: (context, event) => event.data }),
           },
           onError: {

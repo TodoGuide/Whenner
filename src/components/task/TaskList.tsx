@@ -3,13 +3,13 @@
 
 import React from "react";
 import { Accordion, Card } from "react-bootstrap";
-import { Task as TaskModel } from "../../models/Task";
 import Task from "./Task";
-import { itemKey } from "../utils";
+import { TaskRecord } from "../../models/Task";
+import TaskRelationshipTabs from "./TaskRelationshipTabs";
 
 type TaskListProps = {
   id: string;
-  tasks: TaskModel[];
+  tasks: TaskRecord[];
   currentDepth?: number;
   maxDepth?: number;
 };
@@ -23,22 +23,31 @@ const TaskList: React.FC<TaskListProps> = ({
   return (
     <Accordion id={id}>
       {tasks.map((task, index) => {
-        const key = itemKey(`${id}-list-${currentDepth}`, task, index);
+        const key = `${id}-list-${currentDepth}-${task.id}-${index}`;
+        console.log("TaskList, rendering", { key, ref: task.ref });
         return (
           <Card key={key}>
             <Card.Header>
               <Accordion.Toggle as={Card.Header} eventKey={key}>
-                <strong>{task.title}</strong> {task.description}
+                <strong>{task?.title}</strong> {task?.description}
               </Accordion.Toggle>
             </Card.Header>
             <Accordion.Collapse eventKey={key}>
               <Card.Body>
                 <Task
                   id={`${key}-task`}
-                  task={task}
+                  taskRef={task.ref}
                   currentDepth={currentDepth}
                   maxDepth={maxDepth}
                 />
+                <TaskRelationshipTabs
+                  id={`${id}-relationships-${task.id}-${currentDepth}`}
+                  tasks={tasks}
+                  showTaskId={task.id}
+                  currentDepth={currentDepth}
+                  maxDepth={maxDepth}
+                />
+                <hr />
               </Card.Body>
             </Accordion.Collapse>
           </Card>

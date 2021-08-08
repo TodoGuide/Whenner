@@ -3,14 +3,20 @@
 
 import React from "react";
 import TaskList from "./task/TaskList";
-import { allTestDataEvents } from "../test/data";
-import { tasksIn } from "../models/Task";
+import { TaskRecord } from "../models/Task";
 
-const TasksPage: React.FC = () => (
+const MAX_DEPTH_DEFAULT = 7;
+
+type TaskPageProps = {
+  tasks: TaskRecord[];
+  maxDepth?: number;
+};
+
+const TasksPage: React.FC<TaskPageProps> = ({ tasks, maxDepth }) => (
   <TaskList
-    tasks={tasksIn(allTestDataEvents)}
+    tasks={tasks}
     id="tasks"
-    maxDepth={15}
+    maxDepth={maxDepth || MAX_DEPTH_DEFAULT}
   ></TaskList>
 );
 

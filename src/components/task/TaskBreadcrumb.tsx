@@ -5,7 +5,6 @@ import React from "react";
 import { Breadcrumb } from "react-bootstrap";
 import { Task as TaskModel, supertasksOf, tasksIn } from "../../models/Task";
 import { allTestDataEvents } from "../../test/data";
-import { itemKey } from "../utils";
 
 interface TaskBreadcrumbProps {
   task: TaskModel;
@@ -25,7 +24,7 @@ const TaskBreadcrumb: React.FC<TaskBreadcrumbProps> = ({
         (supertask, index) => (
           <Breadcrumb.Item
             title={supertask.description}
-            key={itemKey("task-breadcrumb", supertask, index)}
+            key={`task-breadcrumb-${supertask.id}-${index}`}
           >
             {supertask.title}
           </Breadcrumb.Item>

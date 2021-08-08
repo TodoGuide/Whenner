@@ -1,14 +1,26 @@
-import { assign, createMachine, DoneInvokeEvent, spawn } from "xstate";
+import {
+  ActorRef,
+  assign,
+  createMachine,
+  DoneInvokeEvent,
+  spawn,
+  State,
+} from "xstate";
 import { Crud } from ".";
 import Id from "../Id";
 import {
   createOperationErrorConfig,
   createRecordMachine,
+  RecordContext,
   RecordEvent,
 } from "./record";
 
+export type RecordActor<T extends Id> = T & {
+  ref: ActorRef<RecordEvent<T>, State<RecordContext<T>, RecordEvent<T>>>;
+};
+
 export interface RecordSetContext<T extends Id> {
-  records: T[];
+  records: RecordActor<T>[];
   error?: string;
 }
 
@@ -51,7 +63,14 @@ export const createRecordSetMachine = <T extends Id>(
             actions: assign((context, event) => {
               const result = {
                 records: context.records.map((record) =>
-                  record.id === event.record.id ? event.record : record
+                  record.id === event.record.id
+                    ? {
+                        ...event.record,
+                        ref: spawn(
+                          createRecordMachine(event.record, crud, type)
+                        ),
+                      }
+                    : record
                 ),
               };
               return result;

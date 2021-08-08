@@ -4,34 +4,34 @@
 import React from "react";
 import { Tabs, Tab } from "react-bootstrap";
 import {
-  Task as TaskModel,
   subtasksOf,
   successorsOf,
   predecessorsOf,
-  tasksIn,
+  TaskRecord,
 } from "../../models/Task";
-import { allTestDataEvents } from "../../test/data";
 import TaskList from "./TaskList";
-import { itemKey } from "../utils";
 
 interface TaskRelationshipTabsProps {
   id: string;
-  task: TaskModel;
+  tasks: TaskRecord[];
+  showTaskId: number;
   currentDepth?: number;
   maxDepth?: number;
 }
 
 const TaskRelationshipTabs: React.FC<TaskRelationshipTabsProps> = ({
   id,
-  task,
+  tasks,
+  showTaskId,
   currentDepth = 1,
   maxDepth = 3,
 }: TaskRelationshipTabsProps) => {
-  const allTasks = tasksIn(allTestDataEvents);
-  const subtasks = currentDepth <= maxDepth && subtasksOf(task, allTasks);
-  const predecessors =
-    currentDepth <= maxDepth && predecessorsOf(task, allTasks);
-  const successors = currentDepth <= maxDepth && successorsOf(task, allTasks);
+  const task = tasks.find((t) => t.id === showTaskId);
+  if (!task) throw new Error(`Task with ID ${showTaskId} not found in props`);
+
+  const subtasks = currentDepth <= maxDepth && subtasksOf(task, tasks);
+  const predecessors = currentDepth <= maxDepth && predecessorsOf(task, tasks);
+  const successors = currentDepth <= maxDepth && successorsOf(task, tasks);
   const nextDepth = currentDepth + 1;
 
   return (
@@ -55,7 +55,7 @@ const TaskRelationshipTabs: React.FC<TaskRelationshipTabsProps> = ({
               tasks={predecessors || []}
               currentDepth={nextDepth}
               maxDepth={maxDepth}
-              id={itemKey(`${id}-predecessors`, task, nextDepth)}
+              id={`${id}-predecessors-${task.id}-${nextDepth}`}
             />
           </Tab>
         )}
@@ -69,7 +69,7 @@ const TaskRelationshipTabs: React.FC<TaskRelationshipTabsProps> = ({
               tasks={subtasks || []}
               currentDepth={nextDepth}
               maxDepth={maxDepth}
-              id={itemKey(`${id}-subtasks`, task, nextDepth)}
+              id={`${id}-subtasks-${task.id}-${nextDepth}`}
             />
           </Tab>
         )}
@@ -82,7 +82,7 @@ const TaskRelationshipTabs: React.FC<TaskRelationshipTabsProps> = ({
               tasks={successors || []}
               currentDepth={nextDepth}
               maxDepth={maxDepth}
-              id={itemKey(`${id}-successors`, task, nextDepth)}
+              id={`${id}-successors-${task.id}-${nextDepth}`}
             />
           </Tab>
         )}

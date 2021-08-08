@@ -48,12 +48,27 @@ export const createRecordMachine = <T extends Id>(
 ) =>
   createMachine<RecordContext<T>, RecordEvent<T>>({
     id: `${type}_${record.id}`,
-    initial: "viewing",
+    initial: "unmodified",
     context: { record },
     states: {
-      viewing: {
+      unmodified: {
         on: {
+          CHANGE: {
+            actions: assign({ record: (_, event) => event.record }),
+            target: "modified",
+          },
           REFRESH: {
+            target: "refreshing",
+          },
+        },
+      },
+      modified: {
+        on: {
+          CHANGE: {
+            actions: assign({ record: (_, event) => event.record }), // TODO: Dedupe
+            target: "modified",
+          },
+          CANCEL: {
             target: "refreshing",
           },
           SAVE: {
@@ -73,7 +88,7 @@ export const createRecordMachine = <T extends Id>(
           src: (context, event) =>
             crud.find(context.record.id || event.record.id),
           onDone: {
-            target: "viewing",
+            target: "unmodified",
             actions: [
               createRecordAssigner<T>(),
               sendParent((context) => ({
@@ -90,7 +105,7 @@ export const createRecordMachine = <T extends Id>(
           id: "upsert",
           src: createOperationInvoker(crud.upsert),
           onDone: {
-            target: "viewing",
+            target: "unmodified",
             actions: [
               createRecordAssigner<T>(),
               sendParent((context) => ({
@@ -107,7 +122,7 @@ export const createRecordMachine = <T extends Id>(
           id: "insert",
           src: createOperationInvoker(crud.insert),
           onDone: {
-            target: "viewing",
+            target: "unmodified",
             actions: [
               createRecordAssigner<T>(),
               sendParent((context) => ({
@@ -124,7 +139,7 @@ export const createRecordMachine = <T extends Id>(
           id: "update",
           src: createOperationInvoker(crud.update),
           onDone: {
-            target: "viewing",
+            target: "unmodified",
             actions: [
               createRecordAssigner<T>(),
               sendParent((context) => ({
@@ -139,7 +154,7 @@ export const createRecordMachine = <T extends Id>(
       error: {
         on: {
           ACKNOWLEDGE: {
-            target: "viewing",
+            target: "unmodified",
             // todo: Clear context.error
           },
         },

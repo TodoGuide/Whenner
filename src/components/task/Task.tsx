@@ -4,68 +4,90 @@
 import React from "react";
 import { Form, Button } from "react-bootstrap";
 import EstimateInputFormGroup from "../EstimateInputFormGroup";
-import { Task as TaskModel } from "../../models/Task";
 import TaskStatusFormGroup from "./TaskStatusFormGroup";
 import TaskBreadcrumb from "./TaskBreadcrumb";
-import { itemKey } from "../utils";
-import TaskRelationshipTabs from "./TaskRelationshipTabs";
+import { useActor } from "@xstate/react";
+import { TaskActorRef } from "../../models/Task";
 
 interface TaskProps {
   id: string;
-  task: TaskModel;
+  taskRef: TaskActorRef;
   currentDepth?: number;
   maxDepth?: number;
 }
 
 const Task: React.FC<TaskProps> = ({
   id,
-  task,
+  taskRef,
   currentDepth = 1,
-  maxDepth = 3,
 }: TaskProps) => {
+  const [state, send] = useActor(taskRef);
+  const { record: task, error } = state.context;
+  console.log("<Task>", {
+    id,
+    taskRef,
+    currentDepth,
+    state: state.toStrings(),
+    events: state.nextEvents,
+  });
   return (
     <div id={id}>
       <Form>
         <TaskBreadcrumb task={task} />
-        <Form.Group id={itemKey(`${id}-title-group`, task, currentDepth)}>
+        <Form.Group id={`${id}-title-group-${task.id}-${currentDepth}`}>
           <Form.Control
-            id={itemKey(`${id}-title`, task, currentDepth)}
+            id={`${id}-title-${task.id}-${currentDepth}`}
             type="text"
             placeholder="What do you want to get done?"
             value={task.title}
-            readOnly
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              send({
+                type: "CHANGE",
+                record: { ...task, title: e.target.value },
+              })
+            }
           />
         </Form.Group>
-        <Form.Group id={itemKey(`${id}-description-group`, task, currentDepth)}>
+        <Form.Group id={`${id}-description-group-${task.id}-${currentDepth}`}>
           <Form.Control
-            id={itemKey(`${id}-description`, task, currentDepth)}
+            id={`${id}-description-${task.id}-${currentDepth}`}
             as="textarea"
             rows="3"
             value={task.description}
-            readOnly
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              send({
+                type: "CHANGE",
+                record: { ...task, description: e.target.value },
+              })
+            }
           />
         </Form.Group>
         <EstimateInputFormGroup estimatedItem={task} />
         <TaskStatusFormGroup
           task={task}
-          id={itemKey(`${id}-state`, task, currentDepth)}
+          id={`${id}-state-${task.id}-${currentDepth}`}
         />
         <Form.Group controlId="actions" className="text-right">
-          <Button variant="secondary" className="m-2">
-            Close
-          </Button>
-          <Button variant="primary" className="m-2">
-            Save Changes
-          </Button>
+          {state.nextEvents.includes("CANCEL") && (
+            <Button
+              variant="secondary"
+              className="m-2"
+              onClick={() => send({ type: "CANCEL", record: task })}
+            >
+              Cancel
+            </Button>
+          )}
+          {state.nextEvents.includes("SAVE") && (
+            <Button
+              variant="primary"
+              className="m-2"
+              onClick={() => send({ type: "SAVE", record: task })}
+            >
+              Save Changes
+            </Button>
+          )}
         </Form.Group>
       </Form>
-      <TaskRelationshipTabs
-        id={itemKey(`${id}-relationships`, task, currentDepth)}
-        task={task}
-        currentDepth={currentDepth}
-        maxDepth={maxDepth}
-      />
-      <hr />
     </div>
   );
 };
