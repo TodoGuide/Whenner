@@ -3,21 +3,21 @@
 import Id from "../../Id";
 
 /**
- * A function that finds an item of the specified type, optionally from a provided array
+ * A Finder finds an item of the specified type in a data source, or from the provided array if specified
  */
 export interface Finder<T extends Id> {
   (id: number, list?: T[]): Promise<T | undefined>;
 }
 
 /**
- * A function that returns a Finder function for the specified Reader
+ * A FinderComposer function composes a Finder function from the specified Reader function
  */
 export interface FinderComposer {
   <T extends Id>(read: Reader<T[]>): Finder<T>;
 }
 
 /**
- * A function that returns a Finder function to search a list
+ * A FinderComposer function that returns a Finder function to search a list
  * @param read The read function that returns all candidate records
  * @returns A function that finds the item in the given Reader
  */
@@ -30,14 +30,14 @@ export const readListFinder: FinderComposer = <T extends Id>(
 };
 
 /**
- * A function that reads a value of the specified type from some storage location
+ * A Reader function reads a value of the specified type from some storage location
  */
 export interface Reader<T> {
   (): Promise<T>;
 }
 
 /**
- * A function that returns a Reader function for the specified key.
+ * A ReaderComposer function composes a Reader function for the specified key, which acts as a table, bucket, or other name for a data container.
  */
 export interface ReaderComposer {
   <T, A extends T[]>(key: string, defaultValue?: A): Reader<A>;

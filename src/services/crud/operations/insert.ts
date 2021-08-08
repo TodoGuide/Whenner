@@ -1,16 +1,19 @@
+// Licensed under GPL v3: https://www.gnu.org/licenses/gpl-3.0.txt
+// Copyright (C) 2019  James Tharpe
+
 import Id, { IdGenerator } from "../../Id";
 import { Finder, Reader } from "./retrieve";
 import { Writer } from "./update";
 
 /**
- * A function that inserts a value of the specified type into some location
+ * An Inserter function inserts a value of the specified type into some location
  */
 export interface Inserter<T extends Id> {
   (item: T): Promise<T>;
 }
 
 /**
- * A function that returns an Inserter function
+ * An InserterComposer function composes the provided functions into an Inserter function
  */
 export interface InserterComposer {
   <T extends Id>(

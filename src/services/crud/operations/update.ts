@@ -2,10 +2,23 @@ import Id from "../../Id";
 import { Inserter } from "./insert";
 import { Finder, Reader } from "./retrieve";
 
+/**
+ * An Updater function updates a record in a data store with the passed in value
+ *
+ * @export
+ * @interface Updater
+ * @template T - The type of object contained within the data store
+ */
 export interface Updater<T extends Id> {
   (item: T): Promise<T | undefined>;
 }
 
+/**
+ * An UpdateComposer function composes an Updater function from the provided read, write, and find functions
+ *
+ * @export
+ * @interface UpdaterComposer
+ */
 export interface UpdaterComposer {
   <T extends Id>(
     read: Reader<T[]>,
@@ -14,6 +27,12 @@ export interface UpdaterComposer {
   ): Updater<T>;
 }
 
+/**
+ * An UpserterComposer function composes an Upserter function from the provided update and insert functions
+ *
+ * @export
+ * @interface UpserterComposer
+ */
 export interface UpserterComposer {
   <T extends Id>(update: Updater<T>, insert: Inserter<T>): Upserter<T>;
 }
@@ -35,18 +54,21 @@ export const upserter: UpserterComposer = <T extends Id>(
   insert: Inserter<T>
 ): Upserter<T> =>
   async function (item: T): Promise<T> {
-    return (await update(item)) || (await insert(item));
+    const result = (await update(item)) || (await insert(item));
+    console.log("upserter called", { result });
+    return result;
   };
 
 /**
- * A function that writes a value of the specified type to some storage location
+ * A Writer function writes a value of the specified type to a data store
  */
 export interface Writer<T> {
   (item: T): Promise<T>;
 }
 
 /**
- * A function that returns a Writer function for the specified key.
+ * A WriterComposer function composes Writer function for the specified key. They key identifies
+ * the "container" for the data, such as a table or bucket.
  */
 export interface WriterComposer {
   <T>(key: string): Writer<T>;

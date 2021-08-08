@@ -17,7 +17,6 @@ import {
   WriterComposer,
 } from "../operations/update";
 import composeCrud from "..";
-import { logResult } from "../../log";
 
 const buckets: Record<string, Array<any>> = {};
 
