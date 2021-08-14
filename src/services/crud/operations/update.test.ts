@@ -1,25 +1,25 @@
-import Id from "../../Id";
+import Identifiable from "../../Id";
 import { Upserter, upserter } from "./update";
 
 describe("The update module", () => {
   describe("upserter function", () => {
-    let insert: jest.Mock<Promise<Id>>;
+    let insert: jest.Mock<Promise<Identifiable>>;
 
     beforeEach(async () => {
-      insert = jest.fn(async (record: Id) => record);
+      insert = jest.fn(async (record: Identifiable) => record);
     });
 
     describe("Given the update function passed to upserter() returns undefined", () => {
-      let update: jest.Mock<Promise<Id | undefined>>;
-      let upsert: Upserter<Id>;
+      let update: jest.Mock<Promise<Identifiable | undefined>>;
+      let upsert: Upserter<Identifiable>;
 
       beforeEach(() => {
-        update = jest.fn(async (_: Id) => undefined);
+        update = jest.fn(async (_: Identifiable) => undefined);
         upsert = upserter(update, insert);
       });
 
       describe("When the returned upsert function is called, it", () => {
-        let upserted: Id;
+        let upserted: Identifiable;
         beforeEach(async () => {
           upserted = await upsert({ id: 123 });
         });
@@ -39,16 +39,16 @@ describe("The update module", () => {
     });
 
     describe("Given the update function passed to upserter() returns the updated record", () => {
-      let update: jest.Mock<Promise<Id | undefined>>;
-      let upsert: Upserter<Id>;
+      let update: jest.Mock<Promise<Identifiable | undefined>>;
+      let upsert: Upserter<Identifiable>;
 
       beforeEach(() => {
-        update = jest.fn(async (record: Id) => record);
+        update = jest.fn(async (record: Identifiable) => record);
         upsert = upserter(update, insert);
       });
 
       describe("When the returned upsert function is called, it", () => {
-        let upserted: Id;
+        let upserted: Identifiable;
         beforeEach(async () => {
           upserted = await upsert({ id: 123 });
         });

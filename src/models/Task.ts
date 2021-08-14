@@ -1,20 +1,21 @@
 // Licensed under GPL v3: https://www.gnu.org/licenses/gpl-3.0.txt
 // Copyright (C) 2019  James Tharpe
 
-import { Estimated } from "./time/Estimated";
-import { Todo } from "./Todo";
+import { Estimable, isEstimable } from "./time/estimation";
+import { isTodo, Todo } from "./Todo";
 import {
-  Priority,
+  Prioritizable,
   sortByPriority as defaultPrioritize,
   prioritizer,
-} from "./Priority";
-import { Period } from "./time/Period";
+  isPrioritizable,
+} from "./priority";
+import Period from "./time/period";
 import moment from "moment";
-import { Time } from "./time";
-import { ActorRef, assign, createMachine, State } from "xstate";
-import { Upserter } from "../services/crud/operations/update";
+import Time from "./time";
+import { ActorRef, State } from "xstate";
 import { RecordActor } from "../services/crud/record-set";
 import { RecordContext, RecordEvent } from "../services/crud/record";
+import { Completable, isCompletable } from "./completion";
 
 /**
  * A prioritized, estimated to-do with flexible start and end times.
@@ -22,12 +23,37 @@ import { RecordContext, RecordEvent } from "../services/crud/record";
  * @export
  * @interface Task
  * @extends {Todo}
- * @extends {Priority}
- * @extends {Estimated}
+ * @extends {Prioritizable}
+ * @extends {Estimable}
  */
-export interface Task extends Todo, Priority, Estimated {
+export interface Task extends Todo, Prioritizable, Estimable, Completable {
   readonly predecessorIds?: number[];
   readonly supertaskId?: number;
+}
+
+export function isTask(candidate: any) {
+  console.log("isTask", {
+    candidate,
+    todo: isTodo(candidate),
+    isPri: isPrioritizable(candidate),
+    isEst: isEstimable(candidate),
+    isComp: isCompletable(candidate),
+  });
+
+  return (
+    isTodo(candidate) &&
+    isPrioritizable(candidate) &&
+    isEstimable(candidate) &&
+    isCompletable(candidate)
+  );
+}
+
+export function complete(task: Task) {
+  return { ...task, complete: Time.current(), canceled: undefined };
+}
+
+export function cancel(task: Task) {
+  return { ...task, complete: undefined, canceled: Time.current() };
 }
 
 export type TaskRecord = RecordActor<Task>;
@@ -138,14 +164,7 @@ export function successorsOf<T extends Task>(task: T, candidates: T[]) {
   return result && result.length > 0 ? result : undefined;
 }
 
-export function isTask(candidate: any) {
-  return (
-    candidate?.hasOwnProperty("priority") &&
-    candidate?.hasOwnProperty("estimate")
-  );
-}
-
-export function tasksIn<T extends Todo>(todos: Todo[]): T[] {
+export function tasksIn<T extends Todo>(todos: T[]): T[] {
   return todos.filter(isTask) as T[];
 }
 
@@ -153,40 +172,6 @@ export interface TaskContext {
   task: Task;
   error?: string;
 }
-
-export const createTaskMachine = (task: Task, upsert: Upserter<Task>) =>
-  createMachine<TaskContext>({
-    id: "task",
-    initial: "unmodified",
-    context: { task },
-    on: {},
-    states: {
-      unmodified: {
-        on: {
-          SAVE: {
-            target: "saving",
-          },
-        },
-      },
-      saving: {
-        invoke: {
-          id: "upsert",
-          src: (context, event) => upsert({ ...context.task, ...event.task }),
-          onDone: {
-            target: "unmodified",
-            actions: assign({ task: (context, event) => event.data }),
-          },
-          onError: {
-            target: "error",
-            actions: assign({
-              error: (context, event) => JSON.stringify({ context, event }),
-            }),
-          },
-        },
-      },
-      error: {},
-    },
-  });
 
 export const defaultTasks: Task[] = [
   {

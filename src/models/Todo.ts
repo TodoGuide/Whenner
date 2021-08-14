@@ -1,29 +1,31 @@
 // Licensed under GPL v3: https://www.gnu.org/licenses/gpl-3.0.txt
-// Copyright (C) 2019  James Tharpe
+// Copyright © 2021  James Tharpe
 
-import { Estimated } from "./time/Estimated";
-import Id from "../services/Id";
-import { Time } from "./time";
-import { dateValueOf } from "./time/utils";
+import Identifiable, { isIdentifiable } from "../services/Id";
+import Cancelable, { isCancelable } from "./cancelable";
 
-export interface Title {
-  readonly title: string;
-}
-
-export interface Description {
+interface Describable {
   readonly description: string;
 }
 
-/**
- * Anything with a title and description
- *
- * @export
- * @interface Article
- * @extends {Id}
- * @extends {Title}
- * @extends {Description}
- */
-export interface Article extends Id, Title, Description {}
+export interface Titleable {
+  readonly title: string;
+}
+
+function isDescribable(candidate: any) {
+  return (
+    candidate?.hasOwnProperty("description") &&
+    typeof candidate.title === "string"
+  );
+}
+
+function isTitleable(candidate: any) {
+  return (
+    candidate?.hasOwnProperty("title") && typeof candidate.title === "string"
+  );
+}
+
+export interface Article extends Identifiable, Titleable, Describable {}
 
 /**
  * Something that needs to be done
@@ -32,17 +34,16 @@ export interface Article extends Id, Title, Description {}
  * @interface Todo
  * @extends {Article}
  */
-export interface Todo extends Article {
-  readonly completed?: Date;
+export interface Todo extends Article, Cancelable {}
+
+export function isArticle(candidate: any) {
+  return (
+    isIdentifiable(candidate) &&
+    isTitleable(candidate) &&
+    isDescribable(candidate)
+  );
 }
 
-export interface EstimatedTodo extends Todo, Estimated {}
-
-export function toggleCompleted<TTodo extends Todo>(todo: TTodo): TTodo {
-  const result = {
-    ...todo,
-    completed: todo.completed ? undefined : Time.current(),
-  };
-  console.log("toggleCompleted", { todo, result });
-  return result;
+export function isTodo(candidate: any) {
+  return isArticle(candidate) && isCancelable(candidate);
 }

@@ -24,7 +24,7 @@ const TaskList: React.FC<TaskListProps> = ({
     <Accordion id={id}>
       {tasks.map((task, index) => {
         const key = `${id}-list-${currentDepth}-${task.id}-${index}`;
-        console.log("TaskList, rendering", { key, ref: task.ref });
+        // console.log("TaskList, rendering task", { key, ref: task.ref });
         return (
           <Card key={key}>
             <Card.Header>
@@ -36,7 +36,8 @@ const TaskList: React.FC<TaskListProps> = ({
               <Card.Body>
                 <Task
                   id={`${key}-task`}
-                  taskRef={task.ref}
+                  tasks={tasks}
+                  taskId={task.id}
                   currentDepth={currentDepth}
                   maxDepth={maxDepth}
                 />

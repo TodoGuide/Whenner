@@ -1,8 +1,8 @@
 // Licensed under GPL v3: https://www.gnu.org/licenses/gpl-3.0.txt
 // Copyright (C) 2019 James Tharpe
 
-import Id, { IdGenerator } from "../Id";
-import { Time } from "../../models/time";
+import Identifiable, { IdGenerator } from "../Id";
+import Time from "../../models/time";
 import {
   Finder,
   FinderComposer,
@@ -18,7 +18,7 @@ import {
   WriterComposer,
 } from "./operations/update";
 
-export interface Crud<T extends Id> {
+export interface Crud<T extends Identifiable> {
   read: Reader<T[]>;
   find: Finder<T>;
   insert: Inserter<T>;
@@ -26,7 +26,7 @@ export interface Crud<T extends Id> {
   upsert: Upserter<T>;
 }
 
-type ComposeCrudArgs<T extends Id> = {
+type ComposeCrudArgs<T extends Identifiable> = {
   key: string;
   composeRead: ReaderComposer;
   composeWrite: WriterComposer;
@@ -37,7 +37,7 @@ type ComposeCrudArgs<T extends Id> = {
   generateId?: IdGenerator;
 };
 
-export default function composeCrud<T extends Id>({
+export default function composeCrud<T extends Identifiable>({
   key,
   composeRead,
   composeWrite,

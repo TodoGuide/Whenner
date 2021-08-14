@@ -1,14 +1,14 @@
 // Licensed under GPL v3: https://www.gnu.org/licenses/gpl-3.0.txt
 // Copyright (C) 2019  James Tharpe
 
-import { Start } from "./Start";
-import { End } from "./End";
-import { MILLISECONDS_PER_MINUTE } from "./constants";
+import { MILLISECONDS_PER_MINUTE, Startable, Endable } from ".";
 
 /**
  * A period of time, with a discrete start and end
  */
-export type Period = Start & End;
+type Period = Startable & Endable;
+
+export default Period;
 
 /**
  * Gets the period of the specified item, or undefined if none exists
@@ -46,4 +46,8 @@ export function minutesIn(period: Period) {
   return (
     (period.end.getTime() - period.start.getTime()) / MILLISECONDS_PER_MINUTE
   );
+}
+
+export function isPeriod(thing: any) {
+  return thing?.hasOwnProperty("start") && thing?.hasOwnProperty("end");
 }

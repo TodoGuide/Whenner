@@ -1,61 +1,24 @@
 // Licensed under GPL v3: https://www.gnu.org/licenses/gpl-3.0.txt
-// Copyright (C) 2019  James Tharpe
+// Copyright © 2021 James Tharpe
 
-import { Appointment } from "./Appointment";
-import { estimatedPeriodOf, estimateEndOf, Task } from "./Task";
-import { Time } from "./time";
-import {
+import { createMachine } from "xstate";
+import { Appointment, isAppointment } from "./Appointment";
+import { Completable } from "./completion";
+import { isClosed, isCanceled } from "./statuses";
+import { estimatedPeriodOf, estimateEndOf, isTask, Task } from "./Task";
+import Time from "./time";
+import Period, {
   minutesIn,
-  Period,
   periodOf as getPeriod,
   periodsOverlap,
-} from "./time/Period";
+} from "./time/period";
 import { dateValueOf, timeValueOf } from "./time/utils";
+import { Todo } from "./Todo";
 
 export type Event = Task | Appointment;
 
-export class NormalizedEvent implements Task, Appointment {
-  constructor(private event: Event) {}
-
-  get start() {
-    return startOf(this.event) || Time.current();
-  }
-
-  get end() {
-    return endOf(this.event);
-  }
-
-  get predecessorIds() {
-    return (this.event as Task).predecessorIds;
-  }
-
-  get supertaskId() {
-    return (this.event as Task).supertaskId;
-  }
-
-  get completed() {
-    return completed(this.event);
-  }
-
-  get id() {
-    return this.event.id;
-  }
-
-  get title() {
-    return this.event.title;
-  }
-
-  get description() {
-    return this.event.description;
-  }
-
-  get priority() {
-    return startPriorityOf(this.event) || Time.now();
-  }
-
-  get estimate() {
-    return durationInMinutes(this.event);
-  }
+export function isEvent(todo: Todo) {
+  return isTask(todo) || isAppointment(todo);
 }
 
 export function periodOf(event: Event): Period {
@@ -84,7 +47,7 @@ export function startOf(event: Event): Date {
   );
 }
 
-export function startPriorityOf(event: Event, log = false): number {
+export function startPriorityOf(event: Event): number {
   return startOf(event)?.getTime() || Time.now();
 }
 
@@ -92,24 +55,50 @@ export function endOf(event: Event): Date {
   return new Date((event as Appointment).end || estimateEndOf(event as Task));
 }
 
-/**
- * If the given event is a task, the completed date is returned. If the event is an appointment,
- * returns the appointment end date only if the end date is in the past.
- *
- * @export
- * @param {Event} event
- * @returns {(Date | undefined)}
- */
-export function completed(event: Event): Date | undefined {
-  const result =
-    dateValueOf((event as Task).completed) ||
-    ((timeValueOf((event as Appointment).end) || 0) <= Time.now()
-      ? (event as Appointment).end
-      : undefined);
-
-  return result && new Date(result);
+function eventTypeNameOf(event: Event) {
+  return isTask(event)
+    ? "task"
+    : isAppointment(event)
+    ? "appointment"
+    : "unknown";
 }
 
-export function incomplete(events: Event[]): Event[] {
-  return events.filter((event) => !completed(event));
-}
+// export const createEventMachine = (event: Event) =>
+//   createMachine<Completable, Event & { type: string }>(
+//     {
+//       id: `${eventTypeNameOf(event)}-${event.id}`,
+//       initial: "incomplete",
+//       // context: event,
+//       always: [
+//         { target: "closed", cond: "isClosed" },
+//         { target: "canceled", cond: "isCanceled" },
+//         { target: "opened" },
+//       ],
+//       states: {
+//         opened: {
+//           on: {
+//             CLOSE: { target: "closed" },
+//             CANCEL: { target: "canceled" },
+//           },
+//         },
+//         closed: {
+//           on: {
+//             OPEN: { target: "opened" },
+//             CANCEL: { target: "canceled" },
+//           },
+//         },
+//         canceled: {
+//           on: {
+//             OPEN: { target: "opened" },
+//             COMPLETE: { target: "completed" },
+//           },
+//         },
+//       },
+//     },
+//     {
+//       guards: {
+//         isClosed,
+//         isCanceled,
+//       },
+//     }
+//   );

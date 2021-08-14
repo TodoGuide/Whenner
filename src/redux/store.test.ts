@@ -3,10 +3,9 @@
 
 import { Store } from "./store";
 import { Store as ReduxStore } from "redux";
-import { Time } from "../models/time";
+import Time from "../models/time";
 import { WhennerState, initialState } from ".";
 import { WhennerAction } from "./common/actions";
-import { defaultAppointments } from "../models/Appointment";
 import { defaultEvents } from "../services/EventsService";
 
 describe("The Whenner Store", () => {

@@ -1,4 +1,4 @@
-import Id from "../../Id";
+import Identifiable from "../../Id";
 import { Inserter } from "./insert";
 import { Finder, Reader } from "./retrieve";
 
@@ -9,7 +9,7 @@ import { Finder, Reader } from "./retrieve";
  * @interface Updater
  * @template T - The type of object contained within the data store
  */
-export interface Updater<T extends Id> {
+export interface Updater<T extends Identifiable> {
   (item: T): Promise<T | undefined>;
 }
 
@@ -20,7 +20,7 @@ export interface Updater<T extends Id> {
  * @interface UpdaterComposer
  */
 export interface UpdaterComposer {
-  <T extends Id>(
+  <T extends Identifiable>(
     read: Reader<T[]>,
     write: Writer<T[]>,
     find: Finder<T>
@@ -34,13 +34,16 @@ export interface UpdaterComposer {
  * @interface UpserterComposer
  */
 export interface UpserterComposer {
-  <T extends Id>(update: Updater<T>, insert: Inserter<T>): Upserter<T>;
+  <T extends Identifiable>(
+    update: Updater<T>,
+    insert: Inserter<T>
+  ): Upserter<T>;
 }
 
 /**
  * A function that upserts a value of the specified type to some storage location
  */
-export interface Upserter<T extends Id> {
+export interface Upserter<T extends Identifiable> {
   (item: T): Promise<T>;
 }
 
@@ -49,7 +52,7 @@ export interface Upserter<T extends Id> {
  * @param update The Updater function to use for modifications
  * @param insert The Inserter function to use for creates
  */
-export const upserter: UpserterComposer = <T extends Id>(
+export const upserter: UpserterComposer = <T extends Identifiable>(
   update: Updater<T>,
   insert: Inserter<T>
 ): Upserter<T> =>

@@ -2,7 +2,7 @@
 // Copyright (C) 2021  James Tharpe
 
 import { Crud } from "..";
-import { Time } from "../../../models/time";
+import Time from "../../../models/time";
 import { memoryCrud } from "./memory";
 
 type TestEntity = { id: number; data: string };

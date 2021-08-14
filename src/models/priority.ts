@@ -4,8 +4,15 @@
 /**
  * Something with a numeric priority.
  */
-export interface Priority {
+export interface Prioritizable {
   priority: number;
+}
+
+export function isPrioritizable(candidate: any) {
+  return (
+    candidate.hasOwnProperty("priority") &&
+    typeof candidate.priority === "number"
+  );
 }
 
 /**
@@ -17,9 +24,10 @@ export interface Prioritizer<T = {}> {
 
 /**
  * Returns a numeric priority for the given Priority object
- * @param item The item to have its priority determined
+ * @param prioritizable The item to have its priority determined
  */
-export const prioritizer: Prioritizer<Priority> = (item) => item.priority;
+export const prioritizer: Prioritizer<Prioritizable> = (prioritizable) =>
+  prioritizable.priority;
 
 /**
  * The given set of objects, ordered by their numeric priority
@@ -32,11 +40,3 @@ export function sortByPriority<T>(
 ) {
   return priorities.sort((a, b) => prioritizer(a) - prioritizer(b));
 }
-
-// type Constructor<T = {}> = new (...args: any[]) => T;
-
-// function Prioritized<TBase extends Constructor>(Base: TBase, prioritizer: Prioritizer) {
-//   return class implements Priority {
-//     priority = prioritizer(Base);
-//   };
-// }

@@ -1,7 +1,6 @@
 // Licensed under GPL v3: https://www.gnu.org/licenses/gpl-3.0.txt
 // Copyright (C) 2019  James Tharpe
 
-import { isAppointment } from "./Appointment";
 import { isTask, Task } from "./Task";
 import {
   Chronotype,
@@ -9,11 +8,12 @@ import {
   lengthInMinutes,
   preferredStart,
 } from "./Chronotype";
-import { Time } from "./time";
-import { Estimated } from "./time/Estimated";
-import { End } from "./time/End";
-import { sortByPriority } from "./Priority";
+import Time, { Endable } from "./time";
+import { Estimable } from "./time/estimation";
+import { sortByPriority } from "./priority";
 import { endPriorityOf, eventsOverlap, Event, startPriorityOf } from "./Event";
+import { isPeriod } from "./time/period";
+import { isAppointment } from "./Appointment";
 
 export interface Schedule {
   readonly chronotype: Chronotype;
@@ -60,18 +60,4 @@ export function schedule(events: Event[], chronotype: Chronotype): Schedule {
       new Array<Event>()
     ),
   };
-}
-
-export function canBeCompletedSameDay({ end }: End, chronotype: Chronotype) {
-  return end <= endOfDayFor(end, chronotype);
-}
-
-/**
- * Determines if the todo can be within the a single Chronotype period
- */
-export function canBeCompletedWithinOneDay(
-  { estimate }: Estimated,
-  chronotype: Chronotype
-) {
-  return estimate <= lengthInMinutes(chronotype);
 }

@@ -1,8 +1,8 @@
 // Licensed under GPL v3: https://www.gnu.org/licenses/gpl-3.0.txt
 // Copyright (C) 2019  James Tharpe
 
-import Id, { IdGenerator } from "../../Id";
-import { Time } from "../../../models/time";
+import Identifiable, { IdGenerator } from "../../Id";
+import Time from "../../../models/time";
 import {
   Finder,
   FinderComposer,
@@ -19,7 +19,7 @@ import {
 } from "../operations/update";
 import composeCrud from "../";
 
-export const localStorageInserter: InserterComposer = <T extends Id>(
+export const localStorageInserter: InserterComposer = <T extends Identifiable>(
   read: Reader<T[]>,
   write: Writer<T[]>,
   find: Finder<T> = readListFinder(read),
@@ -45,7 +45,7 @@ export const localStorageReader: ReaderComposer =
       JSON.parse(localStorage.getItem(key) || "null") || defaultValue || []
     );
 
-export const localStorageUpdater: UpdaterComposer = <T extends Id>(
+export const localStorageUpdater: UpdaterComposer = <T extends Identifiable>(
   read: Reader<T[]>,
   write: Writer<T[]>,
   find: Finder<T> = readListFinder(read)
@@ -67,7 +67,7 @@ export const localStorageWriter: WriterComposer = <T>(key: string) =>
     return Promise.resolve(item);
   };
 
-type LocalStorageCrudArgs<T extends Id> = {
+type LocalStorageCrudArgs<T extends Identifiable> = {
   key: string;
   defaultData?: T[];
   generateId?: IdGenerator;
@@ -78,7 +78,7 @@ type LocalStorageCrudArgs<T extends Id> = {
   composeInsert?: InserterComposer;
 };
 
-export const localStorageCrud = <T extends Id>({
+export const localStorageCrud = <T extends Identifiable>({
   key,
   defaultData,
   generateId,

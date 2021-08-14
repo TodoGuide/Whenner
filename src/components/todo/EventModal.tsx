@@ -3,7 +3,7 @@
 
 import React from "react";
 import { Form, InputGroup, ModalProps, Modal, Button } from "react-bootstrap";
-import { Time } from "../../models/time";
+import Time from "../../models/time";
 import { Event } from "../../models/Event";
 import { Task } from "../../models/Task";
 
@@ -134,7 +134,7 @@ export default class EventModal extends React.Component<
 
             <Form.Check
               id={"todo-" + event.id + "-done-bool"}
-              checked={!!event.completed}
+              checked={!!(event as Task).completed}
               onChange={this.handleInputChange}
               label="Done"
               type="checkbox"

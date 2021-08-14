@@ -3,10 +3,10 @@
 
 import React from "react";
 import { Form, InputGroup } from "react-bootstrap";
-import { Estimated } from "../models/time/Estimated";
+import { Estimable } from "../models/time/estimation";
 
 interface EstimateInputProps {
-  estimatedItem: Estimated;
+  estimatedItem: Estimable;
 }
 
 const EstimateInputFormGroup: React.FC<EstimateInputProps> = ({

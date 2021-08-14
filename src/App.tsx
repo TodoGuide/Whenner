@@ -15,7 +15,7 @@ import { useMachine } from "@xstate/react";
 import { defaultEvents } from "./services/EventsService";
 import { createRecordSetMachine } from "./services/crud/record-set";
 import { localStorageCrud } from "./services/crud/impl/local-storage";
-import { tasksIn } from "./models/Task";
+import { TaskRecord, tasksIn } from "./models/Task";
 
 const crud = localStorageCrud({
   key: "whenner.events",
@@ -34,7 +34,11 @@ const App: React.FC = () => {
           <Route
             path="/"
             exact
-            render={() => <TasksPage tasks={tasksIn(state.context.records)} />}
+            render={() => (
+              <TasksPage
+                tasks={tasksIn(state.context.records) as Array<TaskRecord>}
+              />
+            )}
           />
           <Route path="/calendar/" component={CalendarPage} />
           <Route path="/settings/" component={SettingsPage} />

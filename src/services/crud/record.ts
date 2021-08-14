@@ -9,19 +9,19 @@ import {
   sendParent,
 } from "xstate";
 import { Crud } from ".";
-import Id from "../Id";
+import Identifiable from "../Id";
 import { Operation } from "./operations";
 
-export interface RecordContext<T extends Id> {
+export interface RecordContext<T extends Identifiable> {
   record: T;
   error?: string;
 }
 
-export interface RecordEvent<T extends Id> extends EventObject {
+export interface RecordEvent<T extends Identifiable> extends EventObject {
   record: T;
 }
 
-function createRecordAssigner<T extends Id>() {
+function createRecordAssigner<T extends Identifiable>() {
   return assign<RecordContext<T>, DoneInvokeEvent<T>>({
     record: (context, event) => ({ ...context.record, ...event.data }),
   });
@@ -36,12 +36,14 @@ export function createOperationErrorConfig() {
   };
 }
 
-function createOperationInvoker<T extends Id>(operation: Operation<T>) {
+function createOperationInvoker<T extends Identifiable>(
+  operation: Operation<T>
+) {
   return (context: RecordContext<T>, event: RecordEvent<T>) =>
     operation({ ...context.record, ...event.record });
 }
 
-export const createRecordMachine = <T extends Id>(
+export const createRecordMachine = <T extends Identifiable>(
   record: T,
   crud: Crud<T>,
   type: string = "record"
@@ -65,7 +67,7 @@ export const createRecordMachine = <T extends Id>(
       modified: {
         on: {
           CHANGE: {
-            actions: assign({ record: (_, event) => event.record }), // TODO: Dedupe
+            actions: assign({ record: (_, event) => event.record }), // TODO: De-dupe
             target: "modified",
           },
           CANCEL: {

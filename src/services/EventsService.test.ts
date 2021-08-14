@@ -5,7 +5,7 @@ import { defaultEvents, EventsService } from "./EventsService";
 import { Todo } from "../models/Todo";
 import { oneHourTask } from "../test/data";
 import { defaultChronotype } from "../models/Chronotype";
-import { Time } from "../models/time";
+import Time from "../models/time";
 import { Task } from "../models/Task";
 import { Crud } from "./crud";
 import { Event } from "../models/Event";
@@ -32,7 +32,6 @@ describe("The Events Service", () => {
       it("Returns the default tasks", () => {
         allResult.forEach((item, index) => {
           expect(item.description).toEqual(defaultEvents[index].description);
-          expect(item.completed).toEqual(defaultEvents[index].completed);
           expect(item.title).toEqual(defaultEvents[index].title);
           expect(item.id).toEqual(defaultEvents[index].id);
         });

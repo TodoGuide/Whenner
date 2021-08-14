@@ -1,7 +1,7 @@
 // Licensed under GPL v3: https://www.gnu.org/licenses/gpl-3.0.txt
 // Copyright (C) 2021  James Tharpe
-import Id, { IdGenerator } from "../../Id";
-import { Time } from "../../../models/time";
+import Identifiable, { IdGenerator } from "../../Id";
+import Time from "../../../models/time";
 import {
   Finder,
   FinderComposer,
@@ -20,7 +20,7 @@ import composeCrud from "..";
 
 const buckets: Record<string, Array<any>> = {};
 
-export const memoryInserter: InserterComposer = <T extends Id>(
+export const memoryInserter: InserterComposer = <T extends Identifiable>(
   read: Reader<T[]>,
   write: Writer<T[]>,
   find: Finder<T> = readListFinder(read),
@@ -44,7 +44,7 @@ export const memoryReader: ReaderComposer =
   (): Promise<T> =>
     Promise.resolve((buckets[key] || defaultValue) as unknown as T) || [];
 
-export const memoryUpdater: UpdaterComposer = <T extends Id>(
+export const memoryUpdater: UpdaterComposer = <T extends Identifiable>(
   read: Reader<T[]>,
   write: Writer<T[]>,
   find: Finder<T> = readListFinder(read)
@@ -65,7 +65,7 @@ export const memoryWriter: WriterComposer = <T>(key: string) =>
     return Promise.resolve(item);
   };
 
-type MemoryCrudArgs<T extends Id> = {
+type MemoryCrudArgs<T extends Identifiable> = {
   key: string;
   defaultData?: T[];
   generateId?: IdGenerator;
@@ -76,7 +76,7 @@ type MemoryCrudArgs<T extends Id> = {
   composeInsert?: InserterComposer;
 };
 
-export const memoryCrud = <T extends Id>({
+export const memoryCrud = <T extends Identifiable>({
   key,
   defaultData,
   generateId,

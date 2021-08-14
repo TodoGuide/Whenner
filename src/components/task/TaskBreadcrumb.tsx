@@ -4,15 +4,18 @@
 import React from "react";
 import { Breadcrumb } from "react-bootstrap";
 import { Task as TaskModel, supertasksOf, tasksIn } from "../../models/Task";
-import { allTestDataEvents } from "../../test/data";
 
 interface TaskBreadcrumbProps {
-  task: TaskModel;
+  taskId: number;
+  tasks: Array<TaskModel>;
 }
 
 const TaskBreadcrumb: React.FC<TaskBreadcrumbProps> = ({
-  task,
+  taskId,
+  tasks,
 }: TaskBreadcrumbProps) => {
+  const task = tasks.find((t) => t.id === taskId);
+  if (!task) throw new Error(`Task with ID ${taskId} not found in tasks`);
   return (
     <Breadcrumb>
       <Breadcrumb.Item title="Set Supertask">
@@ -20,16 +23,14 @@ const TaskBreadcrumb: React.FC<TaskBreadcrumbProps> = ({
           ✨{/* TODO: Implement set for supertask */}
         </span>
       </Breadcrumb.Item>
-      {supertasksOf(task, tasksIn(allTestDataEvents))?.map(
-        (supertask, index) => (
-          <Breadcrumb.Item
-            title={supertask.description}
-            key={`task-breadcrumb-${supertask.id}-${index}`}
-          >
-            {supertask.title}
-          </Breadcrumb.Item>
-        )
-      )}
+      {supertasksOf(task, tasksIn(tasks))?.map((supertask, index) => (
+        <Breadcrumb.Item
+          title={supertask.description}
+          key={`task-breadcrumb-${supertask.id}-${index}`}
+        >
+          {supertask.title}
+        </Breadcrumb.Item>
+      ))}
       <Breadcrumb.Item active>{task.title}</Breadcrumb.Item>
     </Breadcrumb>
   );

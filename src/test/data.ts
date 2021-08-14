@@ -4,7 +4,7 @@
 import moment from "moment";
 import { Appointment } from "../models/Appointment";
 import { Task } from "../models/Task";
-import { Time } from "../models/time";
+import Time from "../models/time";
 
 export const oneHourTask: Task = {
   id: 100,

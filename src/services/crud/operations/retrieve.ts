@@ -1,11 +1,11 @@
 // Licensed under GPL v3: https://www.gnu.org/licenses/gpl-3.0.txt
 // Copyright (C) 2021  James Tharpe
-import Id from "../../Id";
+import Identifiable from "../../Id";
 
 /**
  * A Finder finds an item of the specified type in a data source, or from the provided array if specified
  */
-export interface Finder<T extends Id> {
+export interface Finder<T extends Identifiable> {
   (id: number, list?: T[]): Promise<T | undefined>;
 }
 
@@ -13,7 +13,7 @@ export interface Finder<T extends Id> {
  * A FinderComposer function composes a Finder function from the specified Reader function
  */
 export interface FinderComposer {
-  <T extends Id>(read: Reader<T[]>): Finder<T>;
+  <T extends Identifiable>(read: Reader<T[]>): Finder<T>;
 }
 
 /**
@@ -21,7 +21,7 @@ export interface FinderComposer {
  * @param read The read function that returns all candidate records
  * @returns A function that finds the item in the given Reader
  */
-export const readListFinder: FinderComposer = <T extends Id>(
+export const readListFinder: FinderComposer = <T extends Identifiable>(
   read: Reader<T[]>
 ): Finder<T> => {
   return async function (id: number, list?: T[]) {

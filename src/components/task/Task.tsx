@@ -4,25 +4,31 @@
 import React from "react";
 import { Form, Button } from "react-bootstrap";
 import EstimateInputFormGroup from "../EstimateInputFormGroup";
-import TaskStatusFormGroup from "./TaskStatusFormGroup";
 import TaskBreadcrumb from "./TaskBreadcrumb";
 import { useActor } from "@xstate/react";
-import { TaskActorRef } from "../../models/Task";
+import { TaskRecord } from "../../models/Task";
+import { isCanceled, isClosed, isOpened } from "../../models/statuses";
 
 interface TaskProps {
   id: string;
-  taskRef: TaskActorRef;
+  taskId: number;
+  tasks: Array<TaskRecord>;
   currentDepth?: number;
   maxDepth?: number;
 }
 
 const Task: React.FC<TaskProps> = ({
   id,
-  taskRef,
+  taskId,
+  tasks,
   currentDepth = 1,
 }: TaskProps) => {
+  const taskRef = tasks.find((t) => t.id === taskId)?.ref;
+  if (!taskRef) throw new Error(`Task with ID ${taskId} not found in tasks`);
+
   const [state, send] = useActor(taskRef);
-  const { record: task, error } = state.context;
+  const { record: task } = state.context;
+
   console.log("<Task>", {
     id,
     taskRef,
@@ -30,10 +36,12 @@ const Task: React.FC<TaskProps> = ({
     state: state.toStrings(),
     events: state.nextEvents,
   });
+
   return (
     <div id={id}>
+      Hello?
       <Form>
-        <TaskBreadcrumb task={task} />
+        <TaskBreadcrumb tasks={tasks} taskId={task.id} />
         <Form.Group id={`${id}-title-group-${task.id}-${currentDepth}`}>
           <Form.Control
             id={`${id}-title-${task.id}-${currentDepth}`}
@@ -63,10 +71,41 @@ const Task: React.FC<TaskProps> = ({
           />
         </Form.Group>
         <EstimateInputFormGroup estimatedItem={task} />
-        <TaskStatusFormGroup
-          task={task}
-          id={`${id}-state-${task.id}-${currentDepth}`}
-        />
+        <Form.Group
+          id={id}
+          onChange={
+            (e: React.ChangeEvent<HTMLInputElement>) => console.log(e.target)
+            // send({
+            //   type: "CHANGE",
+            //   record: { ...task, title: e.target.value },
+            // })
+          }
+        >
+          <Form.Check
+            id={`${id}-incomplete-${task.id}`}
+            checked={isOpened(task)}
+            name="status"
+            label="Incomplete"
+            type="radio"
+            readOnly
+          />
+          <Form.Check
+            id={`${id}-complete-${task.id}`}
+            checked={isClosed(task)}
+            name="status"
+            label="Complete [yyyy-MM-dd]"
+            type="radio"
+            readOnly
+          />
+          <Form.Check
+            id={`${id}-canceled-${task.id}`}
+            checked={isCanceled(task)}
+            name="status"
+            label="Canceled [yyyy-MM-dd]"
+            type="radio"
+            readOnly
+          />
+        </Form.Group>
         <Form.Group controlId="actions" className="text-right">
           {state.nextEvents.includes("CANCEL") && (
             <Button

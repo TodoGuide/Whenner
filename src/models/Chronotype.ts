@@ -3,7 +3,7 @@
 
 import moment from "moment";
 import { Duration } from "moment";
-import { Period } from "./time/Period";
+import Period from "./time/period";
 import { latestOf } from "./time/utils";
 
 /**

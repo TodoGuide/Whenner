@@ -15,7 +15,7 @@ import {
 import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop";
 import { connect } from "react-redux";
 import { Dispatch, bindActionCreators } from "redux";
-import { Time } from "../models/time";
+import Time from "../models/time";
 import { WhennerState } from "../redux";
 import { WhennerAction } from "../redux/common/actions";
 import { startOfDayFor, endOfDayFor } from "../models/Chronotype";
@@ -28,7 +28,7 @@ import {
   latestOf,
   timeValueOf,
 } from "../models/time/utils";
-import { Event, NormalizedEvent } from "../models/Event";
+import { Event } from "../models/Event";
 import {
   EventActionThunk,
   EventsResultActionThunk,
@@ -36,8 +36,14 @@ import {
 import { upsertEvent } from "../redux/events/actions/upsertEvent";
 import { loadEvents } from "../redux/events/actions/loadEvents";
 import { Task } from "../models/Task";
-import { minutesIn } from "../models/time/Period";
+import { minutesIn } from "../models/time/period";
 import { defaultEvents } from "../services/EventsService";
+import {
+  isClosed,
+  Closable,
+  isNotOpened,
+  Statusable,
+} from "../models/statuses";
 
 moment.locale(navigator.language, {
   week: {
@@ -90,9 +96,7 @@ class Calendar extends React.Component<CalendarProps, CalendarState> {
   }
 
   componentDidMount() {
-    const events = this.props.schedule.events.map(
-      (t) => new NormalizedEvent(t)
-    );
+    const events = this.props.schedule.events;
     if (
       events.length === defaultEvents.length &&
       events.every((value, index) => value.id === defaultEvents[index].id)
@@ -108,7 +112,7 @@ class Calendar extends React.Component<CalendarProps, CalendarState> {
     end: stringOrDate,
     isSelected: boolean
   ): React.HTMLAttributes<HTMLDivElement> =>
-    (event as Event).completed
+    isNotOpened(event as Statusable)
       ? { style: { backgroundColor: "grey" } }
       : { style: {} };
 
@@ -133,7 +137,7 @@ class Calendar extends React.Component<CalendarProps, CalendarState> {
     const events = schedule(
       scheduleProp.events,
       scheduleProp.chronotype
-    ).events.map((t) => new NormalizedEvent(t));
+    ).events;
     console.log("Calendar.render", events);
     return (
       <div>

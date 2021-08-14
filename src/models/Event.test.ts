@@ -1,46 +1,21 @@
-import { oneHourTask, pastAppointment, twoHourTask } from "../test/data";
-import { incomplete, Event, completed } from "./Event";
-import { Time } from "./time";
+// Licensed under GPL v3: https://www.gnu.org/licenses/gpl-3.0.txt
+// Copyright © 2021 James Tharpe
+
+import { pastAppointment } from "../test/data";
+import { closed } from "./statuses";
 
 describe("The Event Module", () => {
   describe("Given a task", () => {
-    describe("That is completed", () => {
-      const completedTask = { ...twoHourTask, completed: Time.current() };
-
-      it("When completed is called, it returns the completed date", () => {
-        expect(completed(completedTask)).toEqual(completedTask.completed);
-      });
-    });
-
-    describe("That is incomplete", () => {
-      const incompleteTask = { ...twoHourTask };
-
-      it("When completed is called, it returns falsy", () => {
-        expect(completed(incompleteTask)).toBeFalsy();
-      });
-    });
+    // ...
   });
 
   describe("Given an appointment", () => {
-    describe("That is completed (the end date is in the past)", () => {
-      const completedAppointment = { ...pastAppointment };
+    describe("That is ended (the end date is in the past)", () => {
+      const endedAppointment = { ...pastAppointment };
 
-      it("When completed is called, it returns the completed date", () => {
-        expect(completed(completedAppointment)).toEqual(
-          completedAppointment.end
-        );
+      it("When closed is called, it returns the appointment end date", () => {
+        expect(closed(endedAppointment)).toEqual(endedAppointment.end);
       });
-    });
-  });
-
-  describe("Given a populated Event List with one incomplete task", () => {
-    let events: Event[] = [
-      oneHourTask,
-      { ...twoHourTask, completed: Time.current() },
-    ];
-
-    it("When the todo list is passed to incomplete, it returns the incomplete items", () => {
-      expect(incomplete(events)).toEqual([oneHourTask]);
     });
   });
 });

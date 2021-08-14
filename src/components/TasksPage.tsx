@@ -12,12 +12,15 @@ type TaskPageProps = {
   maxDepth?: number;
 };
 
-const TasksPage: React.FC<TaskPageProps> = ({ tasks, maxDepth }) => (
-  <TaskList
-    tasks={tasks}
-    id="tasks"
-    maxDepth={maxDepth || MAX_DEPTH_DEFAULT}
-  ></TaskList>
-);
+const TasksPage: React.FC<TaskPageProps> = ({ tasks, maxDepth }) => {
+  console.log("<TasksPage>", { tasks });
+  return (
+    <TaskList
+      tasks={tasks}
+      id="tasks"
+      maxDepth={maxDepth || MAX_DEPTH_DEFAULT}
+    ></TaskList>
+  );
+};
 
 export default TasksPage;
