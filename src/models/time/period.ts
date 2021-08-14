@@ -1,7 +1,7 @@
 // Licensed under GPL v3: https://www.gnu.org/licenses/gpl-3.0.txt
-// Copyright (C) 2019  James Tharpe
+// Copyright (C) 2019 James Tharpe
 
-import { MILLISECONDS_PER_MINUTE, Startable, Endable } from ".";
+import { Endable, MILLISECONDS_PER_MINUTE, Startable } from ".";
 
 /**
  * A period of time, with a discrete start and end

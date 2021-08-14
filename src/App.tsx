@@ -1,21 +1,21 @@
 // Licensed under GPL v3: https://www.gnu.org/licenses/gpl-3.0.txt
-// Copyright (C) 2019  James Tharpe
+// Copyright (C) 2019 James Tharpe
 
+import { useMachine } from "@xstate/react";
 import React from "react";
+import Container from "react-bootstrap/Container";
 import { Provider } from "react-redux";
-import { Store } from "./redux/store";
-import CalendarPage from "./components/CalendarPage";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import AboutPage from "./components/AboutPage";
-import Container from "react-bootstrap/Container";
-import SettingsPage from "./components/SettingsPage";
+import CalendarPage from "./components/CalendarPage";
 import Header from "./components/common/Header";
+import SettingsPage from "./components/SettingsPage";
 import TasksPage from "./components/TasksPage";
-import { useMachine } from "@xstate/react";
-import { defaultEvents } from "./services/EventsService";
-import { createRecordSetMachine } from "./services/crud/record-set";
-import { localStorageCrud } from "./services/crud/impl/local-storage";
 import { TaskRecord, tasksIn } from "./models/Task";
+import { Store } from "./redux/store";
+import { localStorageCrud } from "./services/crud/impl/local-storage";
+import { createRecordSetMachine } from "./services/crud/record-set";
+import { defaultEvents } from "./services/EventsService";
 
 const crud = localStorageCrud({
   key: "whenner.events",

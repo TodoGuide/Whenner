@@ -1,9 +1,9 @@
 // Licensed under GPL v3: https://www.gnu.org/licenses/gpl-3.0.txt
-// Copyright (C) 2019  James Tharpe
+// Copyright (C) 2019 James Tharpe
 
 import React from "react";
-import TaskList from "./task/TaskList";
 import { TaskRecord } from "../models/Task";
+import TaskList from "./task/TaskList";
 
 const MAX_DEPTH_DEFAULT = 7;
 

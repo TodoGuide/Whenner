@@ -1,21 +1,21 @@
 // Licensed under GPL v3: https://www.gnu.org/licenses/gpl-3.0.txt
-// Copyright (C) 2019  James Tharpe
+// Copyright (C) 2019 James Tharpe
 
-import { Estimable, isEstimable } from "./time/estimation";
-import { isTodo, Todo } from "./Todo";
-import {
-  Prioritizable,
-  sortByPriority as defaultPrioritize,
-  prioritizer,
-  isPrioritizable,
-} from "./priority";
-import Period from "./time/period";
 import moment from "moment";
-import Time from "./time";
 import { ActorRef, State } from "xstate";
-import { RecordActor } from "../services/crud/record-set";
 import { RecordContext, RecordEvent } from "../services/crud/record";
+import { RecordActor } from "../services/crud/record-set";
 import { Completable, isCompletable } from "./completion";
+import {
+  isPrioritizable,
+  Prioritizable,
+  prioritizer,
+  sortByPriority as defaultPrioritize,
+} from "./priority";
+import Time from "./time";
+import { Estimable, isEstimable } from "./time/estimation";
+import Period from "./time/period";
+import { isTodo, Todo } from "./Todo";
 
 /**
  * A prioritized, estimated to-do with flexible start and end times.

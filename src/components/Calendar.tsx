@@ -1,11 +1,8 @@
 // Licensed under GPL v3: https://www.gnu.org/licenses/gpl-3.0.txt
-// Copyright (C) 2019  James Tharpe
+// Copyright (C) 2019 James Tharpe
 
-import "react-big-calendar/lib/addons/dragAndDrop/styles.css";
-import "react-big-calendar/lib/css/react-big-calendar.css";
-
-import React from "react";
 import moment from "moment";
+import React from "react";
 import {
   Calendar as BigCalendar,
   Event as BCEvent,
@@ -13,37 +10,34 @@ import {
   stringOrDate,
 } from "react-big-calendar";
 import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop";
-import { connect } from "react-redux";
-import { Dispatch, bindActionCreators } from "redux";
-import Time from "../models/time";
-import { WhennerState } from "../redux";
-import { WhennerAction } from "../redux/common/actions";
-import { startOfDayFor, endOfDayFor } from "../models/Chronotype";
+import "react-big-calendar/lib/addons/dragAndDrop/styles.css";
+import "react-big-calendar/lib/css/react-big-calendar.css";
 import Toast from "react-bootstrap/Toast";
-import EventModal from "./todo/EventModal";
+import { connect } from "react-redux";
+import { bindActionCreators, Dispatch } from "redux";
+import { endOfDayFor, startOfDayFor } from "../models/Chronotype";
+import { Event } from "../models/Event";
 import { schedule, Schedule } from "../models/Schedule";
+import { isNotOpened, Statusable } from "../models/statuses";
+import { Task } from "../models/Task";
+import Time from "../models/time";
+import { minutesIn } from "../models/time/period";
 import {
   dateValueOf,
   earliestOf,
   latestOf,
   timeValueOf,
 } from "../models/time/utils";
-import { Event } from "../models/Event";
+import { WhennerState } from "../redux";
+import { WhennerAction } from "../redux/common/actions";
 import {
   EventActionThunk,
   EventsResultActionThunk,
 } from "../redux/events/actions";
-import { upsertEvent } from "../redux/events/actions/upsertEvent";
 import { loadEvents } from "../redux/events/actions/loadEvents";
-import { Task } from "../models/Task";
-import { minutesIn } from "../models/time/period";
+import { upsertEvent } from "../redux/events/actions/upsertEvent";
 import { defaultEvents } from "../services/EventsService";
-import {
-  isClosed,
-  Closable,
-  isNotOpened,
-  Statusable,
-} from "../models/statuses";
+import EventModal from "./todo/EventModal";
 
 moment.locale(navigator.language, {
   week: {

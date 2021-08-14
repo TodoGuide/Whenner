@@ -1,19 +1,12 @@
 // Licensed under GPL v3: https://www.gnu.org/licenses/gpl-3.0.txt
 // Copyright (C) 2019  James Tharpe
 
-import { isTask, Task } from "./Task";
-import {
-  Chronotype,
-  endOfDayFor,
-  lengthInMinutes,
-  preferredStart,
-} from "./Chronotype";
-import Time, { Endable } from "./time";
-import { Estimable } from "./time/estimation";
-import { sortByPriority } from "./priority";
-import { endPriorityOf, eventsOverlap, Event, startPriorityOf } from "./Event";
-import { isPeriod } from "./time/period";
 import { isAppointment } from "./Appointment";
+import { Chronotype, preferredStart } from "./Chronotype";
+import { endPriorityOf, Event, eventsOverlap, startPriorityOf } from "./Event";
+import { sortByPriority } from "./priority";
+import { isTask, Task } from "./Task";
+import Time from "./time";
 
 export interface Schedule {
   readonly chronotype: Chronotype;

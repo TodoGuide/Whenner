@@ -1,5 +1,5 @@
 // Licensed under GPL v3: https://www.gnu.org/licenses/gpl-3.0.txt
-// Copyright © 2021  James Tharpe
+// Copyright © 2021 James Tharpe
 
 import Identifiable, { isIdentifiable } from "../services/Id";
 import Cancelable, { isCancelable } from "./cancelable";

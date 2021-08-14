@@ -1,10 +1,10 @@
 // Licensed under GPL v3: https://www.gnu.org/licenses/gpl-3.0.txt
-// Copyright (C) 2019  James Tharpe
+// Copyright (C) 2019 James Tharpe
 
 import React from "react";
 import { Accordion, Card } from "react-bootstrap";
-import Task from "./Task";
 import { TaskRecord } from "../../models/Task";
+import Task from "./Task";
 import TaskRelationshipTabs from "./TaskRelationshipTabs";
 
 type TaskListProps = {

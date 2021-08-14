@@ -1,9 +1,9 @@
 // Licensed under GPL v3: https://www.gnu.org/licenses/gpl-3.0.txt
-// Copyright (C) 2019  James Tharpe
+// Copyright (C) 2019 James Tharpe
 
 import React from "react";
 import { Breadcrumb } from "react-bootstrap";
-import { Task as TaskModel, supertasksOf, tasksIn } from "../../models/Task";
+import { supertasksOf, Task as TaskModel, tasksIn } from "../../models/Task";
 
 interface TaskBreadcrumbProps {
   taskId: number;

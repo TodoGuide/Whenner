@@ -1,10 +1,7 @@
 // Licensed under GPL v3: https://www.gnu.org/licenses/gpl-3.0.txt
 // Copyright © 2021 James Tharpe
 
-import { createMachine } from "xstate";
 import { Appointment, isAppointment } from "./Appointment";
-import { Completable } from "./completion";
-import { isClosed, isCanceled } from "./statuses";
 import { estimatedPeriodOf, estimateEndOf, isTask, Task } from "./Task";
 import Time from "./time";
 import Period, {
