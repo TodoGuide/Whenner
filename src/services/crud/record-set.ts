@@ -79,12 +79,36 @@ export const createRecordSetMachine = <T extends Id>(
               return result;
             }),
           },
+          INCLUDE_RECORD: {
+            actions: assign((context, event) => {
+              const result = {
+                records: [
+                  ...context.records,
+                  {
+                    ...event.record,
+                    ref: spawn(createRecordMachine(event.record, crud, type)),
+                  },
+                ],
+              };
+              return result;
+            }),
+          },
+          EXCLUDE_RECORD: {
+            actions: assign((context, event) => {
+              const result = {
+                records: context.records.filter(
+                  (record) => record.id === event.record.id
+                ),
+              };
+              return result;
+            }),
+          },
         },
       },
       error: {
         on: {
-          ACKNOWLEDGE: {
-            target: "ready",
+          RETRY: {
+            target: "loading",
           },
         },
       },

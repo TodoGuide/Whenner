@@ -174,7 +174,7 @@ class Calendar extends React.Component<CalendarProps, CalendarState> {
               estimate: moment
                 .duration(moment(end).diff(moment(start)))
                 .asMinutes(),
-              end: dateValueOf(end),
+              end: dateValueOf(end) as Date,
             });
           }}
           onEventDrop={({ event, start, end }) => {
@@ -183,7 +183,7 @@ class Calendar extends React.Component<CalendarProps, CalendarState> {
               start: new Date(start),
               priority: new Date(start).getTime(),
               estimate: (event as Task).estimate,
-              end: dateValueOf(end),
+              end: dateValueOf(end) as Date,
             });
           }}
           onSelectSlot={({ start, end }) => {

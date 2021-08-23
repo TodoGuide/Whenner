@@ -23,11 +23,15 @@ export function earliestOf(...dates: Date[]) {
   return dates.reduce((prev, current) => (current < prev ? current : prev));
 }
 
-export function dateValueOf(date?: Date | string | number): Date | undefined {
+export function dateValueOf(
+  date?: Date | string | number | null
+): Date | undefined {
   return date ? new Date(date) : undefined;
 }
 
-export function timeValueOf(date?: Date | string | number): number | undefined {
+export function timeValueOf(
+  date?: Date | string | number | null
+): number | undefined {
   const dateValue = dateValueOf(date);
   return dateValue ? dateValue.getTime() : undefined;
 }

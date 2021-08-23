@@ -52,13 +52,13 @@ export function endOf(event: Event): Date {
   return new Date((event as Appointment).end || estimateEndOf(event as Task));
 }
 
-function eventTypeNameOf(event: Event) {
-  return isTask(event)
-    ? "task"
-    : isAppointment(event)
-    ? "appointment"
-    : "unknown";
-}
+// function eventTypeNameOf(event: Event): "task" | "appointment" | "unknown" {
+//   return isTask(event)
+//     ? "task"
+//     : isAppointment(event)
+//     ? "appointment"
+//     : "unknown";
+// }
 
 // export const createEventMachine = (event: Event) =>
 //   createMachine<Completable, Event & { type: string }>(

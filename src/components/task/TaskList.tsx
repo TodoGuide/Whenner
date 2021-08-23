@@ -3,6 +3,7 @@
 
 import React from "react";
 import { Accordion, Card } from "react-bootstrap";
+import { prioritizer, sortByPriority } from "../../models/priority";
 import { TaskRecord } from "../../models/Task";
 import Task from "./Task";
 import TaskRelationshipTabs from "./TaskRelationshipTabs";
@@ -20,6 +21,8 @@ const TaskList: React.FC<TaskListProps> = ({
   currentDepth = 1,
   maxDepth = 3,
 }: TaskListProps) => {
+  console.log("<TaskList>", { id, tasks, currentDepth, maxDepth });
+  tasks = sortByPriority(prioritizer, ...tasks);
   return (
     <Accordion id={id}>
       {tasks.map((task, index) => {
@@ -44,7 +47,7 @@ const TaskList: React.FC<TaskListProps> = ({
                 <TaskRelationshipTabs
                   id={`${id}-relationships-${task.id}-${currentDepth}`}
                   tasks={tasks}
-                  showTaskId={task.id}
+                  taskId={task.id}
                   currentDepth={currentDepth}
                   maxDepth={maxDepth}
                 />

@@ -2,7 +2,7 @@
 // Copyright (C) 2019  James Tharpe
 
 import { isAppointment } from "./Appointment";
-import { Chronotype, preferredStart } from "./Chronotype";
+import { Chronotype, defaultChronotype, preferredStart } from "./Chronotype";
 import { endPriorityOf, Event, eventsOverlap, startPriorityOf } from "./Event";
 import { sortByPriority } from "./priority";
 import { isTask, Task } from "./Task";
@@ -13,7 +13,10 @@ export interface Schedule {
   readonly events: Event[];
 }
 
-export function schedule(events: Event[], chronotype: Chronotype): Schedule {
+export function schedule(
+  events: Event[],
+  chronotype: Chronotype = defaultChronotype
+): Schedule {
   let currentPriority = Time.now();
   return {
     chronotype,

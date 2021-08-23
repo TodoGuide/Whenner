@@ -9,13 +9,17 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 import AboutPage from "./components/AboutPage";
 import CalendarPage from "./components/CalendarPage";
 import Header from "./components/common/Header";
+import Actions from "./components/common/Actions";
+import Navigator from "./components/common/Navigator";
 import SettingsPage from "./components/SettingsPage";
 import TasksPage from "./components/TasksPage";
-import { TaskRecord, tasksIn } from "./models/Task";
+import { emptyTask, taskFrom, TaskRecord, tasksIn } from "./models/Task";
 import { Store } from "./redux/store";
 import { localStorageCrud } from "./services/crud/impl/local-storage";
 import { createRecordSetMachine } from "./services/crud/record-set";
 import { defaultEvents } from "./services/EventsService";
+import { earliest } from "./models/priority";
+import { startPriorityOf } from "./models/Event";
 
 const crud = localStorageCrud({
   key: "whenner.events",
@@ -23,13 +27,30 @@ const crud = localStorageCrud({
 });
 
 const App: React.FC = () => {
-  const [state] = useMachine(createRecordSetMachine(crud, "Event"), {
+  const [state, send] = useMachine(createRecordSetMachine(crud, "Event"), {
     devTools: true,
   });
+
+  console.log("<App>", { state });
+
+  const { records: events } = state.context;
+
+  const handleIncludeTask = (
+    record = taskFrom({
+      ...emptyTask,
+      priority: earliest(startPriorityOf, events) - 1,
+    })
+  ) => {
+    console.log("handleIncludeTask", { record });
+    send({ type: "INCLUDE_RECORD", record });
+  };
+
   return (
     <Router>
       <Container>
         <Header />
+        <Actions onIncludeTask={handleIncludeTask} />
+        <Navigator />
         <Provider store={Store.instance}>
           <Route
             path="/"

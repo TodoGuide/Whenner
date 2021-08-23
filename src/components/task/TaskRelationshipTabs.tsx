@@ -14,7 +14,7 @@ import TaskList from "./TaskList";
 interface TaskRelationshipTabsProps {
   id: string;
   tasks: TaskRecord[];
-  showTaskId: number;
+  taskId: number;
   currentDepth?: number;
   maxDepth?: number;
 }
@@ -22,12 +22,12 @@ interface TaskRelationshipTabsProps {
 const TaskRelationshipTabs: React.FC<TaskRelationshipTabsProps> = ({
   id,
   tasks,
-  showTaskId,
+  taskId,
   currentDepth = 1,
   maxDepth = 3,
 }: TaskRelationshipTabsProps) => {
-  const task = tasks.find((t) => t.id === showTaskId);
-  if (!task) throw new Error(`Task with ID ${showTaskId} not found in props`);
+  const task = tasks.find((t) => t.id === taskId);
+  if (!task) throw new Error(`Task with ID ${taskId} not found in props`);
 
   const subtasks = currentDepth <= maxDepth && subtasksOf(task, tasks);
   const predecessors = currentDepth <= maxDepth && predecessorsOf(task, tasks);

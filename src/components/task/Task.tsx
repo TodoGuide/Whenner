@@ -31,6 +31,8 @@ const Task: React.FC<TaskProps> = ({
 
   console.log("<Task>", {
     id,
+    taskId,
+    tasks,
     taskRef,
     currentDepth,
     state: state.toStrings(),
@@ -39,7 +41,6 @@ const Task: React.FC<TaskProps> = ({
 
   return (
     <div id={id}>
-      Hello?
       <Form>
         <TaskBreadcrumb tasks={tasks} taskId={task.id} />
         <Form.Group id={`${id}-title-group-${task.id}-${currentDepth}`}>

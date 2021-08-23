@@ -3,7 +3,6 @@
 
 import Time from "./time";
 import Period, { isPeriod } from "./time/period";
-import { addHour } from "./time/utils";
 import { isTodo, Todo } from "./Todo";
 
 /**
@@ -16,14 +15,29 @@ import { isTodo, Todo } from "./Todo";
  */
 export interface Appointment extends Todo, Period {}
 
+export const emptyAppointment: Appointment = {
+  id: 0,
+  title: "",
+  description: "",
+  start: Time.current(),
+  end: Time.current(),
+  canceled: null,
+};
+
+export function appointmentFrom(
+  appointmentLike: Partial<Appointment>
+): Appointment {
+  return { ...emptyAppointment, ...appointmentLike };
+}
+
 export const defaultAppointments: Appointment[] = [
-  {
-    id: Time.now(),
-    title: "Call someone you love",
-    description: "Let them know how much you appreciate them",
-    start: addHour(Time.current()),
-    end: addHour(addHour(Time.current())),
-  },
+  // {
+  //   id: Time.now(),
+  //   title: "Call someone you love",
+  //   description: "Let them know how much you appreciate them",
+  //   start: addHour(Time.current()),
+  //   end: addHour(addHour(Time.current())),
+  // },
 ];
 
 export function isAppointment(todo: Todo) {

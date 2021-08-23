@@ -9,10 +9,11 @@ export interface Prioritizable {
 }
 
 export function isPrioritizable(candidate: any) {
-  return (
+  const result =
     candidate.hasOwnProperty("priority") &&
-    typeof candidate.priority === "number"
-  );
+    typeof candidate.priority === "number";
+  // console.log("isPrioritizable", { candidate, result });
+  return result;
 }
 
 /**
@@ -39,4 +40,13 @@ export function sortByPriority<T>(
   ...priorities: T[]
 ) {
   return priorities.sort((a, b) => prioritizer(a) - prioritizer(b));
+}
+
+export function earliest<T>(
+  prioritizer: Prioritizer<T>,
+  priorities: T[]
+): number {
+  return priorities
+    .map(prioritizer)
+    .reduce((priority, candidate) => Math.min(priority, candidate), 0);
 }

@@ -31,21 +31,30 @@ export interface Task extends Todo, Prioritizable, Estimable, Completable {
   readonly supertaskId?: number;
 }
 
-export function isTask(candidate: any) {
-  console.log("isTask", {
-    candidate,
-    todo: isTodo(candidate),
-    isPri: isPrioritizable(candidate),
-    isEst: isEstimable(candidate),
-    isComp: isCompletable(candidate),
-  });
+export function taskFrom(taskLike: Partial<Task>): Task {
+  return { ...emptyTask, ...taskLike };
+}
 
-  return (
+export const emptyTask: Task = {
+  canceled: null,
+  completed: null,
+  description: "",
+  estimate: 20,
+  id: 0,
+  priority: 0,
+  title: "",
+  predecessorIds: [],
+  supertaskId: undefined,
+};
+
+export function isTask(candidate: any) {
+  const result =
     isTodo(candidate) &&
     isPrioritizable(candidate) &&
     isEstimable(candidate) &&
-    isCompletable(candidate)
-  );
+    isCompletable(candidate);
+  // console.log("isTask", { candidate, result });
+  return result;
 }
 
 export function complete(task: Task) {
@@ -174,19 +183,19 @@ export interface TaskContext {
 }
 
 export const defaultTasks: Task[] = [
-  {
-    id: 1,
-    title: "Use Whenner",
-    description: "This is done already!",
-    estimate: 5,
-    completed: Time.current(),
-    priority: Time.now(),
-  },
-  {
-    id: 2,
-    title: "Get started with Whenner",
-    description: "Click stuff, learn how the app works",
-    estimate: 5,
-    priority: Time.now() + 1,
-  },
+  // {
+  //   id: 1,
+  //   title: "Use Whenner",
+  //   description: "This is done already!",
+  //   estimate: 5,
+  //   completed: Time.current(),
+  //   priority: Time.now(),
+  // },
+  // {
+  //   id: 2,
+  //   title: "Get started with Whenner",
+  //   description: "Click stuff, learn how the app works",
+  //   estimate: 5,
+  //   priority: Time.now() + 1,
+  // },
 ];

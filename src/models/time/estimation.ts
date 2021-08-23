@@ -11,10 +11,11 @@ export type StartEstimable = Startable & Estimable;
 export type EndEstimable = Endable & Estimable;
 
 export function isEstimable(candidate: any) {
-  return (
+  const result =
     candidate.hasOwnProperty("estimate") &&
-    typeof candidate.estimate === "number"
-  );
+    typeof candidate.estimate === "number";
+  // console.log("isEstimable", { candidate, result });
+  return result;
 }
 
 export function isStartEstimable(candidate: any) {

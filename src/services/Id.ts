@@ -9,6 +9,7 @@ export interface IdGenerator {
   (): number;
 }
 
-export function isIdentifiable(thing: any) {
-  return thing?.hasOwnProperty("id");
+export function isIdentifiable(candidate: any) {
+  const result = candidate?.hasOwnProperty("id");
+  return result;
 }

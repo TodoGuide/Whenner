@@ -7,7 +7,7 @@ import { isDate } from "./time";
  * A Completable object has a `completed` date property
  */
 export interface Completable {
-  completed?: Date;
+  completed: Date | null;
 }
 
 export function complete<TCompletable extends Completable>(
@@ -23,8 +23,9 @@ export function incomplete<TCompletable extends Completable>(
 }
 
 export function isCompletable(candidate: any) {
-  return (
+  const result =
     candidate.hasOwnProperty("completed") &&
-    (isDate(candidate.completed) || typeof candidate.completed === "undefined")
-  );
+    (isDate(candidate.completed) || candidate.completed === null);
+  // console.log("isCompletable", { candidate, result });
+  return result;
 }

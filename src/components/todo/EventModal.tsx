@@ -57,7 +57,7 @@ export default class EventModal extends React.Component<
         ...this.state.event,
         completed: this.readInput(inputEvent.currentTarget)
           ? Time.current()
-          : undefined,
+          : null,
       };
       this.setState({
         ...this.state,

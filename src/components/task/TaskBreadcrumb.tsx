@@ -15,7 +15,11 @@ const TaskBreadcrumb: React.FC<TaskBreadcrumbProps> = ({
   tasks,
 }: TaskBreadcrumbProps) => {
   const task = tasks.find((t) => t.id === taskId);
-  if (!task) throw new Error(`Task with ID ${taskId} not found in tasks`);
+  console.log("<TaskBreadcrumb>", {
+    taskId,
+    tasks,
+  });
+  if (!task) return <>Task with ID ${taskId} not found in tasks</>; // throw new Error(`Task with ID ${taskId} not found in tasks`);
   return (
     <Breadcrumb>
       <Breadcrumb.Item title="Set Supertask">

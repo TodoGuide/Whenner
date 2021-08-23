@@ -1,12 +1,13 @@
 import { isDate } from "moment";
 
 export default interface Cancelable {
-  canceled?: Date;
+  canceled: Date | null;
 }
 
 export function isCancelable(candidate: any) {
-  return (
+  const result =
     candidate.hasOwnProperty("canceled") &&
-    (isDate(candidate.canceled) || typeof candidate.canceled === "undefined")
-  );
+    (isDate(candidate.canceled) || typeof candidate.canceled === "undefined");
+  console.log("isCancelable", { candidate, result });
+  return result;
 }
