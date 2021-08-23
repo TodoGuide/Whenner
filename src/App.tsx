@@ -56,9 +56,7 @@ const App: React.FC = () => {
             path="/"
             exact
             render={() => (
-              <TasksPage
-                tasks={tasksIn(state.context.records) as Array<TaskRecord>}
-              />
+              <TasksPage tasks={tasksIn(events) as Array<TaskRecord>} />
             )}
           />
           <Route path="/calendar/" component={CalendarPage} />
