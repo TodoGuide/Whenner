@@ -17,6 +17,8 @@ import {
   Upserter,
   WriterComposer,
 } from "./operations/update";
+import { ActorRef, EventObject, State } from "xstate";
+import { RecordContext, RecordEvent } from "./record";
 
 export interface Crud<T extends Identifiable> {
   read: Reader<T[]>;
@@ -25,6 +27,10 @@ export interface Crud<T extends Identifiable> {
   update: Updater<T>;
   upsert: Upserter<T>;
 }
+
+export type CrudActor<T extends Identifiable> = Crud<T> & {
+  ref: ActorRef<EventObject, State<RecordContext<T>, RecordEvent<T>>>;
+};
 
 type ComposeCrudArgs<T extends Identifiable> = {
   key: string;

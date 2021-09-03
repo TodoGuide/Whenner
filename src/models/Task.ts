@@ -4,7 +4,7 @@
 import moment from "moment";
 import { ActorRef, State } from "xstate";
 import { RecordContext, RecordEvent } from "../services/crud/record";
-import { RecordActor } from "../services/crud/record-set";
+import { RecordActor } from "../services/crud/record";
 import { Completable, isCompletable } from "./completion";
 import {
   isPrioritizable,

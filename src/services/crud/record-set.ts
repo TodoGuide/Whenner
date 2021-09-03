@@ -6,8 +6,10 @@ import {
   assign,
   createMachine,
   DoneInvokeEvent,
+  sendParent,
   spawn,
   State,
+  StateMachine,
 } from "xstate";
 import { Crud } from ".";
 import Id from "../Id";
@@ -18,20 +20,33 @@ import {
   RecordEvent,
 } from "./record";
 
+let nextInternalId = -10_000;
+
 export interface RecordSetContext<T extends Id> {
   records: RecordActor<T>[];
   error?: string;
 }
 
-export type RecordSetActor<T extends Id> = T & {
-  ref: ActorRef<RecordEvent<T>, State<RecordSetContext<T>, RecordEvent<T>>>;
+export type RecordSetActorRef<T extends Id> = ActorRef<
+  RecordEvent<T>,
+  State<RecordSetContext<T>, RecordEvent<T>>
+>;
+
+export type RecordSetActor<T extends Id> = Crud<T> & {
+  ref: RecordSetActorRef<T>;
 };
+
+export type RecordSetMachine<T extends Id> = StateMachine<
+  RecordSetContext<T>,
+  any,
+  RecordEvent<T>
+>;
 
 export const createRecordSetMachine = <T extends Id>(
   crud: Crud<T>,
   type: string = "record"
-) =>
-  createMachine<RecordSetContext<T>, RecordEvent<T>>({
+): RecordSetMachine<T> => {
+  return createMachine<RecordSetContext<T>, RecordEvent<T>>({
     id: `${type}-set`,
     initial: "loading",
     context: {
@@ -49,7 +64,10 @@ export const createRecordSetMachine = <T extends Id>(
                 event.data.map((record) => {
                   return {
                     ...record,
-                    ref: spawn(createRecordMachine(record, crud, type)),
+                    internalId: nextInternalId++,
+                    ref: spawn(
+                      createRecordMachine(record, nextInternalId++, crud, type)
+                    ),
                   };
                 }),
             }),
@@ -63,35 +81,66 @@ export const createRecordSetMachine = <T extends Id>(
             target: "loading",
           },
           RECORD_CHANGED: {
-            actions: assign((context, event) => {
-              const result = {
-                records: context.records.map((record) =>
-                  record.id === event.record.id
-                    ? {
-                        ...event.record,
-                        ref: spawn(
-                          createRecordMachine(event.record, crud, type)
-                        ),
-                      }
-                    : record
-                ),
-              };
-              return result;
-            }),
+            actions: [
+              assign((context, event) => {
+                const result = {
+                  records: context.records.map((record) =>
+                    record.internalId === event.internalId
+                      ? {
+                          ...event.record,
+                          internalId: event.internalId,
+                          ref: spawn(
+                            createRecordMachine(
+                              event.record,
+                              event.internalId,
+                              crud,
+                              type
+                            )
+                          ),
+                        }
+                      : record
+                  ),
+                };
+                return result;
+              }),
+              sendParent((context) => ({
+                // TODO: Use `entry` actions - they won't fire for some reason
+                type: "RECORDS_READY",
+                records: context.records,
+              })),
+            ],
           },
           INCLUDE_RECORD: {
-            actions: assign((context, event) => {
-              const result = {
-                records: [
-                  ...context.records,
-                  {
-                    ...event.record,
-                    ref: spawn(createRecordMachine(event.record, crud, type)),
-                  },
-                ],
-              };
-              return result;
-            }),
+            actions: [
+              (context, event) =>
+                console.log("INCLUDE_RECORD", { context, event }),
+              assign((context, event) => {
+                const internalId = nextInternalId++;
+                const result = {
+                  records: [
+                    ...context.records,
+                    {
+                      ...event.record,
+                      internalId,
+                      ref: spawn(
+                        createRecordMachine(
+                          event.record,
+                          internalId,
+                          crud,
+                          type
+                        )
+                      ),
+                    },
+                  ],
+                };
+                return result;
+              }),
+              sendParent((context) => ({
+                // TODO: Use `entry` actions - they won't fire for some reason
+                type: "RECORDS_READY",
+                records: context.records,
+              })),
+            ],
           },
           EXCLUDE_RECORD: {
             actions: assign((context, event) => {
@@ -104,6 +153,13 @@ export const createRecordSetMachine = <T extends Id>(
             }),
           },
         },
+        entry: [
+          (context, event) => console.log("ready entry", { context, event }),
+          sendParent((context) => ({
+            type: "RECORDS_READY",
+            records: context.records,
+          })),
+        ],
       },
       error: {
         on: {
@@ -114,3 +170,4 @@ export const createRecordSetMachine = <T extends Id>(
       },
     },
   });
+};

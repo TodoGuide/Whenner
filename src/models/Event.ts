@@ -1,6 +1,14 @@
 // Licensed under GPL v3: https://www.gnu.org/licenses/gpl-3.0.txt
 // Copyright © 2021 James Tharpe
 
+import { Crud } from "../services/crud";
+import { RecordActor } from "../services/crud/record";
+import {
+  createRecordSetMachine,
+  RecordSetActor,
+  RecordSetActorRef,
+  RecordSetMachine,
+} from "../services/crud/record-set";
 import { Appointment, isAppointment } from "./Appointment";
 import { estimatedPeriodOf, estimateEndOf, isTask, Task } from "./Task";
 import Time from "./time";
@@ -13,6 +21,11 @@ import { dateValueOf, timeValueOf } from "./time/utils";
 import { Todo } from "./Todo";
 
 export type Event = Task | Appointment;
+
+export type EventRecordActor = RecordActor<Event>;
+export type EventRecordSetActor = RecordSetActor<Event>;
+export type EventRecordSetActorRef = RecordSetActorRef<Event>;
+export type EventRecordSetMachine = RecordSetMachine<Event>;
 
 export function isEvent(todo: Todo) {
   return isTask(todo) || isAppointment(todo);
@@ -50,6 +63,12 @@ export function startPriorityOf(event: Event): number {
 
 export function endOf(event: Event): Date {
   return new Date((event as Appointment).end || estimateEndOf(event as Task));
+}
+
+export function createEventRecordSetMachine(
+  crud: Crud<Event>
+): EventRecordSetMachine {
+  return createRecordSetMachine(crud, "Event");
 }
 
 // function eventTypeNameOf(event: Event): "task" | "appointment" | "unknown" {

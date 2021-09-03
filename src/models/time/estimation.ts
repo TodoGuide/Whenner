@@ -14,7 +14,6 @@ export function isEstimable(candidate: any) {
   const result =
     candidate.hasOwnProperty("estimate") &&
     typeof candidate.estimate === "number";
-  // console.log("isEstimable", { candidate, result });
   return result;
 }
 

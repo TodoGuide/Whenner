@@ -9,7 +9,7 @@ import { TaskRecord } from "../../models/Task";
 import EstimateInputFormGroup from "../EstimateInputFormGroup";
 import TaskBreadcrumb from "./TaskBreadcrumb";
 
-interface TaskProps {
+export interface TaskProps {
   id: string;
   taskId: number;
   tasks: Array<TaskRecord>;
@@ -23,21 +23,21 @@ const Task: React.FC<TaskProps> = ({
   tasks,
   currentDepth = 1,
 }: TaskProps) => {
+  console.log("<Task>", {
+    id,
+    taskId,
+    tasks,
+    // taskRef,
+    currentDepth,
+    // state: state.toStrings(),
+    // events: state.nextEvents,
+  });
+
   const taskRef = tasks.find((t) => t.id === taskId)?.ref;
   if (!taskRef) throw new Error(`Task with ID ${taskId} not found in tasks`);
 
   const [state, send] = useActor(taskRef);
   const { record: task } = state.context;
-
-  console.log("<Task>", {
-    id,
-    taskId,
-    tasks,
-    taskRef,
-    currentDepth,
-    state: state.toStrings(),
-    events: state.nextEvents,
-  });
 
   return (
     <div id={id}>

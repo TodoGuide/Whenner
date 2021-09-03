@@ -17,16 +17,19 @@ import { Operation } from "./operations";
 
 export interface RecordContext<T extends Identifiable> {
   record: T;
+  internalId: number;
   error?: string;
-}
-
-export interface RecordEvent<T extends Identifiable> extends EventObject {
-  record: T;
 }
 
 export type RecordActor<T extends Id> = T & {
   ref: ActorRef<RecordEvent<T>, State<RecordContext<T>, RecordEvent<T>>>;
+  internalId: number;
 };
+
+export interface RecordEvent<T extends Identifiable> extends EventObject {
+  record: T | RecordActor<T>;
+  internalId?: number;
+}
 
 function createRecordAssigner<T extends Identifiable>() {
   return assign<RecordContext<T>, DoneInvokeEvent<T>>({
@@ -52,13 +55,14 @@ function createOperationInvoker<T extends Identifiable>(
 
 export const createRecordMachine = <T extends Identifiable>(
   record: T,
+  internalId: number,
   crud: Crud<T>,
   type: string = "record"
 ) =>
   createMachine<RecordContext<T>, RecordEvent<T>>({
     id: `${type}_${record.id}`,
     initial: "unmodified",
-    context: { record },
+    context: { record, internalId },
     states: {
       unmodified: {
         on: {
@@ -120,6 +124,7 @@ export const createRecordMachine = <T extends Identifiable>(
               sendParent((context) => ({
                 type: "RECORD_CHANGED",
                 record: context.record,
+                internalId: context.internalId,
               })),
             ],
           },

@@ -9,14 +9,16 @@ const MAX_DEPTH_DEFAULT = 7;
 
 type TaskPageProps = {
   tasks: TaskRecord[];
+  taskId: number;
   maxDepth?: number;
 };
 
-const TasksPage: React.FC<TaskPageProps> = ({ tasks, maxDepth }) => {
+const TasksPage: React.FC<TaskPageProps> = ({ tasks, taskId, maxDepth }) => {
   console.log("<TasksPage>", { tasks });
   return (
     <TaskList
       tasks={tasks}
+      taskId={taskId}
       id="tasks"
       maxDepth={maxDepth || MAX_DEPTH_DEFAULT}
     ></TaskList>

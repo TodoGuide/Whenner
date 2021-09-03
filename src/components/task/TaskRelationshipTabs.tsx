@@ -53,6 +53,7 @@ const TaskRelationshipTabs: React.FC<TaskRelationshipTabsProps> = ({
             </small>
             <TaskList
               tasks={predecessors || []}
+              taskId={0}
               currentDepth={nextDepth}
               maxDepth={maxDepth}
               id={`${id}-predecessors-${task.id}-${nextDepth}`}
