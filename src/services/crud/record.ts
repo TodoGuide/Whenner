@@ -2,13 +2,16 @@
 // Copyright (C) 2021  James Tharpe
 
 import {
+  ActorRef,
   assign,
   createMachine,
   DoneInvokeEvent,
   EventObject,
   sendParent,
+  State,
 } from "xstate";
 import { Crud } from ".";
+import Id from "../Id";
 import Identifiable from "../Id";
 import { Operation } from "./operations";
 
@@ -20,6 +23,10 @@ export interface RecordContext<T extends Identifiable> {
 export interface RecordEvent<T extends Identifiable> extends EventObject {
   record: T;
 }
+
+export type RecordActor<T extends Id> = T & {
+  ref: ActorRef<RecordEvent<T>, State<RecordContext<T>, RecordEvent<T>>>;
+};
 
 function createRecordAssigner<T extends Identifiable>() {
   return assign<RecordContext<T>, DoneInvokeEvent<T>>({

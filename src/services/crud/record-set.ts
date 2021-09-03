@@ -1,5 +1,5 @@
 // Licensed under GPL v3: https://www.gnu.org/licenses/gpl-3.0.txt
-// Copyright (C) 2021 James Tharpe
+// Copyright © 2021 James Tharpe
 
 import {
   ActorRef,
@@ -14,18 +14,18 @@ import Id from "../Id";
 import {
   createOperationErrorConfig,
   createRecordMachine,
-  RecordContext,
+  RecordActor,
   RecordEvent,
 } from "./record";
-
-export type RecordActor<T extends Id> = T & {
-  ref: ActorRef<RecordEvent<T>, State<RecordContext<T>, RecordEvent<T>>>;
-};
 
 export interface RecordSetContext<T extends Id> {
   records: RecordActor<T>[];
   error?: string;
 }
+
+export type RecordSetActor<T extends Id> = T & {
+  ref: ActorRef<RecordEvent<T>, State<RecordSetContext<T>, RecordEvent<T>>>;
+};
 
 export const createRecordSetMachine = <T extends Id>(
   crud: Crud<T>,
