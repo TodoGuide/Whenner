@@ -10,6 +10,7 @@ import {
   createEventRecordSetMachine,
   EventRecordActor,
   EventRecordSetActorRef,
+  startPriorityOf,
 } from "../models/Event";
 import { Crud } from "../services/crud";
 import { Event } from "../models/Event";
@@ -51,7 +52,17 @@ export const createAppMachine = (crud: Crud<Event>): AppMachine =>
             actions: [
               (context, event) => console.log("NEW_TASK", { context, event }),
               send(
-                { type: "INCLUDE_RECORD", record: { ...emptyTask } },
+                (context) => ({
+                  type: "INCLUDE_RECORD",
+                  record: {
+                    ...emptyTask,
+                    priority:
+                      Math.min(
+                        0,
+                        ...context.events.map((event) => startPriorityOf(event))
+                      ) - 1,
+                  },
+                }),
                 { to: (context) => context.db }
               ),
             ],
