@@ -1,7 +1,7 @@
 import moment from "moment";
-import Appointment from "../appointment";
-import Chronotype from "../chronotype";
-import Task from "../task";
+import Appointment from "../models/appointment";
+import Chronotype from "../models/chronotype";
+import Task from "../models/task";
 
 export const defaultTasks: Task[] = [
   // {

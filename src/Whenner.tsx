@@ -6,16 +6,16 @@ import React from "react";
 import Container from "react-bootstrap/Container";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import { EventObject } from "xstate";
-import AboutPage from "./components/AboutPage";
-import CalendarPage from "./components/CalendarPage";
-import Actions from "./components/common/Actions";
-import Header from "./components/common/Header";
-import Navigator from "./components/common/Navigator";
-import SettingsPage from "./components/SettingsPage";
-import TasksPage from "./components/TasksPage";
-import { localStorageCrud } from "./crud.local-storage";
+import AboutPage from "./ui/AboutPage";
+import CalendarPage from "./ui/CalendarPage";
+import Actions from "./ui/common/Actions";
+import Header from "./ui/common/Header";
+import Navigator from "./ui/common/Navigator";
+import SettingsPage from "./ui/SettingsPage";
+import TasksPage from "./ui/TasksPage";
+import { localStorageCrud } from "./models/crud.local-storage";
 import { defaultEvents } from "./data/defaults";
-import { TaskRecord, tasksIn } from "./task";
+import { TaskRecord, tasksIn } from "./models/task";
 import { createWhennerMachine } from "./whenner.state";
 
 const crud = localStorageCrud({

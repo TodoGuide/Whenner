@@ -12,10 +12,10 @@ import {
 import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop";
 import "react-big-calendar/lib/addons/dragAndDrop/styles.css";
 import "react-big-calendar/lib/css/react-big-calendar.css";
-import Task from "../task";
-import Time from "../time";
-import Event from "../event";
-import { isNotOpened, Statusable } from "../attribs/statusable";
+import Task from "../models/task";
+import Time from "../models/time";
+import Event from "../models/event";
+import { isNotOpened, Statusable } from "../models/attribs/statusable";
 
 moment.locale(navigator.language, {
   week: {

@@ -8,7 +8,7 @@ import {
   predecessorsOf,
   successorsOf,
   TaskRecord,
-} from "../../task";
+} from "../../models/task";
 import TaskList from "./TaskList";
 
 interface TaskRelationshipTabsProps {

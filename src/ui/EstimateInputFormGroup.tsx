@@ -3,7 +3,7 @@
 
 import React from "react";
 import { Form, InputGroup } from "react-bootstrap";
-import { Estimable } from "../time/estimation";
+import { Estimable } from "../models/time/estimation";
 
 interface EstimateInputProps {
   estimatedItem: Estimable;

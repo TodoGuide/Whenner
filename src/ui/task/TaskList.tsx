@@ -3,8 +3,11 @@
 
 import React from "react";
 import { Accordion, Card } from "react-bootstrap";
-import { prioritizer, sortByPriority } from "../../attribs/prioritizable";
-import { TaskRecord } from "../../task";
+import {
+  prioritizer,
+  sortByPriority,
+} from "../../models/attribs/prioritizable";
+import { TaskRecord } from "../../models/task";
 import Task from "./Task";
 import TaskRelationshipTabs from "./TaskRelationshipTabs";
 

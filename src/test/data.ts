@@ -2,9 +2,9 @@
 // Copyright (C) 2019  James Tharpe
 
 import moment from "moment";
-import Appointment, { appointmentFrom } from "../appointment";
-import Task, { taskFrom } from "../task";
-import Time from "../time";
+import Appointment, { appointmentFrom } from "../models/appointment";
+import Task, { taskFrom } from "../models/task";
+import Time from "../models/time";
 
 export const oneHourTask: Task = taskFrom({
   id: 100,

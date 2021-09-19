@@ -3,7 +3,7 @@
 
 import React from "react";
 import { Breadcrumb } from "react-bootstrap";
-import Task, { supertasksOf, tasksIn } from "../../task";
+import Task, { supertasksOf, tasksIn } from "../../models/task";
 
 interface TaskBreadcrumbProps {
   taskId: number;

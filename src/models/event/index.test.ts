@@ -1,7 +1,7 @@
 // Licensed under GPL v3: https://www.gnu.org/licenses/gpl-3.0.txt
 // Copyright © 2021 James Tharpe
 
-import { pastAppointment } from "../test/data";
+import { pastAppointment } from "../../test/data";
 import { closed } from "../attribs/closable";
 
 describe("The Event Module", () => {
