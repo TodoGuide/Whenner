@@ -1,50 +1,55 @@
-import {
-  AnyEventObject,
-  assign,
-  createMachine,
-  send,
-  spawn,
-  StateMachine,
-} from "xstate";
+import { assign, createMachine, send, spawn, StateMachine } from "xstate";
 import {
   createEventRecordSetMachine,
   EventRecordActor,
   EventRecordSetActorRef,
   startPriorityOf,
-} from "../models/Event";
-import { Crud } from "../services/crud";
-import { Event } from "../models/Event";
-import { emptyTask } from "../models/Task";
+} from "./models/Event";
+import { Event } from "./models/Event";
+import { emptyTask } from "./models/Task";
+import { Crud } from "./services/crud";
+import { RecordsReadyEvent } from "./services/crud/record-set.events";
 
-export interface AppContext {
+export interface WhennerContext {
   events: EventRecordActor[];
   db: EventRecordSetActorRef;
 }
 
-export type AppMachine = StateMachine<AppContext, any, AnyEventObject>;
+type NewTaskEvent = {
+  type: "NEW_TASK";
+};
 
-export const createAppMachine = (crud: Crud<Event>): AppMachine =>
-  createMachine<AppContext>({
+export type WhennerEvent = RecordsReadyEvent<Event> | NewTaskEvent;
+
+export type WhennerMachine = StateMachine<WhennerContext, any, WhennerEvent>;
+
+export const createWhennerMachine = (crud: Crud<Event>) => {
+  const result: WhennerMachine = createMachine<WhennerContext, WhennerEvent>({
     id: "whenner-app",
     context: {
       events: [],
-      db: {} as unknown as EventRecordSetActorRef,
+      db: {} as EventRecordSetActorRef,
     },
     initial: "loading",
     on: {
-      RECORDS_READY: {
+      "RECORD_SET.RECORDS_READY": {
         target: "ready",
         actions: [
           (context, event) => console.log("RECORDS_READY", { context, event }),
-          assign((_context, event) => ({ events: event.records })),
+          assign({ events: (_, event) => event.records }),
         ],
       },
     },
     states: {
       loading: {
-        entry: assign((context) => ({
-          db: spawn(createEventRecordSetMachine(crud)),
-        })),
+        entry: assign((context) => {
+          return {
+            ...context,
+            db: spawn(
+              createEventRecordSetMachine(crud)
+            ) as EventRecordSetActorRef,
+          };
+        }),
       },
       ready: {
         on: {
@@ -71,3 +76,5 @@ export const createAppMachine = (crud: Crud<Event>): AppMachine =>
       },
     },
   });
+  return result;
+};

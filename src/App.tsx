@@ -7,7 +7,6 @@ import Container from "react-bootstrap/Container";
 import { Provider } from "react-redux";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import { EventObject } from "xstate";
-import { createAppMachine } from "./charts/app";
 import AboutPage from "./components/AboutPage";
 import CalendarPage from "./components/CalendarPage";
 import Actions from "./components/common/Actions";
@@ -15,12 +14,11 @@ import Header from "./components/common/Header";
 import Navigator from "./components/common/Navigator";
 import SettingsPage from "./components/SettingsPage";
 import TasksPage from "./components/TasksPage";
-import { startPriorityOf } from "./models/Event";
-import { earliest } from "./models/priority";
-import { emptyTask, taskFrom, TaskRecord, tasksIn } from "./models/Task";
+import { TaskRecord, tasksIn } from "./models/Task";
 import { Store } from "./redux/store";
 import { localStorageCrud } from "./services/crud/impl/local-storage";
 import { defaultEvents } from "./services/EventsService";
+import { createWhennerMachine } from "./whenner.state";
 
 const crud = localStorageCrud({
   key: "whenner.events",
@@ -28,7 +26,7 @@ const crud = localStorageCrud({
 });
 
 const App: React.FC = () => {
-  const [state, send, service] = useMachine(createAppMachine(crud), {
+  const [state, send, service] = useMachine(createWhennerMachine(crud), {
     devTools: true,
   });
 

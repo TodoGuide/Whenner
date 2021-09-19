@@ -1,35 +1,12 @@
 // Licensed under GPL v3: https://www.gnu.org/licenses/gpl-3.0.txt
 // Copyright (C) 2021  James Tharpe
 
-import {
-  ActorRef,
-  assign,
-  createMachine,
-  DoneInvokeEvent,
-  EventObject,
-  sendParent,
-  State,
-} from "xstate";
+import { assign, createMachine, DoneInvokeEvent, sendParent } from "xstate";
 import { Crud } from ".";
-import Id from "../Id";
 import Identifiable from "../Id";
 import { Operation } from "./operations";
-
-export interface RecordContext<T extends Identifiable> {
-  record: T;
-  internalId: number;
-  error?: string;
-}
-
-export type RecordActor<T extends Id> = T & {
-  ref: ActorRef<RecordEvent<T>, State<RecordContext<T>, RecordEvent<T>>>;
-  internalId: number;
-};
-
-export interface RecordEvent<T extends Identifiable> extends EventObject {
-  record: T | RecordActor<T>;
-  internalId?: number;
-}
+import RecordContext from "./record.context";
+import RecordEvent from "./record.events";
 
 function createRecordAssigner<T extends Identifiable>() {
   return assign<RecordContext<T>, DoneInvokeEvent<T>>({
@@ -87,7 +64,7 @@ export const createRecordMachine = <T extends Identifiable>(
           SAVE: {
             target: "saving",
           },
-          INERT: {
+          INSERT: {
             target: "inserting",
           },
           UPDATE: {
@@ -140,7 +117,7 @@ export const createRecordMachine = <T extends Identifiable>(
             actions: [
               createRecordAssigner<T>(),
               sendParent((context) => ({
-                type: "RECORD_CHANGED",
+                type: "RECORD_CHANGE",
                 record: context.record,
               })),
             ],

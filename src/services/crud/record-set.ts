@@ -2,51 +2,33 @@
 // Copyright © 2021 James Tharpe
 
 import {
-  ActorRef,
   assign,
   createMachine,
   DoneInvokeEvent,
   sendParent,
   spawn,
-  State,
   StateMachine,
 } from "xstate";
 import { Crud } from ".";
+import Identifiable from "../Id";
 import Id from "../Id";
-import {
-  createOperationErrorConfig,
-  createRecordMachine,
-  RecordActor,
-  RecordEvent,
-} from "./record";
+import { createOperationErrorConfig, createRecordMachine } from "./record";
+import { RecordSetContext } from "./record-set.context";
+import RecordSetEvent from "./record-set.events";
 
 let nextInternalId = -10_000;
-
-export interface RecordSetContext<T extends Id> {
-  records: RecordActor<T>[];
-  error?: string;
-}
-
-export type RecordSetActorRef<T extends Id> = ActorRef<
-  RecordEvent<T>,
-  State<RecordSetContext<T>, RecordEvent<T>>
->;
-
-export type RecordSetActor<T extends Id> = Crud<T> & {
-  ref: RecordSetActorRef<T>;
-};
 
 export type RecordSetMachine<T extends Id> = StateMachine<
   RecordSetContext<T>,
   any,
-  RecordEvent<T>
+  RecordSetEvent<T>
 >;
 
-export const createRecordSetMachine = <T extends Id>(
+export const createRecordSetMachine = <T extends Identifiable>(
   crud: Crud<T>,
   type: string = "record"
 ): RecordSetMachine<T> => {
-  return createMachine<RecordSetContext<T>, RecordEvent<T>>({
+  const result = createMachine<RecordSetContext<T>, RecordSetEvent<T>>({
     id: `${type}-set`,
     initial: "loading",
     context: {
@@ -105,7 +87,7 @@ export const createRecordSetMachine = <T extends Id>(
               }),
               sendParent((context) => ({
                 // TODO: Use `entry` actions - they won't fire for some reason
-                type: "RECORDS_READY",
+                type: "RECORD_SET.RECORDS_READY",
                 records: context.records,
               })),
             ],
@@ -137,7 +119,7 @@ export const createRecordSetMachine = <T extends Id>(
               }),
               sendParent((context) => ({
                 // TODO: Use `entry` actions - they won't fire for some reason
-                type: "RECORDS_READY",
+                type: "RECORD_SET.RECORDS_READY",
                 records: context.records,
               })),
             ],
@@ -156,7 +138,7 @@ export const createRecordSetMachine = <T extends Id>(
         entry: [
           (context, event) => console.log("ready entry", { context, event }),
           sendParent((context) => ({
-            type: "RECORDS_READY",
+            type: "RECORD_SET.RECORDS_READY",
             records: context.records,
           })),
         ],
@@ -170,4 +152,5 @@ export const createRecordSetMachine = <T extends Id>(
       },
     },
   });
+  return result;
 };

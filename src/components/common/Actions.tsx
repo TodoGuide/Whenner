@@ -3,12 +3,12 @@
 
 import React from "react";
 import { Row, Col, Button } from "react-bootstrap";
-import { EventObject, Sender, State } from "xstate";
-import { AppContext } from "../../charts/app";
+import { Sender, State } from "xstate";
+import { WhennerContext, WhennerEvent } from "../../whenner.state";
 
 type ActionsPageProps = {
-  state: State<AppContext>;
-  send: Sender<EventObject>;
+  state: State<WhennerContext, WhennerEvent>;
+  send: Sender<WhennerEvent>;
 };
 
 const Actions: React.FC<ActionsPageProps> = ({ state, send }) => {

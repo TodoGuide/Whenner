@@ -18,7 +18,8 @@ import {
   WriterComposer,
 } from "./operations/update";
 import { ActorRef, EventObject, State } from "xstate";
-import { RecordContext, RecordEvent } from "./record";
+import RecordEvent from "./record.events";
+import RecordContext from "./record.context";
 
 export interface Crud<T extends Identifiable> {
   read: Reader<T[]>;

@@ -2,11 +2,9 @@
 // Copyright © 2021 James Tharpe
 
 import { Crud } from "../services/crud";
-import { RecordActor } from "../services/crud/record";
+import RecordActor from "../services/crud/record.actor";
 import {
   createRecordSetMachine,
-  RecordSetActor,
-  RecordSetActorRef,
   RecordSetMachine,
 } from "../services/crud/record-set";
 import { Appointment, isAppointment } from "./Appointment";
@@ -19,6 +17,9 @@ import Period, {
 } from "./time/period";
 import { dateValueOf, timeValueOf } from "./time/utils";
 import { Todo } from "./Todo";
+import RecordSetActor, {
+  RecordSetActorRef,
+} from "../services/crud/record-set.actor";
 
 export type Event = Task | Appointment;
 
