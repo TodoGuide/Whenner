@@ -1,16 +1,16 @@
 // Licensed under GPL v3: https://www.gnu.org/licenses/gpl-3.0.txt
-// Copyright (C) 2019 James Tharpe
+// Copyright © 2021 James Tharpe
 
 import React from "react";
 import { Accordion, Card } from "react-bootstrap";
-import { prioritizer, sortByPriority } from "../../models/priority";
-import { TaskRecord } from "../../models/Task";
+import { prioritizer, sortByPriority } from "../../attribs/prioritizable";
+import { TaskRecord } from "../../task";
 import Task from "./Task";
 import TaskRelationshipTabs from "./TaskRelationshipTabs";
 
 type TaskListProps = {
   id: string;
-  tasks: TaskRecord[];
+  tasks: Array<TaskRecord>;
   taskId?: number;
   currentDepth?: number;
   maxDepth?: number;

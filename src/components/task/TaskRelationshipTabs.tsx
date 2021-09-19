@@ -5,15 +5,15 @@ import React from "react";
 import { Tabs, Tab } from "react-bootstrap";
 import {
   subtasksOf,
-  successorsOf,
   predecessorsOf,
+  successorsOf,
   TaskRecord,
-} from "../../models/Task";
+} from "../../task";
 import TaskList from "./TaskList";
 
 interface TaskRelationshipTabsProps {
   id: string;
-  tasks: TaskRecord[];
+  tasks: Array<TaskRecord>;
   taskId: number;
   currentDepth?: number;
   maxDepth?: number;

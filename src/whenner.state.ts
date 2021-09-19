@@ -1,14 +1,13 @@
 import { assign, createMachine, send, spawn, StateMachine } from "xstate";
-import {
+import { emptyTask } from "./task";
+import { Crud } from "./crud";
+import { RecordsReadyEvent } from "./crud/record-set.events";
+import Event, {
   createEventRecordSetMachine,
   EventRecordActor,
   EventRecordSetActorRef,
   startPriorityOf,
-} from "./models/Event";
-import { Event } from "./models/Event";
-import { emptyTask } from "./models/Task";
-import { Crud } from "./services/crud";
-import { RecordsReadyEvent } from "./services/crud/record-set.events";
+} from "./event";
 
 export interface WhennerContext {
   events: EventRecordActor[];

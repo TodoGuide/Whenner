@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
-import App from "./App";
+import Whenner from "./Whenner";
 import reportWebVitals from "./reportWebVitals";
 import { inspect } from "@xstate/inspect";
 
@@ -11,7 +11,7 @@ inspect({
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <Whenner />
   </React.StrictMode>,
   document.getElementById("root")
 );

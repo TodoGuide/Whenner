@@ -3,9 +3,9 @@
 
 import React from "react";
 import { Form, InputGroup, ModalProps, Modal, Button } from "react-bootstrap";
-import Time from "../../models/time";
-import { Event } from "../../models/Event";
-import { Task } from "../../models/Task";
+import Time from "../../time";
+import Event from "../../event";
+import Task from "../../task";
 
 interface EventModalProps extends ModalProps {
   event?: Event;

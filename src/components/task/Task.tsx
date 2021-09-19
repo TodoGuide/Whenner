@@ -1,11 +1,13 @@
 // Licensed under GPL v3: https://www.gnu.org/licenses/gpl-3.0.txt
-// Copyright (C) 2019 James Tharpe
+// Copyright © 2021 James Tharpe
 
 import { useActor } from "@xstate/react";
 import React from "react";
 import { Button, Form } from "react-bootstrap";
-import { isCanceled, isClosed, isOpened } from "../../models/statuses";
-import { TaskRecord } from "../../models/Task";
+import { isCanceled } from "../../attribs/cancelable";
+import { isClosed } from "../../attribs/closable";
+import { isOpened } from "../../attribs/statusable";
+import { TaskRecord } from "../../task";
 import EstimateInputFormGroup from "../EstimateInputFormGroup";
 import TaskBreadcrumb from "./TaskBreadcrumb";
 

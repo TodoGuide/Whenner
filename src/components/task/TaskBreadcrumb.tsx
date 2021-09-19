@@ -3,11 +3,11 @@
 
 import React from "react";
 import { Breadcrumb } from "react-bootstrap";
-import { supertasksOf, Task as TaskModel, tasksIn } from "../../models/Task";
+import Task, { supertasksOf, tasksIn } from "../../task";
 
 interface TaskBreadcrumbProps {
   taskId: number;
-  tasks: Array<TaskModel>;
+  tasks: Array<Task>;
 }
 
 const TaskBreadcrumb: React.FC<TaskBreadcrumbProps> = ({

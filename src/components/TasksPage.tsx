@@ -2,7 +2,7 @@
 // Copyright (C) 2019 James Tharpe
 
 import React from "react";
-import { TaskRecord } from "../models/Task";
+import { TaskRecord } from "../task";
 import TaskList from "./task/TaskList";
 
 const MAX_DEPTH_DEFAULT = 7;
