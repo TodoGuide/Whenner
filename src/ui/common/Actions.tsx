@@ -4,7 +4,7 @@
 import React from "react";
 import { Row, Col, Button } from "react-bootstrap";
 import { Sender, State } from "xstate";
-import { WhennerContext, WhennerEvent } from "../../whenner.state";
+import { WhennerContext, WhennerEvent } from "../../models/whenner";
 
 type ActionsPageProps = {
   state: State<WhennerContext, WhennerEvent>;

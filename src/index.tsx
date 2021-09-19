@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
-import Whenner from "./Whenner";
+import Whenner from "./ui/Whenner";
 import reportWebVitals from "./reportWebVitals";
 import { inspect } from "@xstate/inspect";
 
