@@ -1,7 +1,7 @@
 import { ActorRef, State } from "xstate";
-import Identifiable from "../attribs/identifiable";
-import RecordContext from "./record.context";
-import RecordEvent from "./record.events";
+import Identifiable from "../../attribs/identifiable";
+import RecordContext from "./context";
+import RecordEvent from "./events";
 
 type RecordActorRef<T extends Identifiable> = ActorRef<
   RecordEvent<T>,

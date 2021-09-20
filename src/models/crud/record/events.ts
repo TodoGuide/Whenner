@@ -1,5 +1,5 @@
-import Identifiable from "../attribs/identifiable";
-import RecordActor from "./record.actor";
+import Identifiable from "../../attribs/identifiable";
+import RecordActor from "./actor";
 
 export interface RecordEventData<T extends Identifiable> {
   record: T | RecordActor<T>;

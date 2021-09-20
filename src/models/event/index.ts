@@ -2,8 +2,7 @@
 // Copyright © 2021 James Tharpe
 
 import { Crud } from "../crud";
-import RecordActor from "../crud/record.actor";
-import { createRecordSetMachine, RecordSetMachine } from "../crud/record-set";
+import RecordActor from "../crud/record/actor";
 import Appointment, { isAppointment } from "../appointment";
 import Time from "../time";
 import Period, {
@@ -12,9 +11,10 @@ import Period, {
   periodsOverlap,
 } from "../time/period";
 import { dateValueOf, timeValueOf } from "../time";
-import RecordSetActor, { RecordSetActorRef } from "../crud/record-set.actor";
+import RecordSetActor, { RecordSetActorRef } from "../crud/record-set/actor";
 import Todo from "../todo";
 import Task, { estimatedPeriodOf, estimateEndOf, isTask } from "../task";
+import { createRecordSetMachine, RecordSetMachine } from "../crud/record-set";
 
 type Event = Task | Appointment;
 

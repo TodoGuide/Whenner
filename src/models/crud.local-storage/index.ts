@@ -7,14 +7,14 @@ import {
   Retriever,
   RetrieverComposer,
   readListFinder,
-} from "../crud/operations/retrieve";
-import { Creator, CreatorComposer } from "../crud/operations/create";
+} from "../crud/retrieve";
+import { Creator, CreatorComposer } from "../crud/create";
 import {
   Updater,
   UpdaterComposer,
   Writer,
   WriterComposer,
-} from "../crud/operations/update";
+} from "../crud/update";
 import composeCrud from "../crud";
 import Time from "../time";
 import Identifiable, { IdGenerator } from "../attribs/identifiable";

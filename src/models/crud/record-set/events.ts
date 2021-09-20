@@ -1,6 +1,6 @@
-import Identifiable from "../attribs/identifiable";
-import RecordActor from "./record.actor";
-import { RecordEventData } from "./record.events";
+import Identifiable from "../../attribs/identifiable";
+import RecordActor from "../record/actor";
+import { RecordEventData } from "../record/events";
 
 export type RefreshEvent = {
   type: "REFRESH";

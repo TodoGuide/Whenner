@@ -2,20 +2,20 @@
 // Copyright © 2021  James Tharpe
 
 import composeCrud from "../crud";
-import { Creator, CreatorComposer } from "../crud/operations/create";
+import { Creator, CreatorComposer } from "../crud/create";
 import {
   Finder,
   FinderComposer,
   Retriever,
   RetrieverComposer,
   readListFinder,
-} from "../crud/operations/retrieve";
+} from "../crud/retrieve";
 import {
   Updater,
   UpdaterComposer,
   Writer,
   WriterComposer,
-} from "../crud/operations/update";
+} from "../crud/update";
 import Identifiable, { IdGenerator } from "../attribs/identifiable";
 import Time from "../time";
 

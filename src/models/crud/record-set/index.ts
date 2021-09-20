@@ -9,12 +9,12 @@ import {
   spawn,
   StateMachine,
 } from "xstate";
-import { Crud } from ".";
-import Identifiable from "../attribs/identifiable";
-import Id from "../attribs/identifiable";
-import { createOperationErrorConfig, createRecordMachine } from "./record";
-import { RecordSetContext } from "./record-set.context";
-import RecordSetEvent from "./record-set.events";
+import { Crud } from "..";
+import Identifiable from "../../attribs/identifiable";
+import Id from "../../attribs/identifiable";
+import { createOperationErrorConfig, createRecordMachine } from "../record";
+import { RecordSetContext } from "./context";
+import RecordSetEvent from "./events";
 
 let nextInternalId = -10_000;
 

@@ -1,7 +1,7 @@
 import { assign, createMachine, send, spawn, StateMachine } from "xstate";
 import { emptyTask } from "./task";
 import { Crud } from "./crud";
-import { RecordsReadyEvent } from "./crud/record-set.events";
+import { RecordsReadyEvent } from "./crud/record-set/events";
 import Event, {
   createEventRecordSetMachine,
   EventRecordActor,

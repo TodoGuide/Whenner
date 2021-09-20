@@ -1,4 +1,4 @@
-import Identifiable from "../../attribs/identifiable";
+import Identifiable from "../attribs/identifiable";
 import { Creator } from "./create";
 import { Finder, Retriever } from "./retrieve";
 

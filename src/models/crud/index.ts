@@ -8,18 +8,18 @@ import {
   FinderComposer,
   Retriever,
   RetrieverComposer,
-} from "./operations/retrieve";
-import { Creator, CreatorComposer } from "./operations/create";
+} from "./retrieve";
+import { Creator, CreatorComposer } from "./create";
 import {
   Updater,
   UpdaterComposer,
   upserter,
   Upserter,
   WriterComposer,
-} from "./operations/update";
+} from "./update";
 import { ActorRef, EventObject, State } from "xstate";
-import RecordEvent from "./record.events";
-import RecordContext from "./record.context";
+import RecordContext from "./record/context";
+import RecordEvent from "./record/events";
 
 export interface Crud<T extends Identifiable> {
   read: Retriever<T[]>;

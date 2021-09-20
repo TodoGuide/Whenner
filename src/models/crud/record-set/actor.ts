@@ -1,8 +1,8 @@
 import { ActorRef, State } from "xstate";
-import { Crud } from ".";
-import Identifiable from "../attribs/identifiable";
-import { RecordSetContext } from "./record-set.context";
-import RecordSetEvent from "./record-set.events";
+import { Crud } from "..";
+import Identifiable from "../../attribs/identifiable";
+import { RecordSetContext } from "./context";
+import RecordSetEvent from "./events";
 
 export type RecordSetActorRef<T extends Identifiable> = ActorRef<
   RecordSetEvent<T>,

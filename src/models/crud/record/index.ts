@@ -8,11 +8,11 @@ import {
   sendParent,
   StateMachine,
 } from "xstate";
-import { Crud } from ".";
-import Identifiable from "../attribs/identifiable";
-import { Operation } from "./operations";
-import RecordContext from "./record.context";
-import RecordEvent from "./record.events";
+import { Crud } from "..";
+import Identifiable from "../../attribs/identifiable";
+import Operation from "../operation";
+import RecordContext from "./context";
+import RecordEvent from "./events";
 
 function createRecordAssigner<T extends Identifiable>() {
   return assign<RecordContext<T>, DoneInvokeEvent<T>>({

@@ -1,6 +1,7 @@
 // Licensed under GPL v3: https://www.gnu.org/licenses/gpl-3.0.txt
-// Copyright (C) 2021  James Tharpe
-import Identifiable from "../../attribs/identifiable";
+// Copyright © 2021  James Tharpe
+
+import Identifiable from "../attribs/identifiable";
 
 /**
  * A Finder finds an item of the specified type in a data source, or from the provided array if specified
