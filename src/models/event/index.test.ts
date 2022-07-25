@@ -2,7 +2,7 @@
 // Copyright © 2021 James Tharpe
 
 import { pastAppointment } from "../../test/data";
-import { closed } from "../attribs/closable";
+import { closed } from "../attributes/closable";
 
 describe("The Event Module", () => {
   describe("Given a task", () => {

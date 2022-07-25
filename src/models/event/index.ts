@@ -1,20 +1,20 @@
 // Licensed under GPL v3: https://www.gnu.org/licenses/gpl-3.0.txt
 // Copyright © 2021 James Tharpe
 
-import { Crud } from "../crud";
-import RecordActor from "../crud/record/actor";
+import { Crud } from "../../crud";
+import RecordActor from "../../crud/record/actor";
 import Appointment, { isAppointment } from "../appointment";
-import Time from "../time";
 import Period, {
   minutesIn,
   periodOf as getPeriod,
   periodsOverlap,
 } from "../time/period";
 import { dateValueOf, timeValueOf } from "../time";
-import RecordSetActor, { RecordSetActorRef } from "../crud/record-set/actor";
+import RecordSetActor, { RecordSetActorRef } from "../../crud/record-set/actor";
 import Todo from "../todo";
 import Task, { estimatedPeriodOf, estimateEndOf, isTask } from "../task";
-import { createRecordSetMachine, RecordSetMachine } from "../crud/record-set";
+import { createRecordSetMachine, RecordSetMachine } from "../../crud/record-set";
+import Time from "../time";
 
 type Event = Task | Appointment;
 

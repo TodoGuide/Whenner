@@ -4,9 +4,9 @@
 import { useActor } from "@xstate/react";
 import React from "react";
 import { Button, Form } from "react-bootstrap";
-import { isCanceled } from "../../models/attribs/cancelable";
-import { isClosed } from "../../models/attribs/closable";
-import { isOpened } from "../../models/attribs/statusable";
+import { isCanceled } from "../../models/attributes/cancelable";
+import { isClosed } from "../../models/attributes/closable";
+import { isOpened } from "../../models/attributes/statusable";
 import { TaskRecord } from "../../models/task";
 import EstimateInputFormGroup from "../EstimateInputFormGroup";
 import TaskBreadcrumb from "./TaskBreadcrumb";

@@ -13,10 +13,10 @@ import Header from "./common/Header";
 import Navigator from "./common/Navigator";
 import SettingsPage from "./SettingsPage";
 import TasksPage from "./TasksPage";
-import { localStorageCrud } from "../models/crud.local-storage";
+import { localStorageCrud } from "../crud.local-storage";
 import { defaultEvents } from "../data/defaults";
-import { TaskRecord, tasksIn } from "../models/task";
 import { createWhennerMachine } from "../models/whenner";
+import { TaskRecord, tasksIn } from "../models/task";
 
 const crud = localStorageCrud({
   key: "whenner.events",

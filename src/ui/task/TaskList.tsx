@@ -6,7 +6,7 @@ import { Accordion, Card } from "react-bootstrap";
 import {
   prioritizer,
   sortByPriority,
-} from "../../models/attribs/prioritizable";
+} from "../../models/attributes/prioritizable";
 import { TaskRecord } from "../../models/task";
 import Task from "./Task";
 import TaskRelationshipTabs from "./TaskRelationshipTabs";

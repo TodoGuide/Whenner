@@ -3,12 +3,7 @@
 
 import React from "react";
 import { Tabs, Tab } from "react-bootstrap";
-import {
-  subtasksOf,
-  predecessorsOf,
-  successorsOf,
-  TaskRecord,
-} from "../../models/task";
+import { predecessorsOf, subtasksOf, successorsOf, TaskRecord } from "../../models/task";
 import TaskList from "./TaskList";
 
 interface TaskRelationshipTabsProps {

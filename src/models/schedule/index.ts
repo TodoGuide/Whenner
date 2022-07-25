@@ -3,7 +3,7 @@
 
 import { isAppointment } from "../appointment";
 import Chronotype, { preferredStart } from "../chronotype";
-import { sortByPriority } from "../attribs/prioritizable";
+import { sortByPriority } from "../attributes/prioritizable";
 import Time from "../time";
 import { defaultChronotype } from "../../data/defaults";
 import Event, { endPriorityOf, eventsOverlap, startPriorityOf } from "../event";
