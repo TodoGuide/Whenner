@@ -42,7 +42,7 @@
     "@types/redux-immutable-state-invariant": "^2.1.2",
     "@xstate/test": "^0.4.2",
     "husky": "^3.1.0",
-    "npm-check-updates": "^11.8.3",
+    "npm-check-updates": "^16.7.4",
     "tslint": "^5.20.1",
     "typescript": "^4.3.5"
   },
